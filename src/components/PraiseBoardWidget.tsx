@@ -58,7 +58,7 @@ export default function PraiseBoardWidget() {
       setNetwork(network.name);
       
       // Auto switch to Sepolia
-      if (network.chainId !== 11155111n) {
+      if (network.chainId !== BigInt(11155111)) {
         try {
           await provider.send("wallet_switchEthereumChain", [{ chainId: "0xaa36a7" }]);
           setNetwork("sepolia");
