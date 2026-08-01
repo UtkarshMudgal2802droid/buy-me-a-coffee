@@ -6,7 +6,7 @@ import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
 // We will inject the contract address here later after deployment
-const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || "";
+const CONTRACT_ADDRESS = "0x0FaebD0cfA6f15CA041e304111C3590d3B6C3b2b";
 
 const ABI = [
   "function tip(string note) payable",
