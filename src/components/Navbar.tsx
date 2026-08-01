@@ -1,39 +1,42 @@
 "use client";
 
 import React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Sparkles, Hexagon, TerminalSquare } from 'lucide-react';
 
 export default function Navbar() {
-  const pathname = usePathname();
-
   const navLinks = [
-    { name: 'Home', href: '#home', icon: <Sparkles className="w-4 h-4" /> },
-    { name: 'Features', href: '#features', icon: <Hexagon className="w-4 h-4" /> },
-    { name: 'Creator Demo', href: '#demo', icon: <Hexagon className="w-4 h-4" /> },
-    { name: 'Praise Board', href: '#praise-board', icon: <TerminalSquare className="w-4 h-4" /> },
+    { name: 'Home', offset: 0, icon: <Sparkles className="w-4 h-4" /> },
+    { name: 'Features', offset: 1, icon: <Hexagon className="w-4 h-4" /> },
+    { name: 'Demo', offset: 2, icon: <Hexagon className="w-4 h-4" /> },
+    { name: 'Ledger', offset: 3, icon: <TerminalSquare className="w-4 h-4" /> },
   ];
+
+  const handleNavClick = (offset: number) => {
+    // Each section represents 100vh of vertical scroll
+    const targetY = offset * window.innerHeight;
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
+  };
 
   return (
     <motion.nav 
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-2xl"
+      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-auto"
     >
-      <div className="glass-card px-2 py-2 flex items-center justify-between rounded-full bg-slate-950/40 border-white/10 shadow-2xl backdrop-blur-xl overflow-x-auto">
-        {navLinks.map((link) => {
-          return (
-            <a key={link.href} href={link.href} className="relative flex-1 group min-w-max">
-              <div className="flex items-center justify-center gap-2 px-4 py-3 rounded-full text-sm font-bold transition-all duration-300 text-slate-400 group-hover:text-white hover:bg-white/10">
-                {link.icon}
-                {link.name}
-              </div>
-            </a>
-          );
-        })}
+      <div className="glass-panel px-1 py-1 flex items-center justify-between rounded-full">
+        {navLinks.map((link) => (
+          <button 
+            key={link.name} 
+            onClick={() => handleNavClick(link.offset)}
+            className="relative flex-1 group min-w-max cursor-pointer"
+          >
+            <div className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-full text-xs uppercase tracking-widest font-semibold transition-all duration-300 text-[#737373] hover:text-[#f8f9fa] hover:bg-white/5">
+              {link.name}
+            </div>
+          </button>
+        ))}
       </div>
     </motion.nav>
   );
