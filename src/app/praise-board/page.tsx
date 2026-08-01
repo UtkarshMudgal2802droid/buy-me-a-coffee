@@ -76,9 +76,12 @@ export default function PraiseBoard() {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, provider);
       
+      const currentBlock = await provider.getBlockNumber();
+      const fromBlock = Math.max(0, currentBlock - 9000);
+
       // The supporter wall is populated from decoded event logs
       const filter = contract.filters.TipReceived();
-      const events = await contract.queryFilter(filter);
+      const events = await contract.queryFilter(filter, fromBlock, "latest");
       
       const parsedTips = events.map((event: any) => ({
         sender: event.args.sender,
