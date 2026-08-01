@@ -4,58 +4,65 @@ import HybridFeatureCards from '@/components/HybridFeatureCards';
 import CreatorCard from '@/components/CreatorCard';
 import DonationWidget from '@/components/DonationWidget';
 import PraiseBoardWidget from '@/components/PraiseBoardWidget';
+import HorizontalScrollProvider from '@/components/HorizontalScrollProvider';
+import Navbar from '@/components/Navbar';
 
 export default function Home() {
   return (
-    <main className="flex flex-col w-full min-h-screen">
-      
-      {/* Hero Section */}
-      <section id="home" className="min-h-screen pt-20">
-        <Hero />
-      </section>
+    <main className="w-full bg-[#0a0a0a]">
+      <Navbar />
+      <HorizontalScrollProvider>
+        
+        {/* Section 1: Hero */}
+        <section id="home" className="w-[100vw] h-screen flex-shrink-0 flex items-center justify-center pt-20 px-6">
+          <Hero />
+        </section>
 
-      {/* Features Section */}
-      <section id="features" className="min-h-screen py-20 relative flex items-center">
-        <HybridFeatureCards />
-      </section>
+        {/* Section 2: Features */}
+        <section id="features" className="w-[100vw] h-screen flex-shrink-0 flex items-center justify-center px-6 relative">
+          <HybridFeatureCards />
+        </section>
 
-      {/* Creator Demo Section */}
-      <section id="demo" className="min-h-screen py-20 relative flex items-center">
-        <div className="container mx-auto px-6 z-10 max-w-6xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black mb-4 bg-clip-text text-transparent bg-gradient-to-r from-electric-purple to-cyber-blue">
-              Creator Demo
-            </h2>
-            <p className="text-slate-400 text-lg max-w-xl mx-auto">
-              This is how your profile will look to supporters.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            <div className="lg:col-span-7">
-              <CreatorCard />
+        {/* Section 3: Creator Demo */}
+        <section id="demo" className="w-[100vw] h-screen flex-shrink-0 flex items-center justify-center px-6 relative">
+          <div className="w-full max-w-6xl mx-auto flex flex-col items-center">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tighter">
+                Creator Demo
+              </h2>
+              <p className="text-[#737373] text-lg max-w-xl mx-auto font-medium">
+                Sleek, frictionless tipping integrated seamlessly.
+              </p>
             </div>
-            <div className="lg:col-span-5">
-              <DonationWidget />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full">
+              <div className="lg:col-span-7 flex justify-center">
+                <CreatorCard />
+              </div>
+              <div className="lg:col-span-5 flex justify-center">
+                <DonationWidget />
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Praise Board Section */}
-      <section id="praise-board" className="min-h-screen py-20 relative flex items-center">
-        <div className="container mx-auto px-6 z-10 w-full">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black mb-4 bg-clip-text text-transparent bg-gradient-to-r from-warm-amber to-orange-500">
-              The Real Test
-            </h2>
-            <p className="text-slate-400 text-lg max-w-xl mx-auto">
-              Connect your Sepolia testnet wallet below and send a real transaction to our Smart Contract.
-            </p>
+        {/* Section 4: Praise Board */}
+        <section id="praise-board" className="w-[100vw] h-screen flex-shrink-0 flex items-center justify-center px-6 relative">
+          <div className="w-full max-w-5xl mx-auto flex flex-col items-center">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tighter">
+                The Ledger
+              </h2>
+              <p className="text-[#737373] text-lg max-w-xl mx-auto font-medium">
+                Immutable support, etched onto Sepolia.
+              </p>
+            </div>
+            <div className="w-full">
+              <PraiseBoardWidget />
+            </div>
           </div>
-          <PraiseBoardWidget />
-        </div>
-      </section>
+        </section>
 
+      </HorizontalScrollProvider>
     </main>
   );
 }
