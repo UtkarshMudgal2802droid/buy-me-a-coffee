@@ -1,90 +1,150 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-light: #f8f9fa;
-  --color-brand-dark: #0a0a0a;
-  --color-brand-gray: #171717;
-  --color-brand-border: #262626;
-  --color-brand-accent: #e5e5e5;
+  --color-neon-purple: #a855f7;
+  --color-neon-blue: #3b82f6;
+  --color-neon-cyan: #06b6d4;
+  --color-neon-magenta: #ec4899;
+  --color-neon-amber: #f59e0b;
+  --color-deep-space: #030712;
 }
 
 @layer base {
-  :root {
-    --brand-light: #f8f9fa;
-    --brand-dark: #0a0a0a;
-    --brand-gray: #171717;
-    --brand-border: #262626;
-    --brand-accent: #e5e5e5;
-  }
-  
   body {
-    @apply bg-[#0a0a0a] text-[#f8f9fa] antialiased overflow-x-hidden;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+    @apply bg-[#030712] text-slate-100 antialiased overflow-x-hidden;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
   }
 }
 
 @layer components {
-  /* Minimalist Glassmorphism */
+  /* True Premium Glassmorphism */
   .glass-card {
-    @apply bg-[#171717]/80 backdrop-blur-xl border border-[#262626] rounded-2xl shadow-2xl;
+    @apply bg-white/[0.02] backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)];
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 20px 40px rgba(0,0,0,0.5);
   }
   
   .glass-panel {
-    @apply bg-[#171717]/90 backdrop-blur-2xl border border-[#262626] shadow-2xl;
+    @apply bg-slate-900/40 backdrop-blur-3xl border border-white/10 shadow-2xl;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 20px 40px rgba(0,0,0,0.5);
   }
 
   .glass-input {
-    @apply bg-[#0a0a0a] border border-[#262626] rounded-xl px-5 py-4 text-[#f8f9fa] placeholder-[#737373] focus:outline-none focus:border-[#e5e5e5] transition-all duration-300;
+    @apply bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-neon-purple/50 focus:border-neon-purple/50 transition-all duration-300 hover:bg-black/60 shadow-inner;
   }
   
-  /* Advanced Sweep Button */
-  .sweep-btn {
-    @apply relative overflow-hidden rounded-full font-medium transition-colors duration-300 bg-[#f8f9fa] text-[#0a0a0a] z-10 hover:text-[#f8f9fa] flex items-center justify-center gap-2;
+  /* Vibrant Glow Button */
+  .glow-btn {
+    @apply relative overflow-hidden rounded-xl font-bold transition-all duration-500 bg-white text-slate-950 z-10 hover:text-white shadow-[0_0_20px_rgba(168,85,247,0.3)];
   }
   
-  .sweep-btn::before {
+  .glow-btn::before {
     content: '';
     position: absolute;
     top: 100%;
     left: 0;
     width: 100%;
     height: 100%;
-    background: #171717;
-    transition: all 0.4s cubic-bezier(0.8, 0, 0.2, 1);
+    background: linear-gradient(90deg, var(--color-neon-purple), var(--color-neon-blue));
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: -1;
     border-radius: 50% 50% 0 0;
   }
   
-  .sweep-btn:hover::before {
+  .glow-btn:hover::before {
     top: 0;
     border-radius: 0;
   }
 
-  /* Outline Sweep Button */
-  .outline-sweep-btn {
-    @apply relative overflow-hidden rounded-full font-medium transition-colors duration-300 border border-[#262626] bg-transparent text-[#e5e5e5] z-10 hover:text-[#0a0a0a] hover:border-transparent flex items-center justify-center gap-2;
+  .glow-btn:hover {
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.6), 0 0 60px rgba(59, 130, 246, 0.4);
+    border-color: transparent;
   }
 
-  .outline-sweep-btn::before {
+  /* Outline Glow Button */
+  .outline-glow-btn {
+    @apply relative overflow-hidden rounded-xl font-bold transition-all duration-500 border border-white/20 bg-white/5 text-white z-10 hover:text-slate-950 flex items-center justify-center gap-2 backdrop-blur-md;
+  }
+
+  .outline-glow-btn::before {
     content: '';
     position: absolute;
     top: 100%;
     left: 0;
     width: 100%;
     height: 100%;
-    background: #f8f9fa;
+    background: white;
     transition: all 0.4s cubic-bezier(0.8, 0, 0.2, 1);
     z-index: -1;
     border-radius: 50% 50% 0 0;
   }
 
-  .outline-sweep-btn:hover::before {
+  .outline-glow-btn:hover::before {
     top: 0;
     border-radius: 0;
   }
 
+  .outline-glow-btn:hover {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    border-color: white;
+  }
 
-  /* --- HYBRID UIVERSE CARD SYSTEM --- */
+  /* Ambient Mesh Gradients */
+  .ambient-mesh {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    background-color: #030712;
+  }
+
+  .ambient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.5;
+    animation: float 20s infinite ease-in-out alternate;
+  }
+
+  .orb-1 {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(168,85,247,0.4) 0%, transparent 70%);
+    top: -100px;
+    left: -100px;
+    animation-delay: 0s;
+  }
+
+  .orb-2 {
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(6,182,212,0.3) 0%, transparent 70%);
+    bottom: -200px;
+    right: -200px;
+    animation-delay: -5s;
+  }
+
+  .orb-3 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(236,72,153,0.3) 0%, transparent 70%);
+    top: 40%;
+    left: 40%;
+    animation-delay: -10s;
+  }
+
+  @keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(100px, -50px) scale(1.1); }
+    66% { transform: translate(-50px, 100px) scale(0.9); }
+    100% { transform: translate(0, 0) scale(1); }
+  }
+
+
+  /* --- HYBRID UIVERSE CARD SYSTEM (Restoring Glows) --- */
   .hybrid-wrap {
     position: relative;
     width: 100%;
@@ -109,8 +169,8 @@
     width: var(--w-card);
     height: var(--h-card);
     padding: 20px;
-    background-color: #0a0a0a;
-    border: 1px solid #262626;
+    background-color: rgba(3, 7, 18, 0.8);
+    backdrop-blur: 10px;
     z-index: var(--z1);
     top: var(--t1);
     left: var(--l1);
@@ -134,7 +194,7 @@
     z-index: -10;
     pointer-events: none;
     transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
-    opacity: 0;
+    opacity: 0.3; /* restored opacity */
   }
 
   .hybrid-card::after {
@@ -145,18 +205,17 @@
     background: var(--glow-grad);
     transform: translate3d(0, 0, 0) scale(0.95);
     filter: blur(25px);
-    opacity: 0;
+    opacity: 0.2; /* restored opacity */
     transition: opacity 0.6s ease;
   }
 
   .hybrid-card:hover {
     animation-play-state: paused;
     z-index: 10 !important;
-    border-color: transparent;
   }
 
   .hybrid-card:hover::after {
-    opacity: 0.4;
+    opacity: 0.8;
   }
 
   .hybrid-card:hover::before {
@@ -165,7 +224,8 @@
   }
 
   .hybrid-content {
-    background-color: #171717;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     width: 100%;
     height: 100%;
@@ -179,9 +239,9 @@
     justify-content: center;
   }
 
-  /* Sophisticated Gradients */
+  /* Vibrant Gradients for Cards */
   .hybrid-card:nth-child(1) {
-    --glow-grad: conic-gradient(from 0deg at 50% 50%, #171717 0%, #737373 50%, #171717 100%);
+    --glow-grad: linear-gradient(-45deg, #f59e0b 0%, #ec4899 100%);
     --z1: 2;
     --t1: 0;
     --l1: calc(50% - (var(--w-card) / 2));
@@ -202,7 +262,7 @@
   }
 
   .hybrid-card:nth-child(2) {
-    --glow-grad: conic-gradient(from 120deg at 50% 50%, #171717 0%, #e5e5e5 50%, #171717 100%);
+    --glow-grad: linear-gradient(-45deg, #3b82f6 0%, #a855f7 100%);
     --z1: 0;
     --t1: 20px;
     --l1: auto;
@@ -223,7 +283,7 @@
   }
 
   .hybrid-card:nth-child(3) {
-    --glow-grad: conic-gradient(from 240deg at 50% 50%, #171717 0%, #404040 50%, #171717 100%);
+    --glow-grad: linear-gradient(-45deg, #06b6d4 0%, #3b82f6 100%);
     --z1: 0;
     --t1: 20px;
     --l1: var(--insetX-card);
