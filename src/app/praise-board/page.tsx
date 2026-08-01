@@ -5,6 +5,12 @@ import { ethers } from 'ethers';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
+
 // We will inject the contract address here later after deployment
 const CONTRACT_ADDRESS = "0x0FaebD0cfA6f15CA041e304111C3590d3B6C3b2b";
 
