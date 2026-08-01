@@ -78,7 +78,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-6"
         >
-          <Link href="/creator" className="w-full sm:w-auto">
+          <a href="#demo" className="w-full sm:w-auto">
             <motion.button 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -87,8 +87,8 @@ export default function Hero() {
               View Creator Demo 
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </motion.button>
-          </Link>
-          <Link href="/praise-board" className="w-full sm:w-auto">
+          </a>
+          <a href="#praise-board" className="w-full sm:w-auto">
             <motion.button 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -96,7 +96,7 @@ export default function Hero() {
             >
               Go to Praise Board
             </motion.button>
-          </Link>
+          </a>
         </motion.div>
       </div>
 
