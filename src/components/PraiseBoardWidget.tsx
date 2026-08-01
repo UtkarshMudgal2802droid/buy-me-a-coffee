@@ -158,7 +158,7 @@ export default function PraiseBoardWidget() {
   };
 
   return (
-    <div className="min-h-screen text-slate-100 p-8 font-sans">
+    <div className="w-full text-slate-100 font-sans">
       <div className="max-w-5xl mx-auto space-y-12 relative z-10">
         
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
