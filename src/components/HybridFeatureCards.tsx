@@ -12,10 +12,10 @@ export default function HybridFeatureCards() {
         viewport={{ once: true }}
         className="text-center mb-16"
       >
-        <h2 className="text-4xl md:text-5xl font-black mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+        <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tighter text-[#f8f9fa]">
           Powered By Web3
         </h2>
-        <p className="text-slate-400 text-lg max-w-xl mx-auto">
+        <p className="text-[#737373] text-lg max-w-xl mx-auto font-medium">
           A truly decentralized experience built with modern technologies to empower creators.
         </p>
       </motion.div>
