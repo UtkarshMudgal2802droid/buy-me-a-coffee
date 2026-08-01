@@ -17,6 +17,8 @@ export const metadata: Metadata = {
   description: "Support Utkarsh Mudgal by buying a coffee. Your support fuels my creativity and open-source projects.",
 };
 
+import Navbar from "@/components/Navbar";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -27,7 +29,14 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col relative selection:bg-electric-purple/30 selection:text-white">
+        <div className="grid-bg"></div>
+        <div className="aurora-bg"></div>
+        <Navbar />
+        <main className="flex-1 w-full relative z-10 pt-32 pb-12">
+          {children}
+        </main>
+      </body>
     </html>
   );
 }
