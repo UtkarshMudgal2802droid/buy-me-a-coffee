@@ -83,13 +83,15 @@ export default function Hero() {
               View Creator Demo <ArrowRight className="w-5 h-5" />
             </motion.button>
           </Link>
-          <motion.button 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 glass-card text-white hover:bg-white/10 transition-colors font-bold text-lg w-full sm:w-auto"
-          >
-            Connect Wallet
-          </motion.button>
+          <Link href="/praise-board">
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-8 py-4 glass-card text-white hover:bg-white/10 transition-colors font-bold text-lg w-full sm:w-auto"
+            >
+              Go to Praise Board
+            </motion.button>
+          </Link>
         </motion.div>
       </div>
 
