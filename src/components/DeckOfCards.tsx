@@ -7,6 +7,12 @@ import CreatorCard from './CreatorCard';
 import DonationWidget from './DonationWidget';
 import { MessageSquareQuote } from 'lucide-react';
 
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
+
 const CONTRACT_ADDRESS = "0x0FaebD0cfA6f15CA041e304111C3590d3B6C3b2b";
 const ABI = [
   "function tip(string note) payable",
