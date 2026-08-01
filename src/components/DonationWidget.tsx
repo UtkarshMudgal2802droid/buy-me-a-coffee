@@ -22,45 +22,40 @@ export default function DonationWidget() {
   const currentEthAmount = selectedAmount === 'custom' ? customAmount : (selectedAmount * 0.005).toFixed(3);
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 0.6, type: "spring" }}
-      className="glass-card p-6 md:p-10 sticky top-32 w-full max-w-md mx-auto"
-    >
-      <div className="flex items-center gap-4 mb-8">
-        <div className="p-3 rounded-2xl bg-neon-purple/10 border border-neon-purple/30 text-neon-purple shadow-[0_0_15px_rgba(168,85,247,0.3)]">
-          <Hexagon className="w-6 h-6" />
+    <div className="w-full h-full glass-card p-10 flex flex-col justify-between">
+      <div className="flex items-center gap-4 mb-10">
+        <div className="p-4 rounded-3xl bg-[#00e5ff]/10 border-2 border-[#00e5ff]/30 text-[#00e5ff] shadow-[0_10px_25px_rgba(0,229,255,0.3)]">
+          <Hexagon className="w-8 h-8" />
         </div>
-        <h2 className="text-2xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400">Support Creator</h2>
+        <h2 className="text-4xl font-black tracking-tight text-slate-900">Support Creator</h2>
       </div>
 
-      <div className="space-y-8">
+      <div className="space-y-8 flex-1">
         {/* Coffee Selector */}
         <div>
-          <label className="text-[10px] text-slate-400 font-bold mb-4 block uppercase tracking-[0.2em]">Select Amount</label>
-          <div className="grid grid-cols-4 gap-2">
+          <label className="text-sm text-slate-500 font-black mb-4 block uppercase tracking-widest">Select Amount</label>
+          <div className="grid grid-cols-4 gap-3">
             {amounts.map((amount) => (
               <motion.button
                 key={amount}
-                whileTap={{ scale: 0.95 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={() => setSelectedAmount(amount)}
-                className={`py-3 rounded-xl border flex items-center justify-center gap-2 font-semibold text-sm transition-all duration-300 ${
+                className={`py-4 rounded-2xl border-2 flex items-center justify-center gap-2 font-black text-lg transition-all duration-300 ${
                   selectedAmount === amount
-                    ? 'bg-neon-purple/20 border-neon-purple text-neon-purple shadow-[0_0_15px_rgba(168,85,247,0.4)]'
-                    : 'bg-black/30 border-white/10 text-slate-400 hover:bg-black/50 hover:border-white/30'
+                    ? 'bg-[#ff2a85] border-[#ff2a85] text-white shadow-[0_10px_20px_rgba(255,42,133,0.4)] scale-105'
+                    : 'bg-white/50 border-white/80 text-slate-600 hover:bg-white hover:border-[#ff2a85]/50 hover:shadow-md'
                 }`}
               >
-                {amount} <Coffee className="w-4 h-4" />
+                {amount} <Coffee className="w-5 h-5" />
               </motion.button>
             ))}
             <motion.button
-              whileTap={{ scale: 0.95 }}
+              whileTap={{ scale: 0.9 }}
               onClick={() => setSelectedAmount('custom')}
-              className={`py-3 rounded-xl border font-semibold text-sm transition-all duration-300 ${
+              className={`py-4 rounded-2xl border-2 font-black text-lg transition-all duration-300 ${
                 selectedAmount === 'custom'
-                  ? 'bg-neon-cyan/20 border-neon-cyan text-neon-cyan shadow-[0_0_15px_rgba(6,182,212,0.4)]'
-                  : 'bg-black/30 border-white/10 text-slate-400 hover:bg-black/50 hover:border-white/30'
+                  ? 'bg-[#8a2be2] border-[#8a2be2] text-white shadow-[0_10px_20px_rgba(138,43,226,0.4)] scale-105'
+                  : 'bg-white/50 border-white/80 text-slate-600 hover:bg-white hover:border-[#8a2be2]/50 hover:shadow-md'
               }`}
             >
               Custom
@@ -83,9 +78,9 @@ export default function DonationWidget() {
                   placeholder="0.00"
                   value={customAmount}
                   onChange={(e) => setCustomAmount(e.target.value)}
-                  className="glass-input w-full pl-16 text-xl font-bold group-hover:border-neon-cyan/30 focus:border-neon-cyan/50 focus:ring-neon-cyan/30"
+                  className="glass-input w-full pl-20 text-2xl"
                 />
-                <span className="absolute left-5 top-1/2 -translate-y-1/2 text-neon-cyan font-bold tracking-widest text-sm">ETH</span>
+                <span className="absolute left-6 top-1/2 -translate-y-1/2 text-[#8a2be2] font-black tracking-widest text-lg">ETH</span>
               </div>
             </motion.div>
           )}
@@ -93,43 +88,43 @@ export default function DonationWidget() {
 
         {/* Message Input */}
         <div>
-          <label className="text-[10px] text-slate-400 font-bold mb-4 block uppercase tracking-[0.2em]">Message (Optional)</label>
+          <label className="text-sm text-slate-500 font-black mb-4 block uppercase tracking-widest">Message (Optional)</label>
           <textarea
             rows={3}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="You are doing great work..."
-            className="glass-input w-full resize-none text-sm"
+            className="glass-input w-full resize-none text-lg"
           />
         </div>
-
-        {/* Total & Submit */}
-        <div className="pt-6 border-t border-white/10">
-          <div className="flex justify-between items-center mb-6">
-            <span className="text-slate-400 font-bold text-sm tracking-widest uppercase">Total</span>
-            <span className="text-xl font-black text-neon-amber drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]">{currentEthAmount || '0.00'} ETH</span>
-          </div>
-          <button
-            onClick={handleTip}
-            disabled={isProcessing || (selectedAmount === 'custom' && !customAmount)}
-            className="glow-btn w-full py-4 text-sm tracking-widest uppercase disabled:opacity-50"
-          >
-            {isProcessing ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin" />
-                Processing...
-              </>
-            ) : (
-              'Send Tip'
-            )}
-          </button>
-          
-          <p className="text-center text-[10px] uppercase tracking-widest font-bold text-slate-500 mt-6 flex items-center justify-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#10b981] shadow-[0_0_10px_rgba(16,185,129,0.8)] animate-pulse"></span>
-            Ethereum Network Connected
-          </p>
-        </div>
       </div>
-    </motion.div>
+
+      {/* Total & Submit */}
+      <div className="pt-8 border-t-4 border-white/40 mt-auto">
+        <div className="flex justify-between items-center mb-8">
+          <span className="text-slate-500 font-black text-lg tracking-widest uppercase">Total</span>
+          <span className="text-3xl font-black text-[#ff6a00] drop-shadow-md">{currentEthAmount || '0.00'} ETH</span>
+        </div>
+        <button
+          onClick={handleTip}
+          disabled={isProcessing || (selectedAmount === 'custom' && !customAmount)}
+          className="glow-btn w-full py-5 text-xl tracking-widest uppercase disabled:opacity-50 flex justify-center items-center gap-3"
+        >
+          {isProcessing ? (
+            <>
+              <Loader2 className="w-6 h-6 animate-spin" />
+              Processing...
+            </>
+          ) : (
+            'Send Tip'
+          )}
+        </button>
+        
+        <p className="text-center text-xs uppercase tracking-widest font-black text-slate-400 mt-6 flex items-center justify-center gap-2">
+          <span className="w-3 h-3 rounded-full bg-[#00e5ff] shadow-[0_0_15px_rgba(0,229,255,0.8)] animate-pulse"></span>
+          Ethereum Network Connected
+        </p>
+      </div>
+    </div>
   );
 }
