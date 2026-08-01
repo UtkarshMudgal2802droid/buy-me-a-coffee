@@ -17,7 +17,7 @@
   }
   
   body {
-    @apply bg-slate-950 text-slate-100 antialiased overflow-x-hidden;
+    @apply bg-slate-950 text-slate-100 antialiased overflow-x-hidden scroll-smooth;
   }
 }
 
@@ -62,6 +62,188 @@
   .cyber-button:hover {
     box-shadow: 0 0 30px rgba(147, 51, 234, 0.6), 0 0 60px rgba(59, 130, 246, 0.4);
     border-color: transparent;
+  }
+
+  /* --- HYBRID UIVERSE CARD SYSTEM --- */
+  .hybrid-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    --w-card: 220px;
+    --h-card: 280px;
+    --rotate-card: 15deg;
+    --insetX-card: 50px;
+    --w-wrap-card: 100%;
+  }
+
+  .hybrid-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    position: absolute;
+    border-radius: 20px;
+    width: var(--w-card);
+    height: var(--h-card);
+    padding: 20px;
+    background-color: #020617;
+    z-index: var(--z1);
+    top: var(--t1);
+    left: var(--l1);
+    right: var(--r1);
+    transform: var(--trans1);
+    cursor: pointer;
+    animation: hybrid-rotating 12s cubic-bezier(0.75, 0, 0, 1.01) infinite 0s;
+    transition: transform 0.5s ease;
+  }
+
+  /* Glowing Border Effect (From 2nd Uiverse snippet) */
+  .hybrid-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    left: -5px;
+    margin: auto;
+    width: calc(100% + 10px);
+    height: calc(100% + 10px);
+    border-radius: 22px;
+    background: var(--glow-grad);
+    z-index: -10;
+    pointer-events: none;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .hybrid-card::after {
+    content: "";
+    z-index: -11;
+    position: absolute;
+    inset: 0;
+    background: var(--glow-grad);
+    transform: translate3d(0, 0, 0) scale(0.95);
+    filter: blur(20px);
+    opacity: 0.5;
+    transition: opacity 0.4s ease, filter 0.4s ease;
+  }
+
+  .hybrid-card:hover {
+    animation-play-state: paused;
+    z-index: 10 !important;
+  }
+
+  .hybrid-card:hover::after {
+    filter: blur(35px);
+    opacity: 1;
+  }
+
+  .hybrid-card:hover::before {
+    transform: rotate(-90deg) scaleX(1.34) scaleY(0.77);
+  }
+
+  .hybrid-content {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Card Positioning Logic (From 1st Uiverse snippet) */
+  .hybrid-card:nth-child(1) {
+    --glow-grad: linear-gradient(-45deg, #f59e0b 0%, #ef4444 100%);
+    --z1: 2;
+    --t1: 0;
+    --l1: calc(50% - (var(--w-card) / 2));
+    --r1: auto;
+    --trans1: rotate(0deg);
+    
+    --z2: 0;
+    --t2: 20px;
+    --l2: var(--insetX-card);
+    --r2: auto;
+    --trans2: rotate(calc(var(--rotate-card) * -1));
+    
+    --z3: 0;
+    --t3: 20px;
+    --l3: auto;
+    --r3: var(--insetX-card);
+    --trans3: rotate(calc(var(--rotate-card) * 1));
+  }
+
+  .hybrid-card:nth-child(2) {
+    --glow-grad: linear-gradient(-45deg, #3b82f6 0%, #8b5cf6 100%);
+    --z1: 0;
+    --t1: 20px;
+    --l1: auto;
+    --r1: var(--insetX-card);
+    --trans1: rotate(calc(var(--rotate-card) * 1));
+
+    --z2: 2;
+    --t2: 0;
+    --l2: calc(50% - (var(--w-card) / 2));
+    --r2: auto;
+    --trans2: rotate(0deg);
+
+    --z3: 0;
+    --t3: 20px;
+    --l3: var(--insetX-card);
+    --r3: auto;
+    --trans3: rotate(calc(var(--rotate-card) * -1));
+  }
+
+  .hybrid-card:nth-child(3) {
+    --glow-grad: linear-gradient(-45deg, #10b981 0%, #3b82f6 100%);
+    --z1: 0;
+    --t1: 20px;
+    --l1: var(--insetX-card);
+    --r1: auto;
+    --trans1: rotate(calc(var(--rotate-card) * -1));
+
+    --z2: 0;
+    --t2: 20px;
+    --l2: auto;
+    --r2: var(--insetX-card);
+    --trans2: rotate(calc(var(--rotate-card) * 1));
+
+    --z3: 2;
+    --t3: 0;
+    --l3: calc(50% - (var(--w-card) / 2));
+    --r3: auto;
+    --trans3: rotate(0deg);
+  }
+
+  @keyframes hybrid-rotating {
+    0%, 99.99% {
+      z-index: var(--z1);
+      top: var(--t1);
+      left: var(--l1);
+      right: var(--r1);
+      transform: var(--trans1);
+    }
+    33.33% {
+      z-index: var(--z2);
+      top: var(--t2);
+      left: var(--l2);
+      right: var(--r2);
+      transform: var(--trans2);
+    }
+    66.66% {
+      z-index: var(--z3);
+      top: var(--t3);
+      left: var(--l3);
+      right: var(--r3);
+      transform: var(--trans3);
+    }
   }
 }
 
