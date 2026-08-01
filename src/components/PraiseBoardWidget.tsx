@@ -27,7 +27,7 @@ type Tip = {
   txHash: string;
 };
 
-export default function PraiseBoard() {
+export default function PraiseBoardWidget() {
   const [account, setAccount] = useState<string>('');
   const [network, setNetwork] = useState<string>('');
   
