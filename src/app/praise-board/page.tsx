@@ -157,94 +157,170 @@ export default function PraiseBoard() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 p-8 font-sans">
-      <div className="max-w-4xl mx-auto space-y-8">
+    <div className="min-h-screen text-slate-100 p-8 font-sans">
+      <div className="max-w-5xl mx-auto space-y-12 relative z-10">
         
-        <div className="flex items-center justify-between">
-          <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-electric-purple to-warm-amber">The Praise Board</h1>
-          {!account ? (
-            <button onClick={connectWallet} className="px-6 py-2 bg-electric-purple text-white rounded-lg font-bold hover:bg-electric-purple/80 transition">
-              Connect Wallet
-            </button>
-          ) : (
-            <div className="text-sm bg-white/10 px-4 py-2 rounded-full border border-white/20">
-              Connected: {account.slice(0, 6)}...{account.slice(-4)} ({network})
-            </div>
-          )}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <motion.h1 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-electric-purple via-cyber-blue to-warm-amber drop-shadow-md"
+          >
+            The Praise Board
+          </motion.h1>
           
-          {/* Send Tip Section */}
-          <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-2xl">
-            <h2 className="text-2xl font-semibold mb-6">Support Ifeoma</h2>
-            <form onSubmit={sendTip} className="space-y-4">
-              <div>
-                <label className="block text-sm mb-2 text-slate-400">Amount (ETH)</label>
-                <input 
-                  type="number" 
-                  step="0.0001"
-                  required
-                  value={amount}
-                  onChange={e => setAmount(e.target.value)}
-                  className="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-electric-purple"
-                  placeholder="0.01"
-                />
-              </div>
-              <div>
-                <label className="block text-sm mb-2 text-slate-400">Note (Max 256 chars)</label>
-                <textarea 
-                  required
-                  maxLength={256}
-                  value={note}
-                  onChange={e => setNote(e.target.value)}
-                  className="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-electric-purple"
-                  placeholder="Thanks for the bus timetables!"
-                  rows={3}
-                />
-              </div>
-              <button 
-                type="submit" 
-                disabled={isProcessing || !account}
-                className="w-full bg-gradient-to-r from-electric-purple to-blue-600 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 disabled:opacity-50"
-              >
-                {isProcessing && <Loader2 className="w-5 h-5 animate-spin" />}
-                {isProcessing ? 'Processing...' : 'Send Tip & Note'}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
+            {!account ? (
+              <button onClick={connectWallet} className="cyber-button px-8 py-3">
+                Connect Wallet
               </button>
-              {statusMsg && <p className="text-sm text-center text-warm-amber mt-4">{statusMsg}</p>}
-            </form>
-          </div>
-
-          {/* Supporter Wall */}
-          <div>
-            <h2 className="text-2xl font-semibold mb-6">Wall of Supporters</h2>
-            {tips.length === 0 ? (
-              <p className="text-slate-400 italic">No tips yet or connect wallet to view.</p>
             ) : (
-              <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">
-                {tips.map((tip, i) => (
-                  <div key={i} className="bg-white/5 border border-white/10 p-4 rounded-xl">
-                    <div className="flex justify-between items-start mb-2">
-                      <span className="text-xs font-mono text-emerald-accent bg-emerald-accent/10 px-2 py-1 rounded">
-                        {tip.sender.slice(0, 6)}...{tip.sender.slice(-4)}
-                      </span>
-                      <span className="font-bold text-warm-amber">{tip.amount} ETH</span>
-                    </div>
-                    <p className="text-slate-300">"{tip.note}"</p>
-                    <a 
-                      href={`https://sepolia.etherscan.io/tx/${tip.txHash}`} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-xs text-slate-500 hover:text-white mt-3 inline-block"
-                    >
-                      View on Etherscan ↗
-                    </a>
-                  </div>
-                ))}
+              <div className="flex items-center gap-3 bg-black/40 backdrop-blur-md px-6 py-3 rounded-full border border-white/10 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
+                <div className="w-2 h-2 rounded-full bg-emerald-accent shadow-[0_0_8px_rgba(16,185,129,1)] animate-pulse"></div>
+                <span className="font-mono text-sm tracking-widest text-slate-300">
+                  {account.slice(0, 6)}...{account.slice(-4)} <span className="text-cyber-blue ml-2">({network})</span>
+                </span>
               </div>
             )}
-          </div>
+          </motion.div>
+        </div>
 
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          
+          {/* Send Tip Section */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="lg:col-span-5"
+          >
+            <div className="glass-card p-8 sticky top-32">
+              <h2 className="text-2xl font-black mb-8 tracking-tight flex items-center gap-3">
+                Support Ifeoma
+              </h2>
+              <form onSubmit={sendTip} className="space-y-6">
+                <div className="relative group">
+                  <label className="block text-xs mb-3 text-slate-400 font-bold uppercase tracking-widest">Amount</label>
+                  <input 
+                    type="number" 
+                    step="0.0001"
+                    required
+                    value={amount}
+                    onChange={e => setAmount(e.target.value)}
+                    className="glass-input w-full pl-16 text-xl font-bold bg-black/60 focus:bg-black group-hover:border-electric-purple/30 focus:border-electric-purple/50 focus:ring-electric-purple/30"
+                    placeholder="0.01"
+                  />
+                  <span className="absolute left-5 top-[2.4rem] text-electric-purple font-black tracking-widest">ETH</span>
+                </div>
+                <div className="relative group">
+                  <label className="block text-xs mb-3 text-slate-400 font-bold uppercase tracking-widest">Note (Max 256 chars)</label>
+                  <textarea 
+                    required
+                    maxLength={256}
+                    value={note}
+                    onChange={e => setNote(e.target.value)}
+                    className="glass-input w-full resize-none bg-black/60 focus:bg-black group-hover:border-cyber-blue/30 focus:border-cyber-blue/50 focus:ring-cyber-blue/30"
+                    placeholder="Thanks for the bus timetables!"
+                    rows={4}
+                  />
+                </div>
+                <motion.button 
+                  whileTap={{ scale: 0.95 }}
+                  type="submit" 
+                  disabled={isProcessing || !account}
+                  className="cyber-button w-full py-4 text-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isProcessing ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    'Send Tip & Note'
+                  )}
+                </motion.button>
+                {statusMsg && (
+                  <motion.p 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className={`text-sm text-center font-bold mt-4 ${statusMsg.includes('success') ? 'text-emerald-accent drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'text-warm-amber drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]'}`}
+                  >
+                    {statusMsg}
+                  </motion.p>
+                )}
+              </form>
+            </div>
+          </motion.div>
+
+          {/* Supporter Wall */}
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4 }}
+            className="lg:col-span-7"
+          >
+            <div className="glass-panel p-8 rounded-3xl min-h-[600px] h-full">
+              <h2 className="text-2xl font-black mb-8 tracking-tight">Wall of Supporters</h2>
+              
+              {!account ? (
+                <div className="flex flex-col items-center justify-center h-64 text-center">
+                  <div className="w-16 h-16 rounded-full bg-electric-purple/10 border border-electric-purple/20 flex items-center justify-center mb-4">
+                    <Loader2 className="w-8 h-8 text-electric-purple animate-spin" />
+                  </div>
+                  <p className="text-slate-400 font-medium">Please connect your wallet to view live tips.</p>
+                </div>
+              ) : tips.length === 0 ? (
+                <p className="text-slate-400 font-medium text-center mt-20">No tips have been sent yet. Be the first!</p>
+              ) : (
+                <div className="space-y-6 max-h-[600px] overflow-y-auto pr-4 custom-scrollbar">
+                  {tips.map((tip, i) => (
+                    <motion.div 
+                      key={tip.txHash + i}
+                      initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      transition={{ type: "spring", delay: i * 0.1 }}
+                      className="group relative overflow-hidden bg-black/40 hover:bg-black/60 border border-white/5 hover:border-electric-purple/30 p-6 rounded-2xl transition-all duration-300 shadow-lg"
+                    >
+                      {/* Glow effect on hover */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-electric-purple/10 to-cyber-blue/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                      
+                      <div className="flex justify-between items-start mb-4 relative z-10">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-electric-purple to-cyber-blue flex items-center justify-center font-bold shadow-[0_0_15px_rgba(147,51,234,0.4)]">
+                            {tip.sender.slice(2, 4).toUpperCase()}
+                          </div>
+                          <span className="font-mono text-sm text-slate-300 bg-white/5 px-3 py-1 rounded-full border border-white/10">
+                            {tip.sender.slice(0, 6)}...{tip.sender.slice(-4)}
+                          </span>
+                        </div>
+                        <span className="font-black text-xl text-warm-amber drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]">
+                          {tip.amount} ETH
+                        </span>
+                      </div>
+                      
+                      <p className="text-slate-200 text-lg leading-relaxed relative z-10 font-light pl-13">
+                        "{tip.note}"
+                      </p>
+                      
+                      <div className="mt-4 text-right relative z-10">
+                        <a 
+                          href={`https://sepolia.etherscan.io/tx/${tip.txHash}`} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-cyber-blue transition-colors"
+                        >
+                          View Receipt ↗
+                        </a>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </motion.div>
         </div>
       </div>
     </div>
