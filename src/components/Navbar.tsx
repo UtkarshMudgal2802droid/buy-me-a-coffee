@@ -2,21 +2,14 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Hexagon, TerminalSquare } from 'lucide-react';
+import { Sparkles, TerminalSquare } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Navbar() {
   const navLinks = [
-    { name: 'Home', offset: 0, icon: <Sparkles className="w-4 h-4" /> },
-    { name: 'Features', offset: 1, icon: <Hexagon className="w-4 h-4" /> },
-    { name: 'Demo', offset: 2, icon: <Hexagon className="w-4 h-4" /> },
-    { name: 'Ledger', offset: 3, icon: <TerminalSquare className="w-4 h-4" /> },
+    { name: 'Home', href: '#home', icon: <Sparkles className="w-4 h-4" /> },
+    { name: 'The Deck', href: '#demo', icon: <TerminalSquare className="w-4 h-4" /> },
   ];
-
-  const handleNavClick = (offset: number) => {
-    // Each section represents 100vh of vertical scroll
-    const targetY = offset * window.innerHeight;
-    window.scrollTo({ top: targetY, behavior: 'smooth' });
-  };
 
   return (
     <motion.nav 
@@ -25,17 +18,17 @@ export default function Navbar() {
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
       className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-auto"
     >
-      <div className="glass-panel px-1 py-1 flex items-center justify-between rounded-full">
+      <div className="bg-white/70 backdrop-blur-3xl shadow-[0_10px_30px_rgba(255,42,133,0.2)] border-2 border-white px-2 py-2 flex items-center justify-between rounded-3xl">
         {navLinks.map((link) => (
-          <button 
+          <Link 
             key={link.name} 
-            onClick={() => handleNavClick(link.offset)}
+            href={link.href}
             className="relative flex-1 group min-w-max cursor-pointer"
           >
-            <div className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-full text-xs uppercase tracking-widest font-semibold transition-all duration-300 text-[#737373] hover:text-[#f8f9fa] hover:bg-white/5">
+            <div className="flex items-center justify-center gap-2 px-6 py-3 rounded-2xl text-xs uppercase tracking-[0.2em] font-black transition-all duration-300 text-slate-500 hover:text-slate-900 hover:bg-white hover:shadow-md">
               {link.name}
             </div>
-          </button>
+          </Link>
         ))}
       </div>
     </motion.nav>
