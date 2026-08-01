@@ -29,13 +29,8 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col relative selection:bg-electric-purple/30 selection:text-white">
-        <div className="grid-bg"></div>
-        <div className="aurora-bg"></div>
-        <Navbar />
-        <main className="flex-1 w-full relative z-10 pt-32 pb-12">
-          {children}
-        </main>
+      <body className="min-h-full flex flex-col relative selection:bg-[#262626] selection:text-[#f8f9fa]">
+        {children}
       </body>
     </html>
   );
