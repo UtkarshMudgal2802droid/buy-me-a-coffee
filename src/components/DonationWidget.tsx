@@ -29,38 +29,38 @@ export default function DonationWidget() {
       className="glass-card p-6 md:p-10 sticky top-32 w-full max-w-md mx-auto"
     >
       <div className="flex items-center gap-4 mb-8">
-        <div className="p-3 rounded-2xl bg-electric-purple/10 border border-electric-purple/30 text-electric-purple shadow-[0_0_15px_rgba(147,51,234,0.3)]">
-          <Hexagon className="w-8 h-8" />
+        <div className="p-3 rounded-2xl bg-[#0a0a0a] border border-[#262626] text-[#e5e5e5]">
+          <Hexagon className="w-6 h-6" />
         </div>
-        <h2 className="text-3xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400">Tip in Crypto</h2>
+        <h2 className="text-2xl font-black tracking-tight text-[#f8f9fa]">Support Creator</h2>
       </div>
 
       <div className="space-y-8">
         {/* Coffee Selector */}
         <div>
-          <label className="text-sm text-slate-400 font-bold mb-4 block uppercase tracking-wider">Select Amount</label>
-          <div className="grid grid-cols-4 gap-3">
+          <label className="text-[10px] text-[#737373] font-bold mb-4 block uppercase tracking-[0.2em]">Select Amount</label>
+          <div className="grid grid-cols-4 gap-2">
             {amounts.map((amount) => (
               <motion.button
                 key={amount}
-                whileTap={{ scale: 0.9 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setSelectedAmount(amount)}
-                className={`py-4 rounded-2xl border-2 flex items-center justify-center gap-2 font-bold text-lg transition-all duration-300 ${
+                className={`py-3 rounded-xl border flex items-center justify-center gap-2 font-semibold text-sm transition-all duration-300 ${
                   selectedAmount === amount
-                    ? 'bg-electric-purple/20 border-electric-purple text-electric-purple shadow-[0_0_20px_rgba(147,51,234,0.4)] scale-105'
-                    : 'bg-black/30 border-white/10 text-slate-400 hover:bg-black/50 hover:border-white/30'
+                    ? 'bg-[#e5e5e5] border-[#e5e5e5] text-[#0a0a0a]'
+                    : 'bg-[#0a0a0a] border-[#262626] text-[#737373] hover:bg-[#171717] hover:text-[#e5e5e5]'
                 }`}
               >
-                {amount} <Coffee className="w-5 h-5" />
+                {amount} <Coffee className="w-4 h-4" />
               </motion.button>
             ))}
             <motion.button
-              whileTap={{ scale: 0.9 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setSelectedAmount('custom')}
-              className={`py-4 rounded-2xl border-2 font-bold text-sm transition-all duration-300 ${
+              className={`py-3 rounded-xl border font-semibold text-sm transition-all duration-300 ${
                 selectedAmount === 'custom'
-                  ? 'bg-cyber-blue/20 border-cyber-blue text-cyber-blue shadow-[0_0_20px_rgba(59,130,246,0.4)] scale-105'
-                  : 'bg-black/30 border-white/10 text-slate-400 hover:bg-black/50 hover:border-white/30'
+                  ? 'bg-[#e5e5e5] border-[#e5e5e5] text-[#0a0a0a]'
+                  : 'bg-[#0a0a0a] border-[#262626] text-[#737373] hover:bg-[#171717] hover:text-[#e5e5e5]'
               }`}
             >
               Custom
@@ -83,9 +83,9 @@ export default function DonationWidget() {
                   placeholder="0.00"
                   value={customAmount}
                   onChange={(e) => setCustomAmount(e.target.value)}
-                  className="glass-input w-full pl-16 text-xl font-bold bg-black/60 focus:bg-black group-hover:border-cyber-blue/30 focus:border-cyber-blue/50 focus:ring-cyber-blue/30"
+                  className="glass-input w-full pl-16 text-xl font-bold bg-[#0a0a0a] focus:bg-[#0a0a0a] group-hover:border-[#404040]"
                 />
-                <span className="absolute left-5 top-1/2 -translate-y-1/2 text-cyber-blue font-black tracking-widest">ETH</span>
+                <span className="absolute left-5 top-1/2 -translate-y-1/2 text-[#737373] font-bold tracking-widest text-sm">ETH</span>
               </div>
             </motion.div>
           )}
@@ -93,40 +93,39 @@ export default function DonationWidget() {
 
         {/* Message Input */}
         <div>
-          <label className="text-sm text-slate-400 font-bold mb-4 block uppercase tracking-wider">Leave a message (Optional)</label>
+          <label className="text-[10px] text-[#737373] font-bold mb-4 block uppercase tracking-[0.2em]">Message (Optional)</label>
           <textarea
             rows={3}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="You are doing great work..."
-            className="glass-input w-full resize-none bg-black/40 focus:bg-black"
+            className="glass-input w-full resize-none text-sm"
           />
         </div>
 
         {/* Total & Submit */}
-        <div className="pt-4 border-t border-white/10">
+        <div className="pt-6 border-t border-[#262626]">
           <div className="flex justify-between items-center mb-6">
-            <span className="text-slate-400 font-bold">Total</span>
-            <span className="text-2xl font-black text-warm-amber drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]">{currentEthAmount || '0.00'} ETH</span>
+            <span className="text-[#737373] font-bold text-sm tracking-widest uppercase">Total</span>
+            <span className="text-xl font-black text-[#f8f9fa]">{currentEthAmount || '0.00'} ETH</span>
           </div>
-          <motion.button
-            whileTap={{ scale: 0.95 }}
+          <button
             onClick={handleTip}
             disabled={isProcessing || (selectedAmount === 'custom' && !customAmount)}
-            className="cyber-button w-full py-5 text-xl disabled:opacity-50 flex items-center justify-center gap-3"
+            className="sweep-btn w-full py-4 text-sm tracking-widest uppercase disabled:opacity-50"
           >
             {isProcessing ? (
               <>
-                <Loader2 className="w-6 h-6 animate-spin" />
+                <Loader2 className="w-5 h-5 animate-spin" />
                 Processing...
               </>
             ) : (
               'Send Tip'
             )}
-          </motion.button>
+          </button>
           
-          <p className="text-center text-sm font-bold text-slate-500 mt-6 flex items-center justify-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-emerald-accent shadow-[0_0_12px_rgba(16,185,129,0.9)] animate-pulse"></span>
+          <p className="text-center text-[10px] uppercase tracking-widest font-bold text-[#737373] mt-6 flex items-center justify-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#10b981] animate-pulse"></span>
             Ethereum Network Connected
           </p>
         </div>
