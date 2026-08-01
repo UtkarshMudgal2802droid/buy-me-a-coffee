@@ -9,7 +9,14 @@ import Navbar from '@/components/Navbar';
 
 export default function Home() {
   return (
-    <main className="w-full bg-[#0a0a0a]">
+    <main className="w-full bg-[#030712]">
+      {/* Dynamic Ambient Background */}
+      <div className="ambient-mesh">
+        <div className="ambient-orb orb-1"></div>
+        <div className="ambient-orb orb-2"></div>
+        <div className="ambient-orb orb-3"></div>
+      </div>
+
       <Navbar />
       <HorizontalScrollProvider>
         
