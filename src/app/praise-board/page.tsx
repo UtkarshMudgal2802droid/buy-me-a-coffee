@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 declare global {
   interface Window {
