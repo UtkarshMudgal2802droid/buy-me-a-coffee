@@ -129,6 +129,7 @@ export default function PraiseBoard() {
         setStatusMsg("Tip sent successfully!");
         setAmount('');
         setNote('');
+        await fetchPastTips();
       } else {
         setStatusMsg("Transaction reverted by the network.");
       }
