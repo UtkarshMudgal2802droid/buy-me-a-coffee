@@ -109,6 +109,8 @@ export default function Hero() {
         </motion.div>
       </div>
 
+      {/* 3D WebGL Background Scene */}
+      <Hero3D />
     </div>
   );
 }
