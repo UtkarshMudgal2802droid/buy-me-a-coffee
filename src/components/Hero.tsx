@@ -37,7 +37,7 @@ export default function Hero() {
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-center pt-32 pb-20 px-4">
+    <div className="w-full flex flex-col items-center justify-center px-4 mt-8">
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         
         {/* Seamless Premium Card Container */}
