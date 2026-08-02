@@ -41,9 +41,10 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
   };
 
   const connectWallet = async () => {
-    if (typeof window !== 'undefined' && (window as any).ethereum) {
+    if (typeof window !== 'undefined' && (window as unknown as { ethereum: any }).ethereum) {
       try {
         setIsProcessing(true);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const accounts = await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
         setAccount(accounts[0]);
       } catch (error) {
@@ -71,6 +72,7 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
     setIsProcessing(true);
     setTxStatus('Confirming transaction...');
     try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const provider = new ethers.BrowserProvider((window as any).ethereum);
       const signer = await provider.getSigner();
       const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
@@ -92,6 +94,7 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
       showNotification('success', `Successfully sent ${currentEthAmount} ETH to ${creatorName}!`);
       setMessage('');
       if (selectedAmount === 'custom') setCustomAmount('');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       // Rejected wallet prompt has its own branch (Test 8)
       if (error.code === 4001 || error.code === 'ACTION_REJECTED') {
