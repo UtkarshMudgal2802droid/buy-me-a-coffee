@@ -173,6 +173,7 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: SEPOLIA_CHAIN_ID }],
       });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.code === 4902) {
         try {
