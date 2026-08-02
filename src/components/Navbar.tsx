@@ -56,10 +56,17 @@ export default function Navbar() {
         </div>
 
         {/* Right: Actions */}
-        <div className="flex items-center gap-4">
-          <Link href="#demo" className="bg-bmc-yellow text-bmc-dark font-black text-xs uppercase tracking-widest px-6 py-3 rounded-full border border-bmc-dark hover:bg-yellow-400 transition-colors">
+        <div className="flex items-center">
+          <a 
+            href="#demo"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="bg-bmc-yellow text-bmc-dark font-black text-xs uppercase tracking-widest px-6 py-3 rounded-full border border-bmc-dark hover:bg-yellow-400 transition-colors cursor-pointer"
+          >
             Start Tipping
-          </Link>
+          </a>
         </div>
       </div>
     </motion.nav>
