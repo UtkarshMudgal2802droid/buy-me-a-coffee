@@ -19,22 +19,6 @@ export default function Hero() {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [mouseX, mouseY]);
-  const containerVars = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.1 }
-    }
-  };
-
-  const wordVars = {
-    hidden: { y: "100%", opacity: 0 },
-    show: { 
-      y: "0%", 
-      opacity: 1,
-      transition: { type: "spring" as const, stiffness: 100, damping: 20 }
-    }
-  };
 
   return (
     <div className="w-full flex flex-col items-center justify-center px-4 mt-8">
