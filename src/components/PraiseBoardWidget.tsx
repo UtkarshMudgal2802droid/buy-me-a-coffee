@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import { Loader2, MessageSquareQuote, Coffee } from 'lucide-react';
+import { Loader2, MessageSquareQuote, Coffee, ArrowUpDown, Filter } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 declare global {
@@ -61,12 +61,22 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
   return (
     <div className="w-full max-w-5xl mx-auto mt-20">
       <div className="glass-card p-10 flex flex-col">
-        <h2 className="text-3xl font-black mb-8 tracking-tight text-bmc-dark flex items-center gap-4">
-          <div className="p-3 rounded-full bg-bmc-yellow border-2 border-bmc-dark text-bmc-dark shadow-[4px_4px_0px_0px_rgba(34,34,34,1)]">
-            <MessageSquareQuote className="w-6 h-6" />
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-3xl font-black tracking-tight text-bmc-dark flex items-center gap-4">
+            <div className="p-3 rounded-full bg-bmc-yellow border-2 border-bmc-dark text-bmc-dark shadow-[4px_4px_0px_0px_rgba(34,34,34,1)]">
+              <MessageSquareQuote className="w-6 h-6" />
+            </div>
+            Recent Coffees {creatorName && `for ${creatorName.split(' ')[0]}`}
+          </h2>
+          <div className="flex items-center gap-3">
+            <button className="p-2 rounded-full border-2 border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark transition-colors">
+              <Filter className="w-5 h-5" />
+            </button>
+            <button className="p-2 rounded-full border-2 border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark transition-colors">
+              <ArrowUpDown className="w-5 h-5" />
+            </button>
           </div>
-          Recent Coffees {creatorName && `for ${creatorName.split(' ')[0]}`}
-        </h2>
+        </div>
         
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
