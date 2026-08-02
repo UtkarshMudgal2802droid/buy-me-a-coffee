@@ -32,6 +32,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col relative selection:bg-[#FFDD00] selection:text-[#222222]">
         <Background />
+        <Navbar />
         {children}
       </body>
     </html>
