@@ -130,36 +130,9 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Floating Transit Theme Emojis */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        {[
-          { emoji: "🚌", left: "10%", top: "20%", delay: 0 },
-          { emoji: "⏱️", left: "80%", top: "15%", delay: 1 },
-          { emoji: "🎫", left: "85%", top: "60%", delay: 2 },
-          { emoji: "🚦", left: "15%", top: "70%", delay: 1.5 },
-          { emoji: "☕", left: "75%", top: "85%", delay: 0.5 },
-        ].map((item, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ 
-              opacity: [0.6, 1, 0.6],
-              scale: [1, 1.2, 1],
-              y: [0, -30, 0],
-              rotate: [0, 10, -10, 0]
-            }}
-            transition={{
-              duration: 5,
-              delay: item.delay,
-              repeat: Infinity,
-              repeatType: "reverse"
-            }}
-            className="absolute text-5xl md:text-6xl drop-shadow-lg"
-            style={{ left: item.left, top: item.top }}
-          >
-            {item.emoji}
-          </motion.div>
-        ))}
+      {/* Floating Theme Clock */}
+      <div className="absolute right-[5%] md:right-[15%] top-[40%] hidden md:block z-30 pointer-events-none">
+        <ThemeClock />
       </div>
 
       {/* Interactive Cursor Glow Background */}
