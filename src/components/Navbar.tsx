@@ -30,9 +30,9 @@ export default function Navbar() {
       }}
       animate={hidden ? "hidden" : "visible"}
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-      className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4"
+      className="fixed top-0 left-0 right-0 z-50 flex justify-center px-0 sm:px-6 w-full"
     >
-      <div className="w-full max-w-6xl bg-white/60 backdrop-blur-md border border-white/80 rounded-full px-3 py-2 flex items-center justify-between shadow-sm">
+      <div className="w-full bg-white/70 backdrop-blur-md border-b border-slate-200 px-6 py-3 flex items-center justify-between shadow-sm">
         
         {/* Left: Logo */}
         <Link href="/" className="flex items-center gap-3 px-3 hover:opacity-80 transition-opacity">
