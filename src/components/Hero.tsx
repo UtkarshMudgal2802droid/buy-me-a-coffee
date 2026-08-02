@@ -21,7 +21,7 @@ export default function Hero() {
       y: "0%", 
       rotateZ: 0, 
       opacity: 1,
-      transition: { type: "spring", stiffness: 100, damping: 15, mass: 1 }
+      transition: { type: "spring" as const, stiffness: 100, damping: 15, mass: 1 }
     }
   };
 
