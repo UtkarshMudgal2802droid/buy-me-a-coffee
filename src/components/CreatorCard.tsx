@@ -68,22 +68,24 @@ export default function CreatorCard() {
 
       <motion.div variants={itemVars} className="mt-auto pt-6 relative z-10 w-full">
         <div className="flex justify-between items-end mb-2">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Goal Progress</span>
-          <span className="text-sm font-black text-emerald-500">85%</span>
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+             Coffee Goal <span className="text-amber-500">☕</span>
+          </span>
+          <span className="text-sm font-black text-amber-500">85%</span>
         </div>
         <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden shadow-inner">
           <motion.div 
             initial={{ width: 0 }}
             whileInView={{ width: "85%" }}
             transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
-            className="h-full bg-gradient-to-r from-teal-400 to-emerald-500 rounded-full relative"
+            className="h-full bg-gradient-to-r from-amber-400 to-orange-500 rounded-full relative"
           >
             <div className="absolute inset-0 bg-white/20 w-full h-full animate-[shimmer_2s_infinite]"></div>
           </motion.div>
         </div>
         <div className="flex justify-between items-center mt-2">
-          <span className="text-xs font-bold text-slate-400">0.85 ETH raised</span>
-          <span className="text-xs font-bold text-slate-400">1.0 ETH</span>
+          <span className="text-xs font-bold text-slate-400">170 Coffees</span>
+          <span className="text-xs font-bold text-slate-400">200 Coffees</span>
         </div>
       </motion.div>
       
