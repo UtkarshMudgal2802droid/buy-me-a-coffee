@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import Hero3D from './Hero3D';
 
 export default function Hero() {
   const containerVars = {
