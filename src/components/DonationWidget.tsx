@@ -10,105 +10,123 @@ export default function DonationWidget() {
   const [message, setMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const amounts = [1, 3, 5];
+  // Convert coffee amount to ETH (1 coffee = 0.005 ETH for demo)
+  const ethPerCoffee = 0.005;
+  const currentEthAmount = selectedAmount === 'custom' 
+    ? (parseFloat(customAmount) * ethPerCoffee || 0).toFixed(3)
+    : (selectedAmount * ethPerCoffee).toFixed(3);
 
   const handleTip = async () => {
     setIsProcessing(true);
     // Simulate transaction delay
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise(resolve => setTimeout(resolve, 2000));
     setIsProcessing(false);
   };
 
-  const currentEthAmount = selectedAmount === 'custom' ? customAmount : (selectedAmount * 0.005).toFixed(3);
+  const containerVars = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+    }
+  };
+
+  const itemVars = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100, damping: 20 } }
+  };
 
   return (
-    <div className="w-full h-full glass-card p-10 flex flex-col justify-between">
-      <div className="flex items-center gap-4 mb-10">
-        <div className="p-4 rounded-3xl bg-[#00e5ff]/10 border-2 border-[#00e5ff]/30 text-[#00e5ff] shadow-[0_10px_25px_rgba(0,229,255,0.3)]">
+    <motion.div 
+      variants={containerVars}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: "-50px" }}
+      className="glass-card w-full h-full p-10 flex flex-col relative overflow-hidden"
+    >
+      
+      {/* Animated Glowing Orbs */}
+      <div className="absolute top-[20%] right-[-20%] w-[50%] h-[50%] rounded-full bg-[#00e5ff] opacity-10 blur-3xl mix-blend-multiply"></div>
+
+      <motion.div variants={itemVars} className="flex items-center gap-5 mb-10 relative z-10">
+        <div className="w-16 h-16 rounded-[1.5rem] bg-[#00e5ff]/10 text-[#00e5ff] border-2 border-[#00e5ff]/20 flex items-center justify-center shadow-[0_0_20px_rgba(0,229,255,0.2)]">
           <Hexagon className="w-8 h-8" />
         </div>
-        <h2 className="text-4xl font-black tracking-tight text-slate-900">Support Creator</h2>
-      </div>
+        <h2 className="text-3xl font-black text-slate-900 tracking-tight">Support Creator</h2>
+      </motion.div>
 
-      <div className="space-y-8 flex-1">
-        {/* Coffee Selector */}
-        <div>
-          <label className="text-sm text-slate-500 font-black mb-4 block uppercase tracking-widest">Select Amount</label>
-          <div className="grid grid-cols-4 gap-3">
-            {amounts.map((amount) => (
-              <motion.button
-                key={amount}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setSelectedAmount(amount)}
-                className={`py-4 rounded-2xl border-2 flex items-center justify-center gap-2 font-black text-lg transition-all duration-300 ${
-                  selectedAmount === amount
-                    ? 'bg-[#ff2a85] border-[#ff2a85] text-white shadow-[0_10px_20px_rgba(255,42,133,0.4)] scale-105'
-                    : 'bg-white/50 border-white/80 text-slate-600 hover:bg-white hover:border-[#ff2a85]/50 hover:shadow-md'
-                }`}
-              >
-                {amount} <Coffee className="w-5 h-5" />
-              </motion.button>
-            ))}
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setSelectedAmount('custom')}
-              className={`py-4 rounded-2xl border-2 font-black text-lg transition-all duration-300 ${
-                selectedAmount === 'custom'
-                  ? 'bg-[#8a2be2] border-[#8a2be2] text-white shadow-[0_10px_20px_rgba(138,43,226,0.4)] scale-105'
-                  : 'bg-white/50 border-white/80 text-slate-600 hover:bg-white hover:border-[#8a2be2]/50 hover:shadow-md'
+      <motion.div variants={itemVars} className="mb-8 relative z-10">
+        <label className="block text-xs uppercase tracking-widest font-black text-slate-500 mb-4">
+          Select Amount
+        </label>
+        <div className="flex gap-3">
+          {[1, 3, 5].map((amount) => (
+            <button
+              key={amount}
+              onClick={() => setSelectedAmount(amount)}
+              className={`flex-1 py-3 rounded-2xl border-2 font-black transition-all duration-300 flex items-center justify-center gap-2 hover:-translate-y-1 shadow-sm ${
+                selectedAmount === amount
+                  ? 'border-[#ff2a85] bg-[#ff2a85] text-white shadow-[0_10px_20px_rgba(255,42,133,0.3)]'
+                  : 'border-slate-200 bg-white/80 text-slate-600 hover:border-[#ff2a85]/50 hover:bg-white'
               }`}
             >
-              Custom
-            </motion.button>
-          </div>
+              {amount} <Coffee className="w-4 h-4" />
+            </button>
+          ))}
+          <button
+            onClick={() => setSelectedAmount('custom')}
+            className={`flex-1 py-3 rounded-2xl border-2 font-black transition-all duration-300 hover:-translate-y-1 shadow-sm ${
+              selectedAmount === 'custom'
+                ? 'border-[#8a2be2] bg-[#8a2be2] text-white shadow-[0_10px_20px_rgba(138,43,226,0.3)]'
+                : 'border-slate-200 bg-white/80 text-slate-600 hover:border-[#8a2be2]/50 hover:bg-white'
+            }`}
+          >
+            Custom
+          </button>
         </div>
 
-        {/* Custom ETH Input */}
         <AnimatePresence>
           {selectedAmount === 'custom' && (
-            <motion.div 
-              initial={{ opacity: 0, height: 0, marginTop: 0 }}
-              animate={{ opacity: 1, height: 'auto', marginTop: 16 }}
-              exit={{ opacity: 0, height: 0, marginTop: 0 }}
+            <motion.div
+              initial={{ height: 0, opacity: 0, marginTop: 0 }}
+              animate={{ height: 'auto', opacity: 1, marginTop: 12 }}
+              exit={{ height: 0, opacity: 0, marginTop: 0 }}
               className="overflow-hidden"
             >
-              <div className="relative group">
-                <input
-                  type="number"
-                  placeholder="0.00"
-                  value={customAmount}
-                  onChange={(e) => setCustomAmount(e.target.value)}
-                  className="glass-input w-full pl-20 text-2xl"
-                />
-                <span className="absolute left-6 top-1/2 -translate-y-1/2 text-[#8a2be2] font-black tracking-widest text-lg">ETH</span>
-              </div>
+              <input
+                type="number"
+                placeholder="Number of coffees..."
+                className="w-full glass-input"
+                value={customAmount}
+                onChange={(e) => setCustomAmount(e.target.value)}
+                min="1"
+              />
             </motion.div>
           )}
         </AnimatePresence>
+      </motion.div>
 
-        {/* Message Input */}
-        <div>
-          <label className="text-sm text-slate-500 font-black mb-4 block uppercase tracking-widest">Message (Optional)</label>
-          <textarea
-            rows={3}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="You are doing great work..."
-            className="glass-input w-full resize-none text-lg"
-          />
-        </div>
-      </div>
+      <motion.div variants={itemVars} className="mb-10 relative z-10">
+        <label className="block text-xs uppercase tracking-widest font-black text-slate-500 mb-4">
+          Message (Optional)
+        </label>
+        <textarea
+          placeholder="You are doing great work..."
+          className="w-full glass-input min-h-[100px] resize-none"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
+      </motion.div>
 
-      {/* Total & Submit */}
-      <div className="pt-8 border-t-4 border-white/40 mt-auto">
-        <div className="flex justify-between items-center mb-8">
+      <motion.div variants={itemVars} className="mt-auto relative z-10">
+        <div className="flex justify-between items-end mb-6">
           <span className="text-slate-500 font-black text-lg tracking-widest uppercase">Total</span>
           <span className="text-3xl font-black text-[#ff6a00] drop-shadow-md">{currentEthAmount || '0.00'} ETH</span>
         </div>
         <button
           onClick={handleTip}
           disabled={isProcessing || (selectedAmount === 'custom' && !customAmount)}
-          className="glow-btn w-full py-5 text-xl tracking-widest uppercase disabled:opacity-50 flex justify-center items-center gap-3 pointer-events-auto"
+          className="glow-btn w-full py-5 text-xl tracking-widest uppercase disabled:opacity-50 flex justify-center items-center gap-3 transition-transform duration-300 hover:-translate-y-1"
         >
           {isProcessing ? (
             <>
@@ -124,7 +142,7 @@ export default function DonationWidget() {
           <span className="w-3 h-3 rounded-full bg-[#00e5ff] shadow-[0_0_15px_rgba(0,229,255,0.8)] animate-pulse"></span>
           Ethereum Network Connected
         </p>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
