@@ -109,13 +109,14 @@ export default function Hero3D() {
           <GlassTorus position={[-6, -3, -4]} scale={0.8} color="#FF2A85" />
           
           {/* Center Background - Emerald Glass Icosahedron */}
-          <Float speed={1} rotationIntensity={0.5} floatIntensity={1} position={[0, 0, -8]}>
-            <mesh scale={2.5}>
+          <Float speed={1} rotationIntensity={0.5} floatIntensity={1} position={[0, -4, -12]}>
+            <mesh scale={3}>
               <icosahedronGeometry args={[1, 1]} />
               <meshPhysicalMaterial 
                 color="#10b981"
                 transmission={0.9}
                 opacity={1}
+                transparent={true}
                 metalness={0.1}
                 roughness={0.1}
                 ior={1.4}
