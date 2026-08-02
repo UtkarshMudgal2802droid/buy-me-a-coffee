@@ -3,12 +3,15 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Coffee, Hexagon, Loader2, Wallet } from 'lucide-react';
+import { ethers } from 'ethers';
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../contract-config';
 
 export default function DonationWidget() {
   const [selectedAmount, setSelectedAmount] = useState<number | 'custom'>(3);
   const [customAmount, setCustomAmount] = useState<string>('');
   const [message, setMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [txStatus, setTxStatus] = useState<string>('');
   
   // Wallet state
   const [account, setAccount] = useState<string | null>(null);
@@ -60,10 +63,41 @@ export default function DonationWidget() {
     }
     
     setIsProcessing(true);
-    // Simulate transaction delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    setIsProcessing(false);
-    alert(`Successfully sent ${currentEthAmount} ETH!`);
+    setTxStatus('Confirming transaction...');
+    try {
+      const provider = new ethers.BrowserProvider((window as any).ethereum);
+      const signer = await provider.getSigner();
+      const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+      
+      const tipAmount = ethers.parseEther(currentEthAmount);
+      const note = message || "Here is a coffee!";
+      
+      // Send transaction
+      const tx = await contract.tip(note, { value: tipAmount });
+      
+      setTxStatus('Waiting for confirmation...');
+      // Inspect receipt status (Test 9)
+      const receipt = await tx.wait();
+      
+      if (receipt.status === 0) {
+        throw new Error("Transaction reverted by the EVM");
+      }
+      
+      alert(`Successfully sent ${currentEthAmount} ETH!`);
+      setMessage('');
+      if (selectedAmount === 'custom') setCustomAmount('');
+    } catch (error: any) {
+      // Rejected wallet prompt has its own branch (Test 8)
+      if (error.code === 4001 || error.code === 'ACTION_REJECTED') {
+        alert("Transaction was rejected by the user.");
+      } else {
+        console.error("Transaction failed:", error);
+        alert("Transaction failed. Please try again.");
+      }
+    } finally {
+      setIsProcessing(false);
+      setTxStatus('');
+    }
   };
 
   const containerVars = {
@@ -159,6 +193,7 @@ export default function DonationWidget() {
           className="w-full glass-input min-h-[100px] resize-none"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          maxLength={256}
         />
       </motion.div>
 
@@ -177,7 +212,7 @@ export default function DonationWidget() {
           {isProcessing ? (
             <>
               <Loader2 className="w-6 h-6 animate-spin" />
-              Brewing...
+              {txStatus || 'Processing...'}
             </>
           ) : !account ? (
             <>
