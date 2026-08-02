@@ -11,41 +11,41 @@ import * as motion from 'framer-motion/client';
 export const CREATORS = [
   {
     id: 0,
-    name: "Chilli Labs",
-    tagline: "Macro Biology Creator",
-    description: "I produce hyper-detailed, 8K macro time-lapse videos tracking the fascinating biological processes of nature.",
-    icon: "🌶️",
-    supporters: 142,
-    members: 28,
+    name: "Ifeoma",
+    tagline: "City Bus Timetables",
+    description: "I keep our city's bus timetables online so 9,000 commuters can check them before they leave the house every morning. Your support covers hosting!",
+    icon: "🚌",
+    supporters: 914,
+    members: 120,
     goals: [
-      { title: "New Video Equipment", current: 170, max: 200 },
-      { title: "Hire a Video Editor", current: 50, max: 500 }
+      { title: "Server Hosting (Yearly)", current: 180, max: 200 },
+      { title: "Domain Renewal", current: 15, max: 50 }
     ]
   },
   {
     id: 1,
-    name: "Alice Art",
-    tagline: "Digital Illustrator",
-    description: "Creating vibrant, dream-like digital landscapes and sharing my Procreate brushes with the community.",
-    icon: "🎨",
-    supporters: 89,
-    members: 15,
+    name: "Marcus",
+    tagline: "Subway Accessibility Maps",
+    description: "I map out working elevators and accessible routes across the subway network for commuters with disabilities.",
+    icon: "🗺️",
+    supporters: 412,
+    members: 45,
     goals: [
-      { title: "iPad Pro Upgrade", current: 80, max: 150 },
-      { title: "Artbook Printing", current: 10, max: 300 }
+      { title: "App Development", current: 400, max: 1000 },
+      { title: "Database Hosting", current: 50, max: 100 }
     ]
   },
   {
     id: 2,
-    name: "Bob Beats",
-    tagline: "Lofi Music Producer",
-    description: "Making relaxing lofi beats to study and code to. Help me fund my next studio album!",
-    icon: "🎧",
-    supporters: 312,
-    members: 64,
+    name: "Transit Watch",
+    tagline: "Real-time Train Delays",
+    description: "An independent tracker logging real-time train delays and platform changes. We rely entirely on commuter tips to keep the API running.",
+    icon: "🚆",
+    supporters: 1250,
+    members: 310,
     goals: [
-      { title: "Studio Monitors", current: 300, max: 400 },
-      { title: "Vinyl Pressing", current: 150, max: 1000 }
+      { title: "API Usage Fees", current: 800, max: 1000 },
+      { title: "New Web Dashboard", current: 120, max: 500 }
     ]
   }
 ];
