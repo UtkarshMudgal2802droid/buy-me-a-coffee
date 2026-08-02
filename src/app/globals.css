@@ -13,13 +13,6 @@
   body {
     @apply bg-white text-slate-900 antialiased overflow-x-hidden;
   }
-  
-  /* Hide cursor on non-touch devices to use our custom cursor */
-  @media (pointer: fine) {
-    body, a, button, input, textarea {
-      cursor: none !important;
-    }
-  }
 }
 
 @layer components {
