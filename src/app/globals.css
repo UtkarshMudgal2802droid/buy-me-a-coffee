@@ -13,6 +13,13 @@
   body {
     @apply bg-white text-slate-900 antialiased overflow-x-hidden;
   }
+  
+  /* Hide cursor on non-touch devices to use our custom cursor */
+  @media (pointer: fine) {
+    body, a, button, input, textarea {
+      cursor: none !important;
+    }
+  }
 }
 
 @layer components {
@@ -100,61 +107,6 @@
   .outline-glow-btn:hover {
     box-shadow: 0 15px 30px -10px rgba(15, 23, 42, 0.3);
     border-color: transparent;
-  }
-
-  /* Vibrant Mesh Gradients */
-  .ambient-mesh {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
-    overflow: hidden;
-    pointer-events: none;
-    background-color: #f8fafc;
-  }
-
-  .ambient-orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(120px);
-    opacity: 0.6;
-    animation: float 25s infinite ease-in-out alternate;
-  }
-
-  .orb-1 {
-    width: 800px;
-    height: 800px;
-    background: radial-gradient(circle, rgba(255,42,133,0.5) 0%, transparent 70%);
-    top: -200px;
-    left: -200px;
-    animation-delay: 0s;
-  }
-
-  .orb-2 {
-    width: 1000px;
-    height: 1000px;
-    background: radial-gradient(circle, rgba(0,229,255,0.4) 0%, transparent 70%);
-    bottom: -300px;
-    right: -300px;
-    animation-delay: -7s;
-  }
-
-  .orb-3 {
-    width: 700px;
-    height: 700px;
-    background: radial-gradient(circle, rgba(255,235,59,0.4) 0%, transparent 70%);
-    top: 30%;
-    left: 50%;
-    animation-delay: -14s;
-  }
-
-  @keyframes float {
-    0% { transform: translate(0, 0) scale(1) rotate(0deg); }
-    33% { transform: translate(200px, -100px) scale(1.2) rotate(45deg); }
-    66% { transform: translate(-100px, 200px) scale(0.8) rotate(-45deg); }
-    100% { transform: translate(0, 0) scale(1) rotate(0deg); }
   }
 
   /* Crazy Text Gradient */
