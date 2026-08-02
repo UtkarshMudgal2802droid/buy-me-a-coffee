@@ -27,13 +27,38 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
   const [filterMode, setFilterMode] = useState<'all' | 'has_note' | 'large_only'>('all');
 
   useEffect(() => {
-    fetchPastTips();
+    let contract: ethers.Contract | null = null;
+    
+    const setup = async () => {
+      contract = await fetchPastTips();
+      if (contract) {
+        contract.on("TipReceived", (sender, amount, note, event) => {
+          const newTip = {
+            sender,
+            amount: ethers.formatEther(amount),
+            note,
+            txHash: event.log.transactionHash
+          };
+          setTips(prev => {
+            if (prev.some(t => t.txHash === newTip.txHash)) return prev;
+            return [newTip, ...prev];
+          });
+        });
+      }
+    };
+    setup();
+
+    return () => {
+      if (contract) {
+        contract.removeAllListeners("TipReceived");
+      }
+    };
   }, []);
 
   const fetchPastTips = async () => {
     if (!window.ethereum) {
       setLoading(false);
-      return;
+      return null;
     }
     try {
       const provider = new ethers.BrowserProvider(window.ethereum);
@@ -53,8 +78,10 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
       })).reverse(); // Reverse makes it 'newest' by default
       
       setTips(parsedTips);
+      return contract;
     } catch (error) {
       console.error("Error fetching tips:", error);
+      return null;
     } finally {
       setLoading(false);
     }
