@@ -5,62 +5,7 @@ import { motion } from 'framer-motion';
 export default function Background() {
   return (
     <div className="fixed inset-0 z-[-1] overflow-hidden bg-slate-50 pointer-events-none">
-      {/* Electric Transit Lines Animation */}
-      <svg className="absolute inset-0 w-full h-full opacity-60" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#10b981" stopOpacity="0" />
-            <stop offset="50%" stopColor="#10b981" stopOpacity="1" />
-            <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
-          </linearGradient>
-          <linearGradient id="grad2" x1="100%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0" />
-            <stop offset="50%" stopColor="#3b82f6" stopOpacity="1" />
-            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
-          </linearGradient>
-          <linearGradient id="grad3" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#fde047" stopOpacity="0" />
-            <stop offset="50%" stopColor="#fde047" stopOpacity="1" />
-            <stop offset="100%" stopColor="#fde047" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        
-        {/* Line 1 - Green Flow */}
-        <motion.path 
-          d="M -100 200 C 300 200, 400 600, 800 600 S 1200 200, 2000 200" 
-          fill="none" 
-          stroke="url(#grad1)" 
-          strokeWidth="3"
-          strokeLinecap="round"
-          initial={{ strokeDasharray: "150 1500", strokeDashoffset: 1500 }}
-          animate={{ strokeDashoffset: [1500, -1500] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-        />
-        
-        {/* Line 2 - Blue Flow */}
-        <motion.path 
-          d="M -100 800 C 400 800, 500 300, 1000 300 S 1400 800, 2000 800" 
-          fill="none" 
-          stroke="url(#grad2)" 
-          strokeWidth="4"
-          strokeLinecap="round"
-          initial={{ strokeDasharray: "200 2000", strokeDashoffset: 2000 }}
-          animate={{ strokeDashoffset: [2000, -2000] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-        />
-        
-        {/* Line 3 - Yellow Flow (Vertical-ish) */}
-        <motion.path 
-          d="M 300 -100 C 300 400, 900 500, 900 1000 S 1500 1200, 1500 2000" 
-          fill="none" 
-          stroke="url(#grad3)" 
-          strokeWidth="3"
-          strokeLinecap="round"
-          initial={{ strokeDasharray: "100 1200", strokeDashoffset: 1200 }}
-          animate={{ strokeDashoffset: [1200, -1200] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-        />
-      </svg>
+
 
       {/* Futuristic Glowing Orbs */}
       <motion.div 
