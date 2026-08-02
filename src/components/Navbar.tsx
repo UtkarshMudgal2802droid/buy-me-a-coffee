@@ -29,7 +29,7 @@ export default function Navbar() {
         hidden: { y: "-150%" }
       }}
       animate={hidden ? "hidden" : "visible"}
-      transition={{ duration: 0.2, ease: "easeInOut" }}
+      transition={{ duration: 0.05, ease: "linear" }}
       className="fixed top-0 left-0 right-0 z-50 flex justify-center px-0 sm:px-6 w-full"
     >
       <div className="w-full bg-white/70 backdrop-blur-md border-b border-slate-200 px-6 py-3 flex items-center justify-between shadow-sm">
