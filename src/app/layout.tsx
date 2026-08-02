@@ -18,6 +18,7 @@ export const metadata: Metadata = {
 };
 
 import Navbar from "@/components/Navbar";
+import InteractiveBackground from "@/components/InteractiveBackground";
 
 export default function RootLayout({
   children,
@@ -29,7 +30,8 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col relative selection:bg-[#262626] selection:text-[#f8f9fa]">
+      <body className="min-h-full flex flex-col relative selection:bg-[#FFDD00] selection:text-[#222222]">
+        <InteractiveBackground />
         {children}
       </body>
     </html>
