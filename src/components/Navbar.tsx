@@ -7,9 +7,7 @@ import Link from 'next/link';
 
 export default function Navbar() {
   const navLinks = [
-    { name: 'What is this?', href: '#home' },
-    { name: 'How it works', href: '#demo' },
-    { name: 'Praise Board', href: '#board' },
+    { name: 'Creators', href: '#demo' }
   ];
 
   return (
@@ -35,7 +33,7 @@ export default function Navbar() {
             <Link 
               key={link.name} 
               href={link.href}
-              className="text-sm font-bold text-slate-600 hover:text-bmc-dark transition-colors"
+              className="text-sm font-black text-slate-600 hover:text-bmc-dark transition-colors"
             >
               {link.name}
             </Link>
@@ -44,10 +42,6 @@ export default function Navbar() {
 
         {/* Right: Actions */}
         <div className="flex items-center gap-4">
-          <div className="hidden sm:flex bg-white rounded-full p-1 border border-bmc-dark">
-            <button className="px-3 py-1 rounded-full text-xs font-bold text-slate-400 hover:text-bmc-dark">DE</button>
-            <button className="px-3 py-1 rounded-full bg-bmc-dark text-white text-xs font-bold">EN</button>
-          </div>
           <Link href="#demo" className="bg-bmc-yellow text-bmc-dark font-black text-xs uppercase tracking-widest px-6 py-3 rounded-full border border-bmc-dark hover:bg-yellow-400 transition-colors">
             Start Tipping
           </Link>
