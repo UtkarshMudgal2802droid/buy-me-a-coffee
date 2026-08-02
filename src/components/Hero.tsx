@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
+import Image from 'next/image';
 
 export default function Hero() {
   const mouseX = useMotionValue(0);
@@ -86,10 +86,11 @@ export default function Hero() {
               className="absolute inset-0 w-full h-full"
             >
               {/* The mask-image creates a seamless fade from the white background into the image */}
-              <img 
+              <Image 
                 src="/transit_hero_3d.png" 
                 alt="4K 3D Futuristic Transit" 
-                className="w-full h-full object-cover object-center lg:object-left"
+                fill
+                className="object-cover object-center lg:object-left"
                 style={{ WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 25%)', maskImage: 'linear-gradient(to right, transparent 0%, black 25%)' }}
               />
             </motion.div>
