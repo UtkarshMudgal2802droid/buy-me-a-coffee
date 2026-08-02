@@ -1,10 +1,12 @@
 "use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Verified, Users, Coffee } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Verified, Users, Coffee, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function CreatorCard() {
+  const [currentGoalIndex, setCurrentGoalIndex] = useState(0);
+  
   const containerVars = {
     hidden: { opacity: 0 },
     show: {
@@ -22,6 +24,17 @@ export default function CreatorCard() {
     { title: "New Video Equipment", current: 170, max: 200 },
     { title: "Hire a Video Editor", current: 50, max: 500 }
   ];
+
+  const handlePrevGoal = () => {
+    setCurrentGoalIndex((prev) => (prev === 0 ? goals.length - 1 : prev - 1));
+  };
+
+  const handleNextGoal = () => {
+    setCurrentGoalIndex((prev) => (prev === goals.length - 1 ? 0 : prev + 1));
+  };
+
+  const currentGoal = goals[currentGoalIndex];
+  const progress = Math.min(100, Math.round((currentGoal.current / currentGoal.max) * 100));
 
   return (
     <motion.div 
@@ -70,34 +83,52 @@ export default function CreatorCard() {
         </p>
       </motion.div>
 
-      <motion.div variants={itemVars} className="mt-auto pt-6 relative z-10 w-full flex flex-col gap-6">
-        {goals.map((goal, index) => {
-          const progress = Math.min(100, Math.round((goal.current / goal.max) * 100));
-          return (
-            <div key={index} className="w-full">
-              <div className="flex justify-between items-end mb-2">
-                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                   {goal.title} <Coffee className="w-3 h-3 text-bmc-dark" />
-                </span>
-                <span className="text-sm font-black text-bmc-dark">{progress}%</span>
-              </div>
-              <div className="w-full h-4 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
-                <motion.div 
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${progress}%` }}
-                  transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 + (index * 0.2) }}
-                  className="h-full bg-bmc-yellow relative"
-                >
-                  <div className="absolute inset-0 bg-white/30 w-full h-full animate-[shimmer_2s_infinite]"></div>
-                </motion.div>
-              </div>
-              <div className="flex justify-between items-center mt-2">
-                <span className="text-xs font-bold text-slate-400">{goal.current} Coffees</span>
-                <span className="text-xs font-bold text-slate-400">{goal.max} Coffees</span>
-              </div>
-            </div>
-          );
-        })}
+      <motion.div variants={itemVars} className="mt-auto pt-6 relative z-10 w-full flex flex-col">
+        <div className="w-full relative">
+          <div className="flex justify-between items-center mb-4">
+            <button 
+              onClick={handlePrevGoal} 
+              className="p-1.5 rounded-full hover:bg-slate-100 transition-colors text-slate-400 hover:text-bmc-dark"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <AnimatePresence mode="wait">
+              <motion.span 
+                key={currentGoalIndex}
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 5 }}
+                className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1"
+              >
+                {currentGoal.title} <Coffee className="w-3 h-3 text-bmc-dark" />
+              </motion.span>
+            </AnimatePresence>
+            <button 
+              onClick={handleNextGoal} 
+              className="p-1.5 rounded-full hover:bg-slate-100 transition-colors text-slate-400 hover:text-bmc-dark"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+          
+          <div className="w-full h-4 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+            <motion.div 
+              key={`bar-${currentGoalIndex}`}
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="h-full bg-bmc-yellow relative"
+            >
+              <div className="absolute inset-0 bg-white/30 w-full h-full animate-[shimmer_2s_infinite]"></div>
+            </motion.div>
+          </div>
+          
+          <div className="flex justify-between items-center mt-2">
+            <span className="text-xs font-bold text-slate-400">{currentGoal.current} Coffees</span>
+            <span className="text-sm font-black text-bmc-dark">{progress}%</span>
+            <span className="text-xs font-bold text-slate-400">{currentGoal.max} Coffees</span>
+          </div>
+        </div>
       </motion.div>
       
     </motion.div>
