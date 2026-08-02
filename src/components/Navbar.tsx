@@ -5,8 +5,6 @@ import { motion } from 'framer-motion';
 import { Sparkles, TerminalSquare } from 'lucide-react';
 import Link from 'next/link';
 
-import MagneticButton from './MagneticButton';
-
 export default function Navbar() {
   const navLinks = [
     { name: 'Home', href: '#home', icon: <Sparkles className="w-4 h-4" /> },
