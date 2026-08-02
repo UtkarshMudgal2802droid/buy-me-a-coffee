@@ -11,10 +11,7 @@ declare global {
   }
 }
 
-const CONTRACT_ADDRESS = "0x0FaebD0cfA6f15CA041e304111C3590d3B6C3b2b";
-const ABI = [
-  "event TipReceived(address indexed sender, uint256 amount, string note)"
-];
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../contract-config';
 
 type Tip = {
   sender: string;
