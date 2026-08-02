@@ -1,19 +1,34 @@
 "use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { Coffee } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Navbar() {
+  const [hidden, setHidden] = useState(false);
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    if (latest > previous && latest > 150) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+  });
+
   const navLinks = [
     { name: 'Creators', href: '#demo' }
   ];
 
   return (
     <motion.nav 
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
+      variants={{
+        visible: { y: 0 },
+        hidden: { y: "-150%" }
+      }}
+      animate={hidden ? "hidden" : "visible"}
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
       className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4"
     >
