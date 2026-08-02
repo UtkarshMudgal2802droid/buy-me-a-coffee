@@ -6,12 +6,32 @@ import { Coffee } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Navbar() {
+  const [hidden, setHidden] = useState(false);
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    if (latest > previous && latest > 150) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+  });
+
   const navLinks = [
     { name: 'Creators', id: 'demo' }
   ];
 
   return (
-    <nav className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4">
+    <motion.nav 
+      variants={{
+        visible: { y: 0 },
+        hidden: { y: "-150%" }
+      }}
+      animate={hidden ? "hidden" : "visible"}
+      transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+      className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4"
+    >
       <div className="w-full max-w-6xl bg-white/60 backdrop-blur-md border border-white/80 rounded-full px-3 py-2 flex items-center justify-between shadow-sm">
         
         {/* Left: Logo */}
@@ -30,7 +50,7 @@ export default function Navbar() {
               onClick={() => {
                 const el = document.getElementById(link.id);
                 if (el) {
-                  const y = el.getBoundingClientRect().top + window.scrollY - 100;
+                  const y = el.getBoundingClientRect().top + window.scrollY;
                   window.scrollTo({ top: y, behavior: 'smooth' });
                 }
               }}
@@ -60,7 +80,7 @@ export default function Navbar() {
             onClick={() => {
               const el = document.getElementById('demo');
               if (el) {
-                const y = el.getBoundingClientRect().top + window.scrollY - 100;
+                const y = el.getBoundingClientRect().top + window.scrollY;
                 window.scrollTo({ top: y, behavior: 'smooth' });
               }
             }}
@@ -70,6 +90,6 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 }
