@@ -92,6 +92,7 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: SEPOLIA_CHAIN_ID }],
       });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       // This error code indicates that the chain has not been added to MetaMask.
       if (error.code === 4902) {
@@ -138,6 +139,7 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
       const accounts = await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
       setAccount(accounts[0]);
       await checkNetwork();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.code === 4001 || error.code === 'ACTION_REJECTED') {
         showNotification('warning', "Connection request rejected.");
