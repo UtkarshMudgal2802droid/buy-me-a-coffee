@@ -94,15 +94,15 @@ export default function DonationWidget() {
       <div className="absolute top-[20%] right-[-20%] w-[50%] h-[50%] rounded-full bg-blue-300 opacity-10 blur-3xl mix-blend-multiply"></div>
 
       <motion.div variants={itemVars} className="flex items-center gap-5 mb-10 relative z-10">
-        <div className="w-16 h-16 rounded-full bg-blue-50 text-blue-500 border border-blue-100 flex items-center justify-center shadow-sm">
+        <div className="w-16 h-16 rounded-full bg-amber-50 text-amber-500 border border-amber-100 flex items-center justify-center shadow-sm">
           <Coffee className="w-8 h-8" />
         </div>
-        <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Support Cause</h2>
+        <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Buy me a coffee</h2>
       </motion.div>
 
       <motion.div variants={itemVars} className="mb-8 relative z-10">
         <label className="block text-xs uppercase tracking-widest font-bold text-slate-500 mb-4">
-          Select Amount
+          How many coffees?
         </label>
         
         {/* Telegram-style Segmented Control */}
@@ -112,7 +112,7 @@ export default function DonationWidget() {
               key={option}
               onClick={() => setSelectedAmount(option as number | 'custom')}
               className={`flex-1 py-3 relative font-bold text-sm z-10 transition-colors duration-300 flex items-center justify-center gap-2 ${
-                selectedAmount === option ? 'text-emerald-700' : 'text-slate-500 hover:text-slate-700'
+                selectedAmount === option ? 'text-amber-700' : 'text-slate-500 hover:text-slate-700'
               }`}
             >
               {selectedAmount === option && (
@@ -152,10 +152,10 @@ export default function DonationWidget() {
 
       <motion.div variants={itemVars} className="mb-10 relative z-10">
         <label className="block text-xs uppercase tracking-widest font-black text-slate-500 mb-4">
-          Message (Optional)
+          Say something nice (Optional)
         </label>
         <textarea
-          placeholder="You are doing great work..."
+          placeholder="Love your videos! Keep it up..."
           className="w-full glass-input min-h-[100px] resize-none"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -165,26 +165,26 @@ export default function DonationWidget() {
       <motion.div variants={itemVars} className="mt-auto relative z-10">
         <div className="flex justify-between items-end mb-6">
           <span className="text-slate-500 font-black text-lg tracking-widest uppercase">Total</span>
-          <span className="text-3xl font-black text-charity-orange drop-shadow-md">{currentEthAmount || '0.00'} ETH</span>
+          <span className="text-3xl font-black text-amber-500 drop-shadow-md">{currentEthAmount || '0.00'} ETH</span>
         </div>
         
         <motion.button
           whileTap={{ scale: 0.95 }}
           onClick={handleTip}
           disabled={isProcessing || (selectedAmount === 'custom' && !customAmount && account !== null)}
-          className={`w-full py-5 text-xl tracking-widest uppercase disabled:opacity-50 flex justify-center items-center gap-3 pointer-events-auto rounded-full font-bold text-white shadow-[0_10px_20px_-5px_rgba(16,185,129,0.4)] transition-all duration-300 hover:shadow-[0_15px_25px_-5px_rgba(16,185,129,0.5)] ${account ? 'bg-charity-green hover:bg-emerald-400' : 'bg-slate-800 hover:bg-slate-700 shadow-slate-900/20'}`}
+          className={`w-full py-5 text-xl tracking-widest uppercase disabled:opacity-50 flex justify-center items-center gap-3 pointer-events-auto rounded-full font-bold text-white shadow-[0_10px_20px_-5px_rgba(245,158,11,0.4)] transition-all duration-300 hover:shadow-[0_15px_25px_-5px_rgba(245,158,11,0.5)] ${account ? 'bg-amber-500 hover:bg-amber-400' : 'bg-slate-800 hover:bg-slate-700 shadow-slate-900/20'}`}
         >
           {isProcessing ? (
             <>
               <Loader2 className="w-6 h-6 animate-spin" />
-              Processing...
+              Brewing...
             </>
           ) : !account ? (
             <>
               <Wallet className="w-5 h-5" /> Connect Wallet
             </>
           ) : (
-            'Send Tip'
+            `Support with ${currentEthAmount} ETH`
           )}
         </motion.button>
         
