@@ -91,7 +91,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="flex items-center justify-center relative"
+          className="flex items-center justify-center relative z-20"
         >
           <motion.a whileTap={{ scale: 0.95 }} href="#demo" className="relative z-10">
             <span className="bmc-btn text-lg">
@@ -107,6 +107,50 @@ export default function Hero() {
           </div>
         </motion.div>
       </div>
+
+      {/* Floating Animated Objects */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+        <motion.div
+          animate={{ y: [0, -30, 0], rotate: [0, 10, -10, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[20%] left-[10%] text-6xl opacity-40 drop-shadow-lg"
+        >
+          ☕
+        </motion.div>
+        
+        <motion.div
+          animate={{ y: [0, 40, 0], x: [0, 20, 0], rotate: [0, 45, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute top-[15%] right-[15%] text-5xl opacity-40 drop-shadow-lg"
+        >
+          ✨
+        </motion.div>
+
+        <motion.div
+          animate={{ y: [0, -40, 0], rotate: [0, -20, 0] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute bottom-[20%] left-[20%] text-5xl opacity-30 drop-shadow-lg"
+        >
+          💛
+        </motion.div>
+
+        <motion.div
+          animate={{ y: [0, 30, 0], x: [0, -20, 0], rotate: [0, 15, -15, 0] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+          className="absolute bottom-[30%] right-[10%] text-6xl opacity-40 drop-shadow-lg"
+        >
+          ⚡
+        </motion.div>
+        
+        <motion.div
+          animate={{ y: [0, -50, 0], rotate: [0, 180, 360] }}
+          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+          className="absolute top-[40%] left-[5%] text-4xl opacity-20 drop-shadow-lg blur-[2px]"
+        >
+          🍩
+        </motion.div>
+      </div>
+
     </div>
   );
 }
