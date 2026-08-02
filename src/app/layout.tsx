@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 import Navbar from "@/components/Navbar";
-import InteractiveBackground from "@/components/InteractiveBackground";
+import Background from "@/components/Background";
 
 export default function RootLayout({
   children,
