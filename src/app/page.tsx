@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import Hero from '@/components/Hero';
 import CreatorCard from '@/components/CreatorCard';
 import DonationWidget from '@/components/DonationWidget';
