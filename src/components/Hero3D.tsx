@@ -97,30 +97,28 @@ export default function Hero3D() {
           azimuth={[-Math.PI / 1.4, Math.PI / 2]}
         >
           {/* Top Left - Yellow Glass Donut */}
-          <GlassTorus position={[-5, 3, -2]} scale={1.2} color="#FFDD00" />
+          <GlassTorus position={[-6, 3, -4]} scale={1.2} color="#FFDD00" />
           
           {/* Bottom Right - Dark Metallic Icosahedron */}
-          <MetallicIcosahedron position={[6, -2, -3]} scale={1.5} color="#222222" />
+          <MetallicIcosahedron position={[6, -3, -5]} scale={1.5} color="#222222" />
           
-          {/* Top Right - Soft Cream Sphere */}
-          <FloatingSphere position={[4, 4, -5]} scale={1} color="#F4F1E9" />
+          {/* Top Right - Coral Pink Donut */}
+          <GlassTorus position={[5, 4, -6]} scale={0.8} color="#FF2A85" />
           
-          {/* Bottom Left - Coral Pink Donut */}
-          <GlassTorus position={[-6, -3, -4]} scale={0.8} color="#FF2A85" />
-          
-          {/* Center Background - Emerald Glass Icosahedron */}
-          <Float speed={1} rotationIntensity={0.5} floatIntensity={1} position={[0, -4, -12]}>
-            <mesh scale={3}>
+          {/* Bottom Left - Emerald Glass Icosahedron */}
+          <Float speed={1.5} rotationIntensity={1} floatIntensity={1.5} position={[-5, -4, -6]}>
+            <mesh scale={2}>
               <icosahedronGeometry args={[1, 1]} />
               <meshPhysicalMaterial 
                 color="#10b981"
-                transmission={0.9}
-                opacity={1}
+                transmission={0.4}
+                opacity={0.9}
                 transparent={true}
-                metalness={0.1}
+                metalness={0.2}
                 roughness={0.1}
-                ior={1.4}
+                ior={1.5}
                 thickness={3}
+                clearcoat={1}
               />
             </mesh>
           </Float>
