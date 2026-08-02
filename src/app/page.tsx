@@ -4,15 +4,15 @@ import CreatorCard from '@/components/CreatorCard';
 import DonationWidget from '@/components/DonationWidget';
 import PraiseBoardWidget from '@/components/PraiseBoardWidget';
 import Navbar from '@/components/Navbar';
-import MouseParallaxBackground from '@/components/MouseParallaxBackground';
-import CustomCursor from '@/components/CustomCursor';
 import * as motion from 'framer-motion/client';
 
 export default function Home() {
   return (
-    <main className="w-full min-h-screen relative cursor-none">
-      <CustomCursor />
-      <MouseParallaxBackground />
+    <main className="w-full min-h-screen relative overflow-hidden bg-gradient-to-br from-[#f0f4f8] via-[#e2e8f0] to-[#cbd5e1]">
+      {/* Soft CSS Animated Background Orbs */}
+      <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full mix-blend-multiply opacity-40 animate-blob bg-gradient-to-r from-[#ff2a85]/30 to-[#ffeb3b]/30 blur-3xl pointer-events-none"></div>
+      <div className="absolute top-[20%] right-[-10%] w-[40vw] h-[40vw] rounded-full mix-blend-multiply opacity-40 animate-blob animation-delay-2000 bg-gradient-to-r from-[#00e5ff]/30 to-[#8a2be2]/30 blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-[-20%] left-[20%] w-[60vw] h-[60vw] rounded-full mix-blend-multiply opacity-40 animate-blob animation-delay-4000 bg-gradient-to-r from-[#ffeb3b]/30 to-[#00e5ff]/30 blur-3xl pointer-events-none"></div>
 
       <Navbar />
       
