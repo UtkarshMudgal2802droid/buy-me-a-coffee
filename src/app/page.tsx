@@ -83,11 +83,15 @@ export default function Home() {
           <div className="flex flex-col items-center justify-center w-full max-w-[600px] mx-auto min-h-[600px] relative">
             
             {/* Custom Navigation Buttons */}
-            <button className="swiper-button-prev-custom absolute left-0 top-1/2 -translate-y-1/2 z-30 w-12 h-12 bg-bmc-yellow rounded-full flex items-center justify-center border-2 border-bmc-dark shadow-[4px_4px_0px_0px_rgba(34,34,34,1)] hover:bg-yellow-400 hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all">
+            <button 
+              className={`swiper-button-prev-custom absolute left-0 top-1/2 -translate-y-1/2 z-30 w-12 h-12 bg-bmc-yellow rounded-full flex items-center justify-center border-2 border-bmc-dark shadow-[4px_4px_0px_0px_rgba(34,34,34,1)] transition-all ${activeCreatorId === 0 ? 'opacity-30 pointer-events-none' : 'hover:bg-yellow-400 hover:translate-x-[-2px] hover:translate-y-[-2px]'}`}
+            >
               <ChevronLeft className="w-6 h-6 text-bmc-dark" strokeWidth={3} />
             </button>
 
-            <button className="swiper-button-next-custom absolute right-0 top-1/2 -translate-y-1/2 z-30 w-12 h-12 bg-bmc-yellow rounded-full flex items-center justify-center border-2 border-bmc-dark shadow-[4px_4px_0px_0px_rgba(34,34,34,1)] hover:bg-yellow-400 hover:translate-x-[2px] hover:translate-y-[-2px] transition-all">
+            <button 
+              className={`swiper-button-next-custom absolute right-0 top-1/2 -translate-y-1/2 z-30 w-12 h-12 bg-bmc-yellow rounded-full flex items-center justify-center border-2 border-bmc-dark shadow-[4px_4px_0px_0px_rgba(34,34,34,1)] transition-all ${activeCreatorId === CREATORS.length - 1 ? 'opacity-30 pointer-events-none' : 'hover:bg-yellow-400 hover:translate-x-[2px] hover:translate-y-[-2px]'}`}
+            >
               <ChevronRight className="w-6 h-6 text-bmc-dark" strokeWidth={3} />
             </button>
 
