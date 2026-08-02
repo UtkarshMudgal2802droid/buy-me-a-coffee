@@ -40,22 +40,23 @@ export default function Hero() {
     <div className="w-full flex flex-col items-center justify-center pt-32 pb-20 px-4">
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         
-        {/* Main Glass Container matching reference */}
-        <div className="relative bg-white/70 backdrop-blur-2xl border border-white rounded-[40px] p-10 md:p-20 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)]">
+        {/* Seamless Premium Card Container */}
+        <div className="relative bg-white rounded-[40px] shadow-[0_20px_80px_-15px_rgba(0,0,0,0.1)] overflow-hidden border border-slate-100 flex flex-col lg:flex-row min-h-[600px]">
           
-          <div className="max-w-lg relative z-30">
+          {/* Left Content (Text) */}
+          <div className="w-full lg:w-[55%] p-10 md:p-16 lg:p-20 relative z-20 flex flex-col justify-center">
             {/* Tag Pills */}
             <div className="flex gap-3 mb-8 flex-wrap">
-              <span className="px-4 py-1.5 rounded-full border border-slate-200 bg-white/50 text-[10px] font-black uppercase tracking-widest text-slate-500">Groundbreaking Funding</span>
-              <span className="px-4 py-1.5 rounded-full border border-slate-200 bg-white/50 text-[10px] font-black uppercase tracking-widest text-slate-500">Smart Contracts</span>
-              <span className="px-4 py-1.5 rounded-full border border-slate-200 bg-white/50 text-[10px] font-black uppercase tracking-widest text-slate-500">Zero Fees</span>
+              <span className="px-4 py-1.5 rounded-full border border-slate-200 bg-slate-50 text-[10px] font-black uppercase tracking-widest text-slate-500">Groundbreaking Funding</span>
+              <span className="px-4 py-1.5 rounded-full border border-slate-200 bg-slate-50 text-[10px] font-black uppercase tracking-widest text-slate-500">Smart Contracts</span>
+              <span className="px-4 py-1.5 rounded-full border border-slate-200 bg-slate-50 text-[10px] font-black uppercase tracking-widest text-slate-500">Zero Fees</span>
             </div>
 
             {/* Headline */}
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-6xl md:text-[85px] font-black mb-8 leading-[0.95] tracking-tighter text-slate-900"
+              className="text-6xl md:text-[80px] lg:text-[90px] font-black mb-6 leading-[0.95] tracking-tighter text-slate-900"
             >
               Innovating<br/>
               Transit Funding.
@@ -93,37 +94,23 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* 4K 3D Render Object - Moved to the right, scaled down properly */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9, x: 20 }}
-            animate={{ 
-              opacity: 1, 
-              scale: 1,
-              x: 0,
-              y: [0, -10, 0] // Floating animation
-            }}
-            transition={{ 
-              y: {
-                duration: 6,
-                repeat: Infinity,
-                repeatType: "reverse",
-                ease: "easeInOut"
-              },
-              default: {
-                type: "spring", 
-                stiffness: 80, 
-                damping: 20, 
-                delay: 0.2 
-              }
-            }}
-            className="absolute right-[-8%] bottom-[-15%] w-[700px] h-[700px] hidden lg:block z-10 pointer-events-none mix-blend-multiply"
-          >
-            <img 
-              src="/transit_hero_3d.png" 
-              alt="4K 3D Futuristic Transit" 
-              className="w-full h-full object-contain object-right-bottom"
-            />
-          </motion.div>
+          {/* Right Content (4K 3D Image perfectly blended) */}
+          <div className="w-full lg:w-[45%] relative min-h-[400px] lg:min-h-full flex items-center justify-center bg-white">
+            <motion.div 
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+              className="absolute inset-0 w-full h-full"
+            >
+              {/* The mask-image creates a seamless fade from the white background into the image */}
+              <img 
+                src="/transit_hero_3d.png" 
+                alt="4K 3D Futuristic Transit" 
+                className="w-full h-full object-cover object-center lg:object-left"
+                style={{ WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 25%)', maskImage: 'linear-gradient(to right, transparent 0%, black 25%)' }}
+              />
+            </motion.div>
+          </div>
           
         </div>
       </div>
