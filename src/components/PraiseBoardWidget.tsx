@@ -35,15 +35,22 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
   
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
+  
+  const filterRef = React.useRef<HTMLDivElement>(null);
+  const sortRef = React.useRef<HTMLDivElement>(null);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
-    const handleClickOutside = () => {
-      setIsFilterOpen(false);
-      setIsSortOpen(false);
+    const handleClickOutside = (e: MouseEvent) => {
+      if (filterRef.current && !filterRef.current.contains(e.target as Node)) {
+        setIsFilterOpen(false);
+      }
+      if (sortRef.current && !sortRef.current.contains(e.target as Node)) {
+        setIsSortOpen(false);
+      }
     };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const checkNetworkAndWallet = async () => {
@@ -203,9 +210,9 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
           <div className="flex items-center gap-3">
             
             {/* Filter Dropdown */}
-            <div className="relative">
+            <div className="relative" ref={filterRef}>
               <button 
-                onClick={(e) => { e.stopPropagation(); setIsFilterOpen(!isFilterOpen); setIsSortOpen(false); }}
+                onClick={() => { setIsFilterOpen(!isFilterOpen); setIsSortOpen(false); }}
                 disabled={loading || !hasMetaMask || isWrongNetwork || rpcError}
                 className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 transition-colors font-bold text-sm disabled:opacity-50 ${filterMode !== 'all' ? 'bg-bmc-yellow border-bmc-dark text-bmc-dark shadow-[2px_2px_0px_0px_rgba(34,34,34,1)]' : 'border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark'}`}
               >
@@ -234,9 +241,9 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
             </div>
 
             {/* Sort Dropdown */}
-            <div className="relative">
+            <div className="relative" ref={sortRef}>
               <button 
-                onClick={(e) => { e.stopPropagation(); setIsSortOpen(!isSortOpen); setIsFilterOpen(false); }}
+                onClick={() => { setIsSortOpen(!isSortOpen); setIsFilterOpen(false); }}
                 disabled={loading || !hasMetaMask || isWrongNetwork || rpcError}
                 className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 transition-colors font-bold text-sm disabled:opacity-50 ${sortOrder !== 'newest' ? 'bg-bmc-yellow border-bmc-dark text-bmc-dark shadow-[2px_2px_0px_0px_rgba(34,34,34,1)]' : 'border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark'}`}
               >
