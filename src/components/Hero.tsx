@@ -45,7 +45,7 @@ export default function Hero() {
           className="text-6xl md:text-8xl font-black mb-8 leading-[1.1] tracking-tight text-bmc-dark flex flex-wrap justify-center gap-x-4 overflow-hidden"
           style={{ fontFamily: 'Georgia, serif' }}
         >
-          {["Fund", "your", "creators"].map((word, i) => (
+          {["Support", "your", "local", "transit"].map((word, i) => (
             <motion.span key={i} variants={wordVars} className="inline-block relative">
               {word}
             </motion.span>
@@ -55,7 +55,7 @@ export default function Hero() {
             variants={wordVars} 
             className="inline-block"
           >
-            with a coffee.
+            hero with a coffee.
           </motion.span>
         </motion.h1>
 
@@ -67,9 +67,9 @@ export default function Hero() {
           className="absolute top-1/2 -right-8 sm:-right-32 text-bmc-dark font-bold font-serif italic text-xl"
         >
           <div className="relative">
-            Elevate
+            Keep the
             <br />
-            your brand
+            buses running
             <svg className="absolute -bottom-10 right-0 text-bmc-dark" width="40" height="40" viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2 2C15.5 11.5 45.5 32 58 38M58 38C52 35.5 45.5 33.5 40 32M58 38C55.5 32 52 23.5 49 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
@@ -83,7 +83,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="text-lg text-slate-600 max-w-xl mb-12 font-medium"
         >
-          Accept ETH directly to your wallet. No platform fees, no censorship, just pure peer-to-peer support powered by smart contracts. Our system is ready to propel your creative journey forward.
+          Accept ETH directly to your wallet. No platform fees, no censorship, just pure peer-to-peer support powered by smart contracts. Help creators like Ifeoma keep their city moving.
         </motion.p>
 
         {/* Call to Actions */}
@@ -95,12 +95,12 @@ export default function Hero() {
         >
           <motion.a whileTap={{ scale: 0.95 }} href="#demo" className="relative z-10">
             <span className="bmc-btn text-lg">
-              Get Started
+              Support Ifeoma
             </span>
           </motion.a>
           
           <div className="absolute -bottom-12 -left-16 rotate-[-15deg] font-serif italic text-bmc-dark">
-            It's free!
+            Zero fees!
             <svg className="absolute -top-4 -right-8" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2 28C12 18 25 5 28 2M28 2C24 4 19 6 15 8M28 2C26 6 23 11 20 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
@@ -115,7 +115,7 @@ export default function Hero() {
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-[20%] left-[10%] text-6xl opacity-40 drop-shadow-lg"
         >
-          ☕
+          🚌
         </motion.div>
         
         <motion.div
@@ -123,7 +123,7 @@ export default function Hero() {
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           className="absolute top-[15%] right-[15%] text-5xl opacity-40 drop-shadow-lg"
         >
-          ✨
+          🎫
         </motion.div>
 
         <motion.div
@@ -131,7 +131,7 @@ export default function Hero() {
           transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }}
           className="absolute bottom-[20%] left-[20%] text-5xl opacity-30 drop-shadow-lg"
         >
-          💛
+          ⏱️
         </motion.div>
 
         <motion.div
@@ -139,7 +139,7 @@ export default function Hero() {
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
           className="absolute bottom-[30%] right-[10%] text-6xl opacity-40 drop-shadow-lg"
         >
-          ⚡
+          🚦
         </motion.div>
         
         <motion.div
@@ -147,7 +147,7 @@ export default function Hero() {
           transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
           className="absolute top-[40%] left-[5%] text-4xl opacity-20 drop-shadow-lg blur-[2px]"
         >
-          🍩
+          ☕
         </motion.div>
       </div>
 
