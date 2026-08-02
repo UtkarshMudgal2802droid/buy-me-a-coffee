@@ -109,8 +109,26 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* 3D WebGL Background Scene */}
-      <Hero3D />
+      </div>
+
+      {/* Interactive Cursor Glow Background */}
+      <motion.div
+        className="pointer-events-none fixed top-0 left-0 w-[400px] h-[400px] rounded-full mix-blend-multiply filter blur-[100px] opacity-60 z-0"
+        style={{
+          x: smoothX,
+          y: smoothY,
+          translateX: "-50%",
+          translateY: "-50%",
+        }}
+        animate={{
+          backgroundColor: ["#10b981", "#ffdd00", "#ff2a85", "#10b981"],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "linear"
+        }}
+      />
     </div>
   );
 }
