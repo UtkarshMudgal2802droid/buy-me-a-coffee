@@ -105,20 +105,22 @@ export default function DonationWidget() {
           <span className="text-slate-500 font-black text-lg tracking-widest uppercase">Total</span>
           <span className="text-3xl font-black text-[#ff6a00] drop-shadow-md">{currentEthAmount || '0.00'} ETH</span>
         </div>
-        <button
-          onClick={handleTip}
-          disabled={isProcessing || (selectedAmount === 'custom' && !customAmount)}
-          className="glow-btn w-full py-5 text-xl tracking-widest uppercase disabled:opacity-50 flex justify-center items-center gap-3"
-        >
-          {isProcessing ? (
-            <>
-              <Loader2 className="w-6 h-6 animate-spin" />
-              Processing...
-            </>
-          ) : (
-            'Send Tip'
-          )}
-        </button>
+        <MagneticButton>
+          <button
+            onClick={handleTip}
+            disabled={isProcessing || (selectedAmount === 'custom' && !customAmount)}
+            className="glow-btn w-full py-5 text-xl tracking-widest uppercase disabled:opacity-50 flex justify-center items-center gap-3 pointer-events-none"
+          >
+            {isProcessing ? (
+              <>
+                <Loader2 className="w-6 h-6 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              'Send Tip'
+            )}
+          </button>
+        </MagneticButton>
         
         <p className="text-center text-xs uppercase tracking-widest font-black text-slate-400 mt-6 flex items-center justify-center gap-2">
           <span className="w-3 h-3 rounded-full bg-[#00e5ff] shadow-[0_0_15px_rgba(0,229,255,0.8)] animate-pulse"></span>
