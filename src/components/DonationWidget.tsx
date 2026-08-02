@@ -1,26 +1,69 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Coffee, Hexagon, Loader2 } from 'lucide-react';
+import { Coffee, Hexagon, Loader2, Wallet } from 'lucide-react';
 
 export default function DonationWidget() {
   const [selectedAmount, setSelectedAmount] = useState<number | 'custom'>(3);
   const [customAmount, setCustomAmount] = useState<string>('');
   const [message, setMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  
+  // Wallet state
+  const [account, setAccount] = useState<string | null>(null);
+
+  // Check if wallet is connected on load
+  useEffect(() => {
+    checkConnection();
+  }, []);
+
+  const checkConnection = async () => {
+    if (typeof window !== 'undefined' && (window as any).ethereum) {
+      try {
+        const accounts = await (window as any).ethereum.request({ method: 'eth_accounts' });
+        if (accounts.length > 0) {
+          setAccount(accounts[0]);
+        }
+      } catch (error) {
+        console.error("Error checking connection:", error);
+      }
+    }
+  };
+
+  const connectWallet = async () => {
+    if (typeof window !== 'undefined' && (window as any).ethereum) {
+      try {
+        setIsProcessing(true);
+        const accounts = await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
+        setAccount(accounts[0]);
+      } catch (error) {
+        console.error("Error connecting wallet:", error);
+      } finally {
+        setIsProcessing(false);
+      }
+    } else {
+      alert("Please install MetaMask to connect your wallet.");
+    }
+  };
 
   // Convert coffee amount to ETH (1 coffee = 0.005 ETH for demo)
   const ethPerCoffee = 0.005;
   const currentEthAmount = selectedAmount === 'custom' 
     ? (parseFloat(customAmount) * ethPerCoffee || 0).toFixed(3)
-    : (selectedAmount * ethPerCoffee).toFixed(3);
+    : ((selectedAmount as number) * ethPerCoffee).toFixed(3);
 
   const handleTip = async () => {
+    if (!account) {
+      await connectWallet();
+      return;
+    }
+    
     setIsProcessing(true);
     // Simulate transaction delay
     await new Promise(resolve => setTimeout(resolve, 2000));
     setIsProcessing(false);
+    alert(`Successfully sent ${currentEthAmount} ETH!`);
   };
 
   const containerVars = {
@@ -35,6 +78,8 @@ export default function DonationWidget() {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 100, damping: 20 } }
   };
+
+  const options = [1, 3, 5, 'custom'];
 
   return (
     <motion.div 
@@ -59,39 +104,36 @@ export default function DonationWidget() {
         <label className="block text-xs uppercase tracking-widest font-bold text-slate-500 mb-4">
           Select Amount
         </label>
-        <div className="flex gap-3">
-          {[1, 3, 5].map((amount) => (
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              key={amount}
-              onClick={() => setSelectedAmount(amount)}
-              className={`flex-1 py-3 rounded-full border-2 font-bold transition-all duration-300 flex items-center justify-center gap-2 hover:-translate-y-0.5 shadow-sm ${
-                selectedAmount === amount
-                  ? 'border-emerald-500 bg-emerald-50 text-emerald-600'
-                  : 'border-slate-100 bg-white text-slate-600 hover:border-emerald-200'
+        
+        {/* Telegram-style Segmented Control */}
+        <div className="flex bg-slate-100/80 p-1.5 rounded-full relative shadow-inner">
+          {options.map((option) => (
+            <button
+              key={option}
+              onClick={() => setSelectedAmount(option as number | 'custom')}
+              className={`flex-1 py-3 relative font-bold text-sm z-10 transition-colors duration-300 flex items-center justify-center gap-2 ${
+                selectedAmount === option ? 'text-emerald-700' : 'text-slate-500 hover:text-slate-700'
               }`}
             >
-              {amount} <Coffee className="w-4 h-4" />
-            </motion.button>
+              {selectedAmount === option && (
+                <motion.div
+                  layoutId="activePill"
+                  className="absolute inset-0 bg-white rounded-full shadow-sm border border-slate-200/50"
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                />
+              )}
+              <span className="relative z-10 flex items-center gap-1">
+                {option === 'custom' ? 'Custom' : option} {option !== 'custom' && <Coffee className="w-4 h-4" />}
+              </span>
+            </button>
           ))}
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setSelectedAmount('custom')}
-            className={`flex-1 py-3 rounded-full border-2 font-bold transition-all duration-300 hover:-translate-y-0.5 shadow-sm ${
-              selectedAmount === 'custom'
-                ? 'border-blue-500 bg-blue-50 text-blue-600'
-                : 'border-slate-100 bg-white text-slate-600 hover:border-blue-200'
-            }`}
-          >
-            Custom
-          </motion.button>
         </div>
 
         <AnimatePresence>
           {selectedAmount === 'custom' && (
             <motion.div
               initial={{ height: 0, opacity: 0, marginTop: 0 }}
-              animate={{ height: 'auto', opacity: 1, marginTop: 12 }}
+              animate={{ height: 'auto', opacity: 1, marginTop: 16 }}
               exit={{ height: 0, opacity: 0, marginTop: 0 }}
               className="overflow-hidden"
             >
@@ -123,18 +165,23 @@ export default function DonationWidget() {
       <motion.div variants={itemVars} className="mt-auto relative z-10">
         <div className="flex justify-between items-end mb-6">
           <span className="text-slate-500 font-black text-lg tracking-widest uppercase">Total</span>
-          <span className="text-3xl font-black text-[#ff6a00] drop-shadow-md">{currentEthAmount || '0.00'} ETH</span>
+          <span className="text-3xl font-black text-charity-orange drop-shadow-md">{currentEthAmount || '0.00'} ETH</span>
         </div>
+        
         <motion.button
           whileTap={{ scale: 0.95 }}
           onClick={handleTip}
-          disabled={isProcessing || (selectedAmount === 'custom' && !customAmount)}
-          className="glow-btn w-full py-5 text-xl tracking-widest uppercase disabled:opacity-50 flex justify-center items-center gap-3 pointer-events-auto"
+          disabled={isProcessing || (selectedAmount === 'custom' && !customAmount && account !== null)}
+          className={`w-full py-5 text-xl tracking-widest uppercase disabled:opacity-50 flex justify-center items-center gap-3 pointer-events-auto rounded-full font-bold text-white shadow-[0_10px_20px_-5px_rgba(16,185,129,0.4)] transition-all duration-300 hover:shadow-[0_15px_25px_-5px_rgba(16,185,129,0.5)] ${account ? 'bg-charity-green hover:bg-emerald-400' : 'bg-slate-800 hover:bg-slate-700 shadow-slate-900/20'}`}
         >
           {isProcessing ? (
             <>
               <Loader2 className="w-6 h-6 animate-spin" />
               Processing...
+            </>
+          ) : !account ? (
+            <>
+              <Wallet className="w-5 h-5" /> Connect Wallet
             </>
           ) : (
             'Send Tip'
@@ -142,8 +189,17 @@ export default function DonationWidget() {
         </motion.button>
         
         <p className="text-center text-xs uppercase tracking-widest font-black text-slate-400 mt-6 flex items-center justify-center gap-2">
-          <span className="w-3 h-3 rounded-full bg-[#00e5ff] shadow-[0_0_15px_rgba(0,229,255,0.8)] animate-pulse"></span>
-          Ethereum Network Connected
+          {account ? (
+            <>
+              <span className="w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.8)] animate-pulse"></span>
+              Connected: {account.slice(0, 6)}...{account.slice(-4)}
+            </>
+          ) : (
+            <>
+              <span className="w-3 h-3 rounded-full bg-slate-300"></span>
+              Wallet Not Connected
+            </>
+          )}
         </p>
       </motion.div>
     </motion.div>
