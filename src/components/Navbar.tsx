@@ -28,7 +28,11 @@ export default function Navbar() {
             <button 
               key={link.name} 
               onClick={() => {
-                document.getElementById(link.id)?.scrollIntoView({ behavior: 'smooth' });
+                const el = document.getElementById(link.id);
+                if (el) {
+                  const y = el.getBoundingClientRect().top + window.scrollY - 100;
+                  window.scrollTo({ top: y, behavior: 'smooth' });
+                }
               }}
               className="text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors cursor-pointer"
             >
@@ -54,7 +58,11 @@ export default function Navbar() {
           />
           <button 
             onClick={() => {
-              document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' });
+              const el = document.getElementById('demo');
+              if (el) {
+                const y = el.getBoundingClientRect().top + window.scrollY - 100;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+              }
             }}
             className="relative bg-bmc-yellow text-slate-900 font-black text-xs uppercase tracking-widest px-6 py-3 rounded-full hover:bg-yellow-400 transition-colors cursor-pointer shadow-md z-10"
           >
