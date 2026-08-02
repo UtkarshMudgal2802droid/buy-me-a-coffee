@@ -12,6 +12,7 @@ export default function DonationWidget() {
   const [message, setMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [txStatus, setTxStatus] = useState<string>('');
+  const [notification, setNotification] = useState<{ type: 'success' | 'error', message: string } | null>(null);
   
   // Wallet state
   const [account, setAccount] = useState<string | null>(null);
@@ -20,6 +21,11 @@ export default function DonationWidget() {
   useEffect(() => {
     checkConnection();
   }, []);
+
+  const showNotification = (type: 'success' | 'error', message: string) => {
+    setNotification({ type, message });
+    setTimeout(() => setNotification(null), 5000);
+  };
 
   const checkConnection = async () => {
     if (typeof window !== 'undefined' && (window as any).ethereum) {
@@ -46,7 +52,7 @@ export default function DonationWidget() {
         setIsProcessing(false);
       }
     } else {
-      alert("Please install MetaMask to connect your wallet.");
+      showNotification('error', "Please install MetaMask to connect your wallet.");
     }
   };
 
@@ -83,16 +89,16 @@ export default function DonationWidget() {
         throw new Error("Transaction reverted by the EVM");
       }
       
-      alert(`Successfully sent ${currentEthAmount} ETH!`);
+      showNotification('success', `Successfully sent ${currentEthAmount} ETH!`);
       setMessage('');
       if (selectedAmount === 'custom') setCustomAmount('');
     } catch (error: any) {
       // Rejected wallet prompt has its own branch (Test 8)
       if (error.code === 4001 || error.code === 'ACTION_REJECTED') {
-        alert("Transaction was rejected by the user.");
+        showNotification('error', "Transaction was rejected by the user.");
       } else {
         console.error("Transaction failed:", error);
-        alert("Transaction failed. Please try again.");
+        showNotification('error', "Transaction failed. Please try again.");
       }
     } finally {
       setIsProcessing(false);
