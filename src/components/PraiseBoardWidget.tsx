@@ -105,8 +105,28 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
             <Loader2 className="w-10 h-10 text-amber-500 animate-spin mb-4" />
             <p className="text-slate-500 font-bold uppercase tracking-widest text-sm">Loading Ledger...</p>
           </div>
+        ) : displayedTips.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-16 px-4 text-center border-2 border-dashed border-slate-200 rounded-3xl">
+            <Coffee className="w-12 h-12 text-slate-300 mb-4" />
+            <p className="text-slate-500 font-medium text-lg">No coffees yet.</p>
+            <p className="text-slate-400 mt-1">Be the first to support this creator!</p>
+          </div>
         ) : (
-                    {tip.amount} ETH <Coffee className="w-5 h-5" />
+          <div className="flex flex-col gap-4">
+            {displayedTips.map((tip, i) => (
+              <motion.div 
+                key={tip.txHash + i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ type: "spring", delay: i * 0.1 }}
+                className="bg-white border-2 border-slate-100 rounded-3xl p-6 hover:border-bmc-yellow hover:shadow-[4px_4px_0px_0px_rgba(255,221,0,1)] transition-all group"
+              >
+                <div className="flex justify-between items-start mb-4">
+                  <span className="font-mono text-sm font-bold text-slate-500 bg-slate-50 border border-slate-200 px-3 py-1 rounded-full">
+                    {tip.sender.slice(0, 6)}...{tip.sender.slice(-4)}
+                  </span>
+                  <span className="font-black text-xl text-bmc-dark flex items-center gap-2">
+                    {tip.amount} ETH <Coffee className="w-5 h-5 text-bmc-dark" />
                   </span>
                 </div>
                 
