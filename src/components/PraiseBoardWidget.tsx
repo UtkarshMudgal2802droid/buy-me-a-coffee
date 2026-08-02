@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import { Loader2, MessageSquareQuote, Coffee, ArrowUpDown, Filter, AlertCircle, RefreshCw, Wallet } from 'lucide-react';
+import { Loader2, MessageSquareQuote, Coffee, ArrowUpDown, Filter, AlertCircle, RefreshCw, Wallet, ServerCrash } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 declare global {
@@ -31,6 +31,7 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
   
   const [hasMetaMask, setHasMetaMask] = useState(true);
   const [isWrongNetwork, setIsWrongNetwork] = useState(false);
+  const [rpcError, setRpcError] = useState(false);
 
   const checkNetworkAndWallet = async () => {
     if (!window.ethereum) {
@@ -60,11 +61,13 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
 
     try {
       setLoading(true);
+      setRpcError(false);
       const provider = new ethers.BrowserProvider(window.ethereum);
       const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
       
       const currentBlock = await provider.getBlockNumber();
-      const fromBlock = Math.max(0, currentBlock - 9000);
+      // Use a smaller block range (e.g. 5000) to avoid "service temporarily unavailable" RPC rate limits on free tiers
+      const fromBlock = Math.max(0, currentBlock - 5000);
 
       const filter = contract.filters.TipReceived();
       const events = await contract.queryFilter(filter, fromBlock, "latest");
@@ -81,6 +84,7 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
       return contract;
     } catch (error) {
       console.error("Error fetching tips:", error);
+      setRpcError(true);
       return null;
     } finally {
       setLoading(false);
@@ -197,7 +201,7 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
           <div className="flex items-center gap-3">
             <button 
               onClick={cycleFilter}
-              disabled={loading || !hasMetaMask || isWrongNetwork}
+              disabled={loading || !hasMetaMask || isWrongNetwork || rpcError}
               className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 transition-colors font-bold text-sm disabled:opacity-50 ${filterMode !== 'all' ? 'bg-bmc-yellow border-bmc-dark text-bmc-dark shadow-[2px_2px_0px_0px_rgba(34,34,34,1)]' : 'border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark'}`}
             >
               <Filter className="w-4 h-4" />
@@ -205,7 +209,7 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
             </button>
             <button 
               onClick={cycleSort}
-              disabled={loading || !hasMetaMask || isWrongNetwork}
+              disabled={loading || !hasMetaMask || isWrongNetwork || rpcError}
               className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 transition-colors font-bold text-sm disabled:opacity-50 ${sortOrder !== 'newest' ? 'bg-bmc-yellow border-bmc-dark text-bmc-dark shadow-[2px_2px_0px_0px_rgba(34,34,34,1)]' : 'border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark'}`}
             >
               <ArrowUpDown className="w-4 h-4" />
@@ -235,6 +239,15 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
             <p className="text-red-400 max-w-sm mb-6">Please switch your wallet to the Sepolia test network to view these transactions.</p>
             <button onClick={switchNetwork} className="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-full shadow-md flex items-center gap-2 transition-colors">
               <RefreshCw className="w-4 h-4" /> Switch to Sepolia
+            </button>
+          </div>
+        ) : rpcError ? (
+          <div className="flex flex-col items-center justify-center py-16 px-4 text-center border-2 border-dashed border-amber-200 rounded-3xl bg-amber-50/50">
+            <ServerCrash className="w-12 h-12 text-amber-400 mb-4" />
+            <p className="text-amber-700 font-bold text-lg mb-2">Network Congested</p>
+            <p className="text-amber-600/80 max-w-sm mb-6">The blockchain RPC service is temporarily unavailable or rate-limited. Please try again.</p>
+            <button onClick={() => fetchPastTips()} className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-full shadow-md flex items-center gap-2 transition-colors">
+              <RefreshCw className="w-4 h-4" /> Retry Connection
             </button>
           </div>
         ) : displayedTips.length === 0 ? (
