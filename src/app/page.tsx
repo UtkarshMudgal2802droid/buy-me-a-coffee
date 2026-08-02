@@ -7,10 +7,11 @@ import DonationWidget from '@/components/DonationWidget';
 import PraiseBoardWidget from '@/components/PraiseBoardWidget';
 import Navbar from '@/components/Navbar';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCoverflow, Pagination } from 'swiper/modules';
+import { EffectCoverflow, Navigation } from 'swiper/modules';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
-import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 export const CREATORS = [
   {
@@ -71,7 +72,7 @@ export default function Home() {
       {/* Section 2: Creator Carousel & Donation Side-by-Side */}
       <section id="demo" className="w-full min-h-screen flex flex-col justify-center py-20 px-6 relative z-10">
         
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 pt-10">
           <h2 className="text-4xl font-black text-bmc-dark font-serif italic">Discover Creators</h2>
           <p className="text-slate-600 mt-2 font-medium">Swipe to explore. Fund their goals directly.</p>
         </div>
@@ -79,12 +80,26 @@ export default function Home() {
         <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-stretch perspective-1000">
           
           {/* Left Column: Advanced Swiper Coverflow Carousel */}
-          <div className="flex flex-col items-center justify-center w-full max-w-[600px] mx-auto min-h-[600px]">
+          <div className="flex flex-col items-center justify-center w-full max-w-[600px] mx-auto min-h-[600px] relative">
+            
+            {/* Custom Navigation Buttons */}
+            <button className="swiper-button-prev-custom absolute left-0 top-1/2 -translate-y-1/2 z-30 w-12 h-12 bg-bmc-yellow rounded-full flex items-center justify-center border-2 border-bmc-dark shadow-[4px_4px_0px_0px_rgba(34,34,34,1)] hover:bg-yellow-400 hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all">
+              <ChevronLeft className="w-6 h-6 text-bmc-dark" strokeWidth={3} />
+            </button>
+
+            <button className="swiper-button-next-custom absolute right-0 top-1/2 -translate-y-1/2 z-30 w-12 h-12 bg-bmc-yellow rounded-full flex items-center justify-center border-2 border-bmc-dark shadow-[4px_4px_0px_0px_rgba(34,34,34,1)] hover:bg-yellow-400 hover:translate-x-[2px] hover:translate-y-[-2px] transition-all">
+              <ChevronRight className="w-6 h-6 text-bmc-dark" strokeWidth={3} />
+            </button>
+
             <Swiper
               effect={'coverflow'}
               grabCursor={true}
               centeredSlides={true}
               slidesPerView={'auto'}
+              navigation={{
+                prevEl: '.swiper-button-prev-custom',
+                nextEl: '.swiper-button-next-custom',
+              }}
               coverflowEffect={{
                 rotate: 30,
                 stretch: 0,
@@ -92,9 +107,9 @@ export default function Home() {
                 modifier: 1,
                 slideShadows: false,
               }}
-              modules={[EffectCoverflow]}
+              modules={[EffectCoverflow, Navigation]}
               onSlideChange={(swiper) => setActiveCreatorId(swiper.activeIndex)}
-              className="w-full"
+              className="w-full px-12"
             >
               {CREATORS.map((creator, index) => (
                 <SwiperSlide key={creator.id} className="w-[400px] py-10 px-4">
@@ -104,16 +119,6 @@ export default function Home() {
                 </SwiperSlide>
               ))}
             </Swiper>
-            
-            {/* Carousel Indicators */}
-            <div className="flex gap-2 mt-2 z-20 relative">
-              {CREATORS.map((c) => (
-                <div
-                  key={c.id}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${activeCreatorId === c.id ? 'bg-bmc-yellow scale-125 shadow-md' : 'bg-slate-300'}`}
-                />
-              ))}
-            </div>
           </div>
 
           {/* Right Column: Donation Widget tied to active creator */}
