@@ -207,7 +207,7 @@ export default function DonationWidget() {
           whileTap={{ scale: 0.95 }}
           onClick={handleTip}
           disabled={isProcessing || (selectedAmount === 'custom' && !customAmount && account !== null)}
-          className={`w-full py-5 text-xl tracking-widest uppercase disabled:opacity-50 flex justify-center items-center gap-3 pointer-events-auto rounded-full font-bold text-white shadow-[0_10px_20px_-5px_rgba(245,158,11,0.4)] transition-all duration-300 hover:shadow-[0_15px_25px_-5px_rgba(245,158,11,0.5)] ${account ? 'bg-amber-500 hover:bg-amber-400' : 'bg-slate-800 hover:bg-slate-700 shadow-slate-900/20'}`}
+          className={`w-full text-center flex justify-center items-center gap-3 pointer-events-auto disabled:opacity-50 ${account ? 'bmc-btn' : 'bg-bmc-dark text-white rounded-full py-4 font-bold'}`}
         >
           {isProcessing ? (
             <>
