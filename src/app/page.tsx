@@ -123,7 +123,7 @@ export default function Home() {
 
           {/* Right Column: Donation Widget tied to active creator */}
           <div className="flex justify-start relative z-20">
-            <div className="w-full max-w-md h-[550px]">
+            <div className="w-full max-w-md min-h-[600px]">
               <DonationWidget creatorName={activeCreator.name} />
             </div>
           </div>
