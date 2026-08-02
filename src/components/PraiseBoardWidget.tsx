@@ -73,12 +73,12 @@ export default function PraiseBoardWidget() {
         
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <Loader2 className="w-10 h-10 text-emerald-500 animate-spin mb-4" />
+            <Loader2 className="w-10 h-10 text-amber-500 animate-spin mb-4" />
             <p className="text-slate-500 font-bold uppercase tracking-widest text-sm">Loading Ledger...</p>
           </div>
         ) : tips.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center bg-slate-50 rounded-[2rem] border border-slate-100 shadow-inner">
-            <p className="text-slate-500 font-bold text-lg">Be the first to support this cause!</p>
+            <p className="text-slate-500 font-bold text-lg">Be the first to buy a coffee!</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-h-[600px] overflow-y-auto pr-4 custom-scrollbar">
@@ -88,14 +88,14 @@ export default function PraiseBoardWidget() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ type: "spring", delay: i * 0.1 }}
-                className="bg-white border border-slate-100 hover:border-emerald-200 p-6 rounded-3xl transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 group"
+                className="bg-white border border-slate-100 hover:border-amber-200 p-6 rounded-3xl transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 group"
               >
                 <div className="flex justify-between items-start mb-4">
                   <span className="font-mono text-sm font-bold text-slate-500 bg-slate-50 border border-slate-100 px-3 py-1 rounded-full">
                     {tip.sender.slice(0, 6)}...{tip.sender.slice(-4)}
                   </span>
-                  <span className="font-black text-xl text-emerald-500">
-                    {tip.amount} ETH
+                  <span className="font-black text-xl text-amber-500 flex items-center gap-2">
+                    {tip.amount} ETH <Coffee className="w-5 h-5" />
                   </span>
                 </div>
                 
