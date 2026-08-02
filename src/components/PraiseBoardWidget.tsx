@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import { Loader2, MessageSquareQuote, Coffee, ArrowUpDown, Filter } from 'lucide-react';
+import { Loader2, MessageSquareQuote, Coffee, ArrowUpDown, Filter, AlertCircle, RefreshCw, Wallet } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 declare global {
@@ -13,6 +13,8 @@ declare global {
 }
 
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../contract-config';
+
+const SEPOLIA_CHAIN_ID = '0xaa36a7';
 
 type Tip = {
   sender: string;
@@ -26,13 +28,38 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
   const [loading, setLoading] = useState(true);
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest' | 'highest' | 'lowest'>('newest');
   const [filterMode, setFilterMode] = useState<'all' | 'has_note' | 'large_only'>('all');
+  
+  const [hasMetaMask, setHasMetaMask] = useState(true);
+  const [isWrongNetwork, setIsWrongNetwork] = useState(false);
+
+  const checkNetworkAndWallet = async () => {
+    if (!window.ethereum) {
+      setHasMetaMask(false);
+      setLoading(false);
+      return false;
+    }
+    setHasMetaMask(true);
+    try {
+      const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+      if (chainId !== SEPOLIA_CHAIN_ID) {
+        setIsWrongNetwork(true);
+        setLoading(false);
+        return false;
+      }
+      setIsWrongNetwork(false);
+      return true;
+    } catch (e) {
+      console.error("Could not check network", e);
+      return false;
+    }
+  };
 
   const fetchPastTips = async () => {
-    if (!window.ethereum) {
-      setLoading(false);
-      return null;
-    }
+    const isReady = await checkNetworkAndWallet();
+    if (!isReady) return null;
+
     try {
+      setLoading(true);
       const provider = new ethers.BrowserProvider(window.ethereum);
       const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
       
@@ -83,11 +110,18 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
     };
     setup();
 
+    if (typeof window !== 'undefined' && window.ethereum) {
+      window.ethereum.on('chainChanged', () => {
+        window.location.reload();
+      });
+    }
+
     return () => {
       if (contract) {
         contract.removeAllListeners("TipReceived");
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const cycleFilter = () => {
@@ -120,6 +154,36 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
     displayedTips.reverse();
   }
 
+  const switchNetwork = async () => {
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: SEPOLIA_CHAIN_ID }],
+      });
+    } catch (error: any) {
+      if (error.code === 4902) {
+        try {
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: SEPOLIA_CHAIN_ID,
+                chainName: 'Sepolia test network',
+                rpcUrls: ['https://sepolia.infura.io/v3/'],
+                nativeCurrency: { name: 'SepoliaETH', symbol: 'SEP', decimals: 18 },
+                blockExplorerUrls: ['https://sepolia.etherscan.io'],
+              },
+            ],
+          });
+        } catch (addError) {
+          console.error("Error adding network", addError);
+        }
+      } else {
+        console.error("Error switching network", error);
+      }
+    }
+  };
+
   return (
     <div className="w-full max-w-5xl mx-auto mt-20">
       <div className="glass-card p-10 flex flex-col">
@@ -133,14 +197,16 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
           <div className="flex items-center gap-3">
             <button 
               onClick={cycleFilter}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 transition-colors font-bold text-sm ${filterMode !== 'all' ? 'bg-bmc-yellow border-bmc-dark text-bmc-dark shadow-[2px_2px_0px_0px_rgba(34,34,34,1)]' : 'border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark'}`}
+              disabled={loading || !hasMetaMask || isWrongNetwork}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 transition-colors font-bold text-sm disabled:opacity-50 ${filterMode !== 'all' ? 'bg-bmc-yellow border-bmc-dark text-bmc-dark shadow-[2px_2px_0px_0px_rgba(34,34,34,1)]' : 'border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark'}`}
             >
               <Filter className="w-4 h-4" />
               {filterMode === 'all' ? 'Filter: All' : filterMode === 'has_note' ? 'Filter: Messages' : 'Filter: Large Tips'}
             </button>
             <button 
               onClick={cycleSort}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 transition-colors font-bold text-sm ${sortOrder !== 'newest' ? 'bg-bmc-yellow border-bmc-dark text-bmc-dark shadow-[2px_2px_0px_0px_rgba(34,34,34,1)]' : 'border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark'}`}
+              disabled={loading || !hasMetaMask || isWrongNetwork}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 transition-colors font-bold text-sm disabled:opacity-50 ${sortOrder !== 'newest' ? 'bg-bmc-yellow border-bmc-dark text-bmc-dark shadow-[2px_2px_0px_0px_rgba(34,34,34,1)]' : 'border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark'}`}
             >
               <ArrowUpDown className="w-4 h-4" />
               {sortOrder === 'newest' ? 'Newest' : sortOrder === 'oldest' ? 'Oldest' : sortOrder === 'highest' ? 'Highest Amount' : 'Lowest Amount'}
@@ -152,6 +218,24 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <Loader2 className="w-10 h-10 text-amber-500 animate-spin mb-4" />
             <p className="text-slate-500 font-bold uppercase tracking-widest text-sm">Loading Ledger...</p>
+          </div>
+        ) : !hasMetaMask ? (
+          <div className="flex flex-col items-center justify-center py-16 px-4 text-center border-2 border-dashed border-slate-200 rounded-3xl bg-slate-50/50">
+            <Wallet className="w-12 h-12 text-slate-400 mb-4" />
+            <p className="text-slate-600 font-bold text-lg mb-2">MetaMask is missing</p>
+            <p className="text-slate-400 max-w-sm mb-6">You need a Web3 wallet like MetaMask installed to view the blockchain ledger.</p>
+            <a href="https://metamask.io/download/" target="_blank" rel="noopener noreferrer" className="bmc-btn text-sm py-3 px-6">
+              Install MetaMask
+            </a>
+          </div>
+        ) : isWrongNetwork ? (
+          <div className="flex flex-col items-center justify-center py-16 px-4 text-center border-2 border-dashed border-red-200 rounded-3xl bg-red-50/50">
+            <AlertCircle className="w-12 h-12 text-red-400 mb-4" />
+            <p className="text-red-600 font-bold text-lg mb-2">Wrong Network Connected</p>
+            <p className="text-red-400 max-w-sm mb-6">Please switch your wallet to the Sepolia test network to view these transactions.</p>
+            <button onClick={switchNetwork} className="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-full shadow-md flex items-center gap-2 transition-colors">
+              <RefreshCw className="w-4 h-4" /> Switch to Sepolia
+            </button>
           </div>
         ) : displayedTips.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 px-4 text-center border-2 border-dashed border-slate-200 rounded-3xl">

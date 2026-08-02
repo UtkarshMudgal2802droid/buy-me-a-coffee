@@ -2,9 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Coffee, Loader2, Wallet } from 'lucide-react';
+import { Coffee, Loader2, Wallet, AlertCircle, RefreshCw } from 'lucide-react';
 import { ethers } from 'ethers';
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../contract-config';
+
+const SEPOLIA_CHAIN_ID = '0xaa36a7';
 
 export default function DonationWidget({ creatorName = "Buy me a coffee" }: { creatorName?: string }) {
   const [selectedAmount, setSelectedAmount] = useState<number | 'custom'>(3);
@@ -12,54 +14,140 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
   const [message, setMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [txStatus, setTxStatus] = useState<string>('');
-  const [notification, setNotification] = useState<{ type: 'success' | 'error', message: string } | null>(null);
+  const [notification, setNotification] = useState<{ type: 'success' | 'error' | 'warning', message: string } | null>(null);
   
   // Wallet state
   const [account, setAccount] = useState<string | null>(null);
+  const [isWrongNetwork, setIsWrongNetwork] = useState(false);
+  const [hasMetaMask, setHasMetaMask] = useState(true);
+
+  const checkNetwork = async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (typeof window !== 'undefined' && (window as any).ethereum) {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const chainId = await (window as any).ethereum.request({ method: 'eth_chainId' });
+        setIsWrongNetwork(chainId !== SEPOLIA_CHAIN_ID);
+      } catch (e) {
+        console.error("Could not check network", e);
+      }
+    }
+  };
 
   const checkConnection = async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (typeof window !== 'undefined' && (window as any).ethereum) {
+      setHasMetaMask(true);
       try {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const accounts = await (window as any).ethereum.request({ method: 'eth_accounts' });
         if (accounts.length > 0) {
           setAccount(accounts[0]);
+          await checkNetwork();
         }
       } catch (error) {
         console.error("Error checking connection:", error);
       }
+    } else {
+      setHasMetaMask(false);
     }
   };
 
-  // Check if wallet is connected on load
+  // Check if wallet is connected on load and listen to network changes
   useEffect(() => {
     const t = setTimeout(() => { checkConnection(); }, 0);
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (typeof window !== 'undefined' && (window as any).ethereum) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).ethereum.on('chainChanged', () => {
+        window.location.reload();
+      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).ethereum.on('accountsChanged', (accounts: string[]) => {
+        if (accounts.length > 0) {
+          setAccount(accounts[0]);
+          checkNetwork();
+        } else {
+          setAccount(null);
+        }
+      });
+    }
+
     return () => clearTimeout(t);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const showNotification = (type: 'success' | 'error', message: string) => {
+  const showNotification = (type: 'success' | 'error' | 'warning', message: string) => {
     setNotification({ type, message });
     setTimeout(() => setNotification(null), 5000);
   };
 
-
+  const switchNetwork = async () => {
+    setIsProcessing(true);
+    setTxStatus('Switching Network...');
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (window as any).ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: SEPOLIA_CHAIN_ID }],
+      });
+    } catch (error: any) {
+      // This error code indicates that the chain has not been added to MetaMask.
+      if (error.code === 4902) {
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          await (window as any).ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: SEPOLIA_CHAIN_ID,
+                chainName: 'Sepolia test network',
+                rpcUrls: ['https://sepolia.infura.io/v3/'],
+                nativeCurrency: { name: 'SepoliaETH', symbol: 'SEP', decimals: 18 },
+                blockExplorerUrls: ['https://sepolia.etherscan.io'],
+              },
+            ],
+          });
+        } catch (addError) {
+          console.error("Error adding network", addError);
+          showNotification('error', "Failed to add Sepolia network. Please add it manually.");
+        }
+      } else if (error.code === 4001 || error.code === 'ACTION_REJECTED') {
+        showNotification('warning', "Network switch was rejected.");
+      } else {
+        console.error("Error switching network", error);
+        showNotification('error', "Failed to switch network.");
+      }
+    } finally {
+      setIsProcessing(false);
+      setTxStatus('');
+      await checkNetwork();
+    }
+  };
 
   const connectWallet = async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if (typeof window !== 'undefined' && (window as any).ethereum) {
-      try {
-        setIsProcessing(true);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const accounts = await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
-        setAccount(accounts[0]);
-      } catch (error) {
-        console.error("Error connecting wallet:", error);
-      } finally {
-        setIsProcessing(false);
-      }
-    } else {
+    if (!hasMetaMask) {
       showNotification('error', "Please install MetaMask to connect your wallet.");
+      return;
+    }
+    try {
+      setIsProcessing(true);
+      setTxStatus('Connecting...');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const accounts = await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
+      setAccount(accounts[0]);
+      await checkNetwork();
+    } catch (error: any) {
+      if (error.code === 4001 || error.code === 'ACTION_REJECTED') {
+        showNotification('warning', "Connection request rejected.");
+      } else {
+        console.error("Error connecting wallet:", error);
+        showNotification('error', "Failed to connect wallet.");
+      }
+    } finally {
+      setIsProcessing(false);
+      setTxStatus('');
     }
   };
 
@@ -70,8 +158,16 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
     : ((selectedAmount as number) * ethPerCoffee).toFixed(3);
 
   const handleTip = async () => {
+    if (!hasMetaMask) {
+      showNotification('error', "Please install MetaMask to continue.");
+      return;
+    }
     if (!account) {
       await connectWallet();
+      return;
+    }
+    if (isWrongNetwork) {
+      await switchNetwork();
       return;
     }
     
@@ -104,10 +200,10 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
     } catch (error: any) {
       // Rejected wallet prompt has its own branch (Test 8)
       if (error.code === 4001 || error.code === 'ACTION_REJECTED') {
-        showNotification('error', "Transaction was rejected by the user.");
+        showNotification('warning', "Transaction was rejected by the user.");
       } else {
         console.error("Transaction failed:", error);
-        showNotification('error', "Transaction failed. Please try again.");
+        showNotification('error', "Transaction failed or wallet is locked.");
       }
     } finally {
       setIsProcessing(false);
@@ -143,13 +239,16 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
       <AnimatePresence>
         {notification && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className={`absolute top-6 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-full font-bold shadow-md whitespace-nowrap ${
-              notification.type === 'error' ? 'bg-red-100 text-red-600 border border-red-200' : 'bg-emerald-100 text-emerald-600 border border-emerald-200'
+            initial={{ opacity: 0, y: -20, x: "-50%" }}
+            animate={{ opacity: 1, y: 0, x: "-50%" }}
+            exit={{ opacity: 0, y: -20, x: "-50%" }}
+            className={`absolute top-6 left-1/2 z-50 px-6 py-3 rounded-full font-bold shadow-lg whitespace-nowrap flex items-center gap-2 ${
+              notification.type === 'error' ? 'bg-red-100 text-red-700 border border-red-200' : 
+              notification.type === 'warning' ? 'bg-amber-100 text-amber-700 border border-amber-200' : 
+              'bg-emerald-100 text-emerald-700 border border-emerald-200'
             }`}
           >
+            {notification.type === 'error' && <AlertCircle className="w-5 h-5" />}
             {notification.message}
           </motion.div>
         )}
@@ -237,17 +336,25 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
         <motion.button
           whileTap={{ scale: 0.95 }}
           onClick={handleTip}
-          disabled={isProcessing || (selectedAmount === 'custom' && !customAmount && account !== null)}
-          className={`w-full text-center flex justify-center items-center gap-3 pointer-events-auto disabled:opacity-50 ${account ? 'bmc-btn' : 'bg-bmc-dark text-white rounded-full py-4 font-bold'}`}
+          disabled={isProcessing || (selectedAmount === 'custom' && !customAmount && account !== null && !isWrongNetwork)}
+          className={`w-full text-center flex justify-center items-center gap-3 pointer-events-auto disabled:opacity-50 ${account && !isWrongNetwork ? 'bmc-btn' : isWrongNetwork ? 'bg-red-500 text-white border-2 border-red-700 shadow-[4px_4px_0px_0px_rgba(185,28,28,1)] rounded-full px-8 py-4 font-black transition-all hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(185,28,28,1)]' : 'bg-bmc-dark text-white rounded-full py-4 font-bold hover:bg-slate-800 transition-colors'}`}
         >
           {isProcessing ? (
             <>
               <Loader2 className="w-6 h-6 animate-spin" />
               {txStatus || 'Processing...'}
             </>
+          ) : !hasMetaMask ? (
+            <>
+              <Wallet className="w-5 h-5" /> Install MetaMask
+            </>
           ) : !account ? (
             <>
               <Wallet className="w-5 h-5" /> Connect Wallet
+            </>
+          ) : isWrongNetwork ? (
+            <>
+              <RefreshCw className="w-5 h-5" /> Switch to Sepolia
             </>
           ) : (
             `Support with ${currentEthAmount} ETH`
@@ -255,10 +362,15 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
         </motion.button>
         
         <p className="text-center text-xs uppercase tracking-widest font-black text-slate-400 mt-6 flex items-center justify-center gap-2">
-          {account ? (
+          {account && !isWrongNetwork ? (
             <>
               <span className="w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.8)] animate-pulse"></span>
               Connected: {account.slice(0, 6)}...{account.slice(-4)}
+            </>
+          ) : account && isWrongNetwork ? (
+            <>
+              <span className="w-3 h-3 rounded-full bg-red-400 shadow-[0_0_10px_rgba(248,113,113,0.8)] animate-pulse"></span>
+              Wrong Network (Sepolia Required)
             </>
           ) : (
             <>

@@ -104,6 +104,8 @@ export default function Hero() {
                   src="/transit_hero_3d.png" 
                   alt="4K 3D Futuristic Transit" 
                   fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover object-center lg:object-left"
                   style={{ WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 25%)', maskImage: 'linear-gradient(to right, transparent 0%, black 25%)' }}
                 />
