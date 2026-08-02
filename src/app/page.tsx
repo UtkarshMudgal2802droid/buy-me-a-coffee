@@ -1,17 +1,16 @@
 import React from 'react';
 import Hero from '@/components/Hero';
-import DeckOfCards from '@/components/DeckOfCards';
+import CreatorCard from '@/components/CreatorCard';
+import DonationWidget from '@/components/DonationWidget';
+import PraiseBoardWidget from '@/components/PraiseBoardWidget';
 import Navbar from '@/components/Navbar';
+import MouseParallaxBackground from '@/components/MouseParallaxBackground';
 
 export default function Home() {
   return (
-    <main className="w-full min-h-screen">
-      {/* Dynamic Ambient Background */}
-      <div className="ambient-mesh">
-        <div className="ambient-orb orb-1"></div>
-        <div className="ambient-orb orb-2"></div>
-        <div className="ambient-orb orb-3"></div>
-      </div>
+    <main className="w-full min-h-screen relative">
+      {/* Advanced Interactive Mouse Parallax Background */}
+      <MouseParallaxBackground />
 
       <Navbar />
       
@@ -20,18 +19,28 @@ export default function Home() {
         <Hero />
       </section>
 
-      {/* Section 2: Deck of Cards Interactive UI */}
-      <section id="demo" className="w-full min-h-screen flex flex-col items-center justify-center py-20 px-6 relative z-10 overflow-hidden">
-        <div className="text-center mb-16 relative z-20">
-          <h2 className="text-5xl md:text-7xl font-black mb-4 tracking-tighter text-wild-gradient">
-            The Creator Deck
-          </h2>
-          <p className="text-slate-600 text-xl font-bold max-w-2xl mx-auto">
-            Click a card to send it to the back. Tip, connect, and explore the ledger all in one interactive spot.
-          </p>
+      {/* Section 2: Creator Profile & Donation Side-by-Side */}
+      <section id="demo" className="w-full min-h-screen flex flex-col justify-center py-20 px-6 relative z-10">
+        <div className="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-stretch">
+          
+          {/* Left Column: Creator Profile */}
+          <div className="flex justify-end">
+            <div className="w-full max-w-md h-[550px]">
+              <CreatorCard />
+            </div>
+          </div>
+
+          {/* Right Column: Donation Widget */}
+          <div className="flex justify-start">
+            <div className="w-full max-w-md h-[550px]">
+              <DonationWidget />
+            </div>
+          </div>
+          
         </div>
-        
-        <DeckOfCards />
+
+        {/* Ledger History placed below */}
+        <PraiseBoardWidget />
       </section>
 
     </main>

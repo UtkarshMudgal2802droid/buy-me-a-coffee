@@ -9,19 +9,6 @@ export default function Hero() {
     <div className="w-full flex flex-col items-center justify-center text-center">
       <div className="relative z-10 max-w-5xl mx-auto flex flex-col items-center">
         
-        {/* Subtle Badge */}
-        <motion.div 
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-10"
-        >
-          <div className="px-5 py-2 rounded-2xl border-2 border-slate-200 bg-white/80 backdrop-blur-md text-sm font-black tracking-widest uppercase text-slate-600 inline-flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow hover:-translate-y-1">
-            <span className="w-3 h-3 rounded-full bg-[#ff2a85] animate-pulse shadow-[0_0_15px_rgba(255,42,133,0.8)]"></span>
-            The Web3 Creator Platform
-          </div>
-        </motion.div>
-
         {/* Hero Headline */}
         <motion.h1 
           initial={{ opacity: 0, y: 20 }}
