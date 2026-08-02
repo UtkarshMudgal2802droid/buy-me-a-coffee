@@ -6,7 +6,7 @@ import { Coffee, Hexagon, Loader2, Wallet } from 'lucide-react';
 import { ethers } from 'ethers';
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../contract-config';
 
-export default function DonationWidget() {
+export default function DonationWidget({ creatorName = "Buy me a coffee" }: { creatorName?: string }) {
   const [selectedAmount, setSelectedAmount] = useState<number | 'custom'>(3);
   const [customAmount, setCustomAmount] = useState<string>('');
   const [message, setMessage] = useState('');
@@ -76,7 +76,7 @@ export default function DonationWidget() {
       const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
       
       const tipAmount = ethers.parseEther(currentEthAmount);
-      const note = message || "Here is a coffee!";
+      const note = message || `Coffee for ${creatorName}!`;
       
       // Send transaction
       const tx = await contract.tip(note, { value: tipAmount });
@@ -89,7 +89,7 @@ export default function DonationWidget() {
         throw new Error("Transaction reverted by the EVM");
       }
       
-      showNotification('success', `Successfully sent ${currentEthAmount} ETH!`);
+      showNotification('success', `Successfully sent ${currentEthAmount} ETH to ${creatorName}!`);
       setMessage('');
       if (selectedAmount === 'custom') setCustomAmount('');
     } catch (error: any) {
@@ -147,13 +147,13 @@ export default function DonationWidget() {
       </AnimatePresence>
 
       {/* Soft Animated Background Orbs */}
-      <div className="absolute top-[20%] right-[-20%] w-[50%] h-[50%] rounded-full bg-blue-300 opacity-10 blur-3xl mix-blend-multiply"></div>
+      <div className="absolute top-[20%] right-[-20%] w-[50%] h-[50%] rounded-full bg-blue-300 opacity-10 blur-3xl mix-blend-multiply pointer-events-none"></div>
 
       <motion.div variants={itemVars} className="flex items-center gap-5 mb-10 relative z-10">
-        <div className="w-16 h-16 rounded-full bg-amber-50 text-amber-500 border border-amber-100 flex items-center justify-center shadow-sm">
+        <div className="w-16 h-16 flex-none rounded-full bg-bmc-yellow text-bmc-dark border-2 border-bmc-dark flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(34,34,34,1)]">
           <Coffee className="w-8 h-8" />
         </div>
-        <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Buy me a coffee</h2>
+        <h2 className="text-3xl font-black text-bmc-dark tracking-tight leading-tight">Buy {creatorName.split(' ')[0]} a coffee</h2>
       </motion.div>
 
       <motion.div variants={itemVars} className="mb-8 relative z-10">
