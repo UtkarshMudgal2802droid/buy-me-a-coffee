@@ -26,13 +26,47 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest' | 'highest' | 'lowest'>('newest');
   const [filterMode, setFilterMode] = useState<'all' | 'has_note' | 'large_only'>('all');
 
+  const fetchPastTips = async () => {
+    if (!window.ethereum) {
+      setLoading(false);
+      return null;
+    }
+    try {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
+      
+      const currentBlock = await provider.getBlockNumber();
+      const fromBlock = Math.max(0, currentBlock - 9000);
+
+      const filter = contract.filters.TipReceived();
+      const events = await contract.queryFilter(filter, fromBlock, "latest");
+      
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const parsedTips = events.map((event: any) => ({
+        sender: event.args.sender,
+        amount: ethers.formatEther(event.args.amount),
+        note: event.args.note,
+        txHash: event.transactionHash
+      })).reverse(); // Reverse makes it 'newest' by default
+      
+      setTips(parsedTips);
+      return contract;
+    } catch (error) {
+      console.error("Error fetching tips:", error);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     let contract: ethers.Contract | null = null;
     
     const setup = async () => {
       contract = await fetchPastTips();
       if (contract) {
-        contract.on("TipReceived", (sender, amount, note, event) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        contract.on("TipReceived", (sender: any, amount: any, note: any, event: any) => {
           const newTip = {
             sender,
             amount: ethers.formatEther(amount),
@@ -53,39 +87,8 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
         contract.removeAllListeners("TipReceived");
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const fetchPastTips = async () => {
-    if (!window.ethereum) {
-      setLoading(false);
-      return null;
-    }
-    try {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
-      
-      const currentBlock = await provider.getBlockNumber();
-      const fromBlock = Math.max(0, currentBlock - 9000);
-
-      const filter = contract.filters.TipReceived();
-      const events = await contract.queryFilter(filter, fromBlock, "latest");
-      
-      const parsedTips = events.map((event: any) => ({
-        sender: event.args.sender,
-        amount: ethers.formatEther(event.args.amount),
-        note: event.args.note,
-        txHash: event.transactionHash
-      })).reverse(); // Reverse makes it 'newest' by default
-      
-      setTips(parsedTips);
-      return contract;
-    } catch (error) {
-      console.error("Error fetching tips:", error);
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const cycleFilter = () => {
     if (filterMode === 'all') setFilterMode('has_note');
