@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Coffee, Hexagon, Loader2, Wallet } from 'lucide-react';
+import { Coffee, Loader2, Wallet } from 'lucide-react';
 import { ethers } from 'ethers';
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../contract-config';
 
@@ -34,7 +34,8 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
 
   // Check if wallet is connected on load
   useEffect(() => {
-    checkConnection();
+    const t = setTimeout(() => { checkConnection(); }, 0);
+    return () => clearTimeout(t);
   }, []);
 
   const showNotification = (type: 'success' | 'error', message: string) => {
