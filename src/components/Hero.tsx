@@ -131,8 +131,6 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      </div>
-
       {/* 4K 3D Render Object */}
       <motion.div 
         initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
