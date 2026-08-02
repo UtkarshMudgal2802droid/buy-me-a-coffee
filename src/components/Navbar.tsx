@@ -32,23 +32,23 @@ export default function Navbar() {
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
       className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4"
     >
-      <div className="w-full max-w-6xl bg-[#F4F1E9] border-2 border-bmc-dark rounded-full px-4 py-2 flex items-center justify-between shadow-[4px_4px_0px_0px_rgba(34,34,34,1)]">
+      <div className="w-full max-w-6xl bg-white/60 backdrop-blur-md border border-white/80 rounded-full px-3 py-2 flex items-center justify-between shadow-sm">
         
         {/* Left: Logo */}
-        <Link href="/" className="flex items-center gap-2 px-2 hover:opacity-80 transition-opacity">
-          <div className="bg-bmc-yellow rounded-full p-2 border border-bmc-dark">
-            <Coffee className="w-5 h-5 text-bmc-dark" />
+        <Link href="/" className="flex items-center gap-3 px-3 hover:opacity-80 transition-opacity">
+          <div className="bg-slate-900 rounded-full p-2 shadow-sm">
+            <Coffee className="w-5 h-5 text-white" />
           </div>
-          <span className="font-black text-xl tracking-tight text-bmc-dark hidden sm:block">utkarsh.praiseboard</span>
+          <span className="font-black text-xl tracking-tight text-slate-900 hidden sm:block">utkarsh.praiseboard</span>
         </Link>
 
         {/* Center: Links */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <Link 
               key={link.name} 
               href={link.href}
-              className="text-sm font-black text-slate-600 hover:text-bmc-dark transition-colors"
+              className="text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors"
             >
               {link.name}
             </Link>
@@ -63,7 +63,7 @@ export default function Navbar() {
               e.preventDefault();
               document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="bg-bmc-yellow text-bmc-dark font-black text-xs uppercase tracking-widest px-6 py-3 rounded-full border border-bmc-dark hover:bg-yellow-400 transition-colors cursor-pointer"
+            className="bg-slate-900 text-white font-bold text-xs uppercase tracking-widest px-6 py-3 rounded-full hover:bg-slate-800 transition-colors cursor-pointer shadow-md"
           >
             Start Tipping
           </a>
