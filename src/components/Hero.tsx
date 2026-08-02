@@ -2,7 +2,6 @@
 
 import React, { useEffect } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
-import ThemeClock from './ThemeClock';
 
 export default function Hero() {
   const mouseX = useMotionValue(0);
