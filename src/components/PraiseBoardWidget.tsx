@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 
 declare global {
   interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ethereum?: any;
   }
 }
@@ -87,7 +88,6 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
         contract.removeAllListeners("TipReceived");
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const cycleFilter = () => {
