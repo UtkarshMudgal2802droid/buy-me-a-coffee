@@ -2,10 +2,8 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
 
 export default function Hero() {
-  // Staggered reveal animation variants
   const containerVars = {
     hidden: { opacity: 0 },
     show: {
@@ -15,27 +13,39 @@ export default function Hero() {
   };
 
   const wordVars = {
-    hidden: { y: "150%", rotateZ: 5, opacity: 0 },
+    hidden: { y: "100%", opacity: 0 },
     show: { 
       y: "0%", 
-      rotateZ: 0, 
       opacity: 1,
-      transition: { type: "spring" as const, stiffness: 100, damping: 15, mass: 1 }
+      transition: { type: "spring" as const, stiffness: 100, damping: 20 }
     }
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-center text-center">
-      <div className="relative z-10 max-w-5xl mx-auto flex flex-col items-center">
+    <div className="w-full flex flex-col items-center justify-center text-center mt-20 pt-20">
+      <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
+
+        {/* Hand-drawn accent */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+          animate={{ opacity: 1, scale: 1, rotate: -15 }}
+          transition={{ delay: 0.8 }}
+          className="absolute -top-12 -left-12 sm:-left-24 text-bmc-yellow font-bold rotate-[-15deg]"
+        >
+          <svg width="60" height="40" viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 38C15.5 28.5 45.5 8 58 2M58 2C52 4.5 45.5 6.5 40 8M58 2C55.5 8 52 16.5 49 22" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </motion.div>
 
         {/* Staggered Hero Headline */}
         <motion.h1 
           variants={containerVars}
           initial="hidden"
           animate="show"
-          className="text-6xl md:text-8xl font-black mb-8 leading-tight tracking-tighter text-slate-900 drop-shadow-sm flex flex-wrap justify-center gap-x-4 overflow-hidden"
+          className="text-6xl md:text-8xl font-black mb-8 leading-[1.1] tracking-tight text-bmc-dark flex flex-wrap justify-center gap-x-4 overflow-hidden"
+          style={{ fontFamily: 'Georgia, serif' }}
         >
-          {["Fund", "the", "Future", "of"].map((word, i) => (
+          {["Fund", "your", "creators"].map((word, i) => (
             <motion.span key={i} variants={wordVars} className="inline-block relative">
               {word}
             </motion.span>
@@ -43,40 +53,58 @@ export default function Hero() {
           <br className="hidden md:block w-full" />
           <motion.span 
             variants={wordVars} 
-            className="text-wild-gradient drop-shadow-[0_10px_20px_rgba(255,42,133,0.3)] inline-block mt-2 md:mt-0"
+            className="inline-block"
           >
-            Decentralized Art.
+            with a coffee.
           </motion.span>
         </motion.h1>
+
+        {/* Hand-drawn accent 2 */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8, rotate: 10 }}
+          animate={{ opacity: 1, scale: 1, rotate: 15 }}
+          transition={{ delay: 1 }}
+          className="absolute top-1/2 -right-8 sm:-right-32 text-bmc-dark font-bold font-serif italic text-xl"
+        >
+          <div className="relative">
+            Elevate
+            <br />
+            your brand
+            <svg className="absolute -bottom-10 right-0 text-bmc-dark" width="40" height="40" viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 2C15.5 11.5 45.5 32 58 38M58 38C52 35.5 45.5 33.5 40 32M58 38C55.5 32 52 23.5 49 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+        </motion.div>
 
         {/* Hero Subtitle */}
         <motion.p 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="text-xl text-slate-600 max-w-2xl mb-14 font-bold"
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="text-lg text-slate-600 max-w-xl mb-12 font-medium"
         >
-          Accept ETH directly to your wallet. No platform fees, no censorship, just pure peer-to-peer support powered by smart contracts.
+          Accept ETH directly to your wallet. No platform fees, no censorship, just pure peer-to-peer support powered by smart contracts. Our system is ready to propel your creative journey forward.
         </motion.p>
 
-        {/* Call to Actions with Magnetic Physics */}
+        {/* Call to Actions */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-6"
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="flex items-center justify-center relative"
         >
-          <motion.a whileTap={{ scale: 0.95 }} href="#demo" className="w-full sm:w-auto">
-            <span className="glow-btn px-10 py-5 w-full uppercase tracking-widest flex items-center justify-center pointer-events-auto">
-              Explore the Deck <ArrowRight className="w-5 h-5 ml-2 inline" />
+          <motion.a whileTap={{ scale: 0.95 }} href="#demo" className="relative z-10">
+            <span className="bmc-btn text-lg">
+              Get Started
             </span>
           </motion.a>
           
-          <motion.a whileTap={{ scale: 0.95 }} href="#demo" className="w-full sm:w-auto">
-            <span className="outline-glow-btn px-10 py-5 w-full uppercase tracking-widest pointer-events-auto text-center inline-block">
-              Open Ledger
-            </span>
-          </motion.a>
+          <div className="absolute -bottom-12 -left-16 rotate-[-15deg] font-serif italic text-bmc-dark">
+            It's free!
+            <svg className="absolute -top-4 -right-8" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 28C12 18 25 5 28 2M28 2C24 4 19 6 15 8M28 2C26 6 23 11 20 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
         </motion.div>
       </div>
     </div>
