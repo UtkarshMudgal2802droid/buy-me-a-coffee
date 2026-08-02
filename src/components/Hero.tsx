@@ -66,17 +66,17 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 1 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-6"
         >
-          <MagneticButton as="a" href="#demo">
-            <span className="glow-btn px-10 py-5 w-full sm:w-auto uppercase tracking-widest flex items-center justify-center pointer-events-none">
+          <a href="#demo" className="w-full sm:w-auto">
+            <span className="glow-btn px-10 py-5 w-full uppercase tracking-widest flex items-center justify-center pointer-events-auto">
               Explore the Deck <ArrowRight className="w-5 h-5 ml-2 inline" />
             </span>
-          </MagneticButton>
+          </a>
           
-          <MagneticButton as="a" href="#demo">
-            <span className="outline-glow-btn px-10 py-5 w-full sm:w-auto uppercase tracking-widest pointer-events-none">
+          <a href="#demo" className="w-full sm:w-auto">
+            <span className="outline-glow-btn px-10 py-5 w-full uppercase tracking-widest pointer-events-auto text-center inline-block">
               Open Ledger
             </span>
-          </MagneticButton>
+          </a>
         </motion.div>
       </div>
     </div>
