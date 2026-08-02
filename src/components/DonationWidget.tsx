@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Coffee, Hexagon, Loader2 } from 'lucide-react';
-import MagneticButton from './MagneticButton';
 
 export default function DonationWidget() {
   const [selectedAmount, setSelectedAmount] = useState<number | 'custom'>(3);
