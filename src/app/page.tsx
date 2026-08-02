@@ -6,7 +6,11 @@ import CreatorCard from '@/components/CreatorCard';
 import DonationWidget from '@/components/DonationWidget';
 import PraiseBoardWidget from '@/components/PraiseBoardWidget';
 import Navbar from '@/components/Navbar';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { EffectCoverflow, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/pagination';
 
 export const CREATORS = [
   {
@@ -53,15 +57,6 @@ export const CREATORS = [
 export default function Home() {
   const [activeCreatorId, setActiveCreatorId] = useState(0);
 
-  const handleDragEnd = (event: any, info: any) => {
-    const swipeThreshold = 50;
-    if (info.offset.x > swipeThreshold) {
-      setActiveCreatorId((prev) => (prev > 0 ? prev - 1 : CREATORS.length - 1));
-    } else if (info.offset.x < -swipeThreshold) {
-      setActiveCreatorId((prev) => (prev < CREATORS.length - 1 ? prev + 1 : 0));
-    }
-  };
-
   const activeCreator = CREATORS[activeCreatorId];
 
   return (
@@ -81,87 +76,41 @@ export default function Home() {
           <p className="text-slate-600 mt-2 font-medium">Swipe to explore. Fund their goals directly.</p>
         </div>
 
-        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-stretch perspective-1000 overflow-hidden">
+        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-stretch perspective-1000">
           
-          {/* Left Column: Advanced Coverflow Carousel */}
-          <div className="flex flex-col items-center">
-            <div className="relative w-full max-w-md h-[550px] flex items-center justify-center">
-              <AnimatePresence initial={false}>
-                {CREATORS.map((creator, index) => {
-                  const isActive = index === activeCreatorId;
-                  const isPrev = index === (activeCreatorId - 1 + CREATORS.length) % CREATORS.length;
-                  const isNext = index === (activeCreatorId + 1) % CREATORS.length;
-                  
-                  // Only render the active, previous, and next cards to save DOM elements
-                  if (!isActive && !isPrev && !isNext && CREATORS.length > 3) return null;
-
-                  let xOffset = 0;
-                  let zIndex = 0;
-                  let scale = 1;
-                  let opacity = 1;
-                  let rotateY = 0;
-                  let filter = "blur(0px)";
-
-                  if (isActive) {
-                    zIndex = 10;
-                  } else if (isPrev) {
-                    xOffset = -60;
-                    zIndex = 5;
-                    scale = 0.85;
-                    opacity = 0.4;
-                    rotateY = 15;
-                    filter = "blur(4px)";
-                  } else if (isNext) {
-                    xOffset = 60;
-                    zIndex = 5;
-                    scale = 0.85;
-                    opacity = 0.4;
-                    rotateY = -15;
-                    filter = "blur(4px)";
-                  }
-
-                  return (
-                    <motion.div
-                      key={creator.id}
-                      className="absolute w-full h-full cursor-grab active:cursor-grabbing"
-                      drag="x"
-                      dragConstraints={{ left: 0, right: 0 }}
-                      dragElastic={0.2}
-                      onDragEnd={handleDragEnd}
-                      initial={false}
-                      animate={{
-                        x: `${xOffset}%`,
-                        scale,
-                        zIndex,
-                        opacity,
-                        rotateY,
-                        filter
-                      }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 30
-                      }}
-                      style={{ originX: 0.5, originY: 0.5 }}
-                    >
-                      {/* Block interaction if not active card so you don't accidentally click buttons on blurred cards */}
-                      <div className={`w-full h-full ${!isActive && 'pointer-events-none'}`}>
-                        <CreatorCard creator={creator} />
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </AnimatePresence>
-            </div>
+          {/* Left Column: Advanced Swiper Coverflow Carousel */}
+          <div className="flex flex-col items-center justify-center w-full max-w-[600px] mx-auto min-h-[600px]">
+            <Swiper
+              effect={'coverflow'}
+              grabCursor={true}
+              centeredSlides={true}
+              slidesPerView={'auto'}
+              coverflowEffect={{
+                rotate: 30,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows: false,
+              }}
+              modules={[EffectCoverflow]}
+              onSlideChange={(swiper) => setActiveCreatorId(swiper.activeIndex)}
+              className="w-full"
+            >
+              {CREATORS.map((creator, index) => (
+                <SwiperSlide key={creator.id} className="w-[400px] py-10 px-4">
+                  <div className={`transition-all duration-300 ${activeCreatorId !== index ? 'opacity-50 blur-[2px] pointer-events-none' : 'opacity-100'}`}>
+                    <CreatorCard creator={creator} />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
             
             {/* Carousel Indicators */}
-            <div className="flex gap-2 mt-8 z-20 relative">
+            <div className="flex gap-2 mt-2 z-20 relative">
               {CREATORS.map((c) => (
-                <button
+                <div
                   key={c.id}
-                  onClick={() => setActiveCreatorId(c.id)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${activeCreatorId === c.id ? 'bg-bmc-yellow scale-125 shadow-md' : 'bg-slate-300 hover:bg-slate-400'}`}
-                  aria-label={`Go to ${c.name}`}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${activeCreatorId === c.id ? 'bg-bmc-yellow scale-125 shadow-md' : 'bg-slate-300'}`}
                 />
               ))}
             </div>
