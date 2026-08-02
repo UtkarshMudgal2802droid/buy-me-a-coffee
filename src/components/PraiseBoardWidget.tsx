@@ -35,7 +35,7 @@ export default function PraiseBoardWidget() {
     }
     try {
       const provider = new ethers.BrowserProvider(window.ethereum);
-      const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, provider);
+      const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
       
       const currentBlock = await provider.getBlockNumber();
       const fromBlock = Math.max(0, currentBlock - 9000);
