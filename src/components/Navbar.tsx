@@ -2,9 +2,12 @@
 
 import React, { useState } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
+import { Coffee } from 'lucide-react';
+import Link from 'next/link';
+
 export default function Navbar() {
   const navLinks = [
-    { name: 'Creators', href: '#demo' }
+    { name: 'Creators', id: 'demo' }
   ];
 
   return (
@@ -22,17 +25,15 @@ export default function Navbar() {
         {/* Center: Links */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a 
+            <button 
               key={link.name} 
-              href={link.href}
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' });
+              onClick={() => {
+                document.getElementById(link.id)?.scrollIntoView({ behavior: 'smooth' });
               }}
               className="text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors cursor-pointer"
             >
               {link.name}
-            </a>
+            </button>
           ))}
         </div>
 
@@ -51,16 +52,14 @@ export default function Navbar() {
             }}
             style={{ backgroundSize: "200% 200%" }}
           />
-          <a 
-            href="#demo"
-            onClick={(e) => {
-              e.preventDefault();
+          <button 
+            onClick={() => {
               document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' });
             }}
             className="relative bg-bmc-yellow text-slate-900 font-black text-xs uppercase tracking-widest px-6 py-3 rounded-full hover:bg-yellow-400 transition-colors cursor-pointer shadow-md z-10"
           >
             Start Tipping
-          </a>
+          </button>
         </div>
       </div>
     </nav>
