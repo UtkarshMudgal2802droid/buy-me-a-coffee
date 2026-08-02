@@ -20,13 +20,15 @@ export default function Navbar() {
     >
       <div className="bg-white/70 backdrop-blur-3xl shadow-[0_10px_30px_rgba(255,42,133,0.2)] border-2 border-white px-2 py-2 flex items-center justify-between rounded-3xl">
         {navLinks.map((link) => (
-          <MagneticButton key={link.name} as="a" href={link.href}>
-            <div className="relative flex-1 group min-w-max cursor-pointer pointer-events-none">
-              <div className="flex items-center justify-center gap-2 px-6 py-3 rounded-2xl text-xs uppercase tracking-[0.2em] font-black transition-all duration-300 text-slate-500 group-hover:text-slate-900 group-hover:bg-white group-hover:shadow-md">
-                {link.name}
-              </div>
+          <Link 
+            key={link.name} 
+            href={link.href}
+            className="relative flex-1 group min-w-max cursor-pointer"
+          >
+            <div className="flex items-center justify-center gap-2 px-6 py-3 rounded-2xl text-xs uppercase tracking-[0.2em] font-black transition-all duration-300 text-slate-500 hover:text-slate-900 hover:bg-white hover:shadow-md">
+              {link.name}
             </div>
-          </MagneticButton>
+          </Link>
         ))}
       </div>
     </motion.nav>
