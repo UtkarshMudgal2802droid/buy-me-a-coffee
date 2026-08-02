@@ -26,7 +26,7 @@ export default function Navbar() {
           <div className="bg-bmc-yellow rounded-full p-2 border border-bmc-dark">
             <Coffee className="w-5 h-5 text-bmc-dark" />
           </div>
-          <span className="font-black text-xl tracking-tight text-bmc-dark hidden sm:block">bmc.demo</span>
+          <span className="font-black text-xl tracking-tight text-bmc-dark hidden sm:block">utkarsh.praiseboard</span>
         </Link>
 
         {/* Center: Links */}
