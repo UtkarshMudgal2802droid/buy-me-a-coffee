@@ -3,6 +3,7 @@ import CreatorCard from '@/components/CreatorCard';
 import DonationWidget from '@/components/DonationWidget';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
+import { CREATORS } from '@/app/page';
 
 export default function CreatorPage() {
   return (
