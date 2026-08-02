@@ -58,61 +58,33 @@ function MetallicIcosahedron({ position, scale, color }: any) {
   );
 }
 
-function FloatingSphere({ position, scale, color }: any) {
-  return (
-    <Float speed={3} rotationIntensity={0.5} floatIntensity={2} position={position}>
-      <mesh scale={scale}>
-        <sphereGeometry args={[1, 64, 64]} />
-        <meshPhysicalMaterial 
-          color={color}
-          transmission={0.9}
-          opacity={1}
-          metalness={0.2}
-          roughness={0.05}
-          ior={1.2}
-          thickness={1}
-          clearcoat={1}
-        />
-      </mesh>
-    </Float>
-  );
+function Spaceship({ url }: { url: string }) {
+  const { scene } = useGLTF(url);
+  return <primitive object={scene} />;
 }
 
+// 4K Transit Element
 export default function Hero3D() {
-  return (
-    <div className="absolute inset-0 z-0 pointer-events-auto">
-      <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 5]} intensity={1} />
-        <spotLight position={[-10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
-        
-        <Environment preset="city" />
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
-        <PresentationControls 
-          global 
-          config={{ mass: 2, tension: 500 }} 
-          snap={true} 
-          rotation={[0, 0, 0]} 
-          polar={[-Math.PI / 3, Math.PI / 3]} 
-          azimuth={[-Math.PI / 1.4, Math.PI / 2]}
+  if (!mounted) return null;
+
+  return (
+    <div className="w-[100%] h-[100%] relative min-h-[500px]">
+      <Canvas shadows camera={{ position: [0, 2, 10], fov: 50 }}>
+        {/* Premium Studio Lighting */}
+        <ambientLight intensity={0.5} />
+        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
+        <pointLight position={[-10, -10, -10]} intensity={0.5} />
+        
+        {/* Floating Animation Wrapper */}
+        <Float 
+          speed={2.5} 
+          rotationIntensity={0.2} 
+          floatIntensity={0.5}
+          floatingRange={[-0.1, 0.1]}
         >
-          {/* Top Left - Yellow Glass Donut */}
-          <GlassTorus position={[-6, 3, -4]} scale={1.2} color="#FFDD00" />
-          
-          {/* Bottom Right - Dark Metallic Icosahedron */}
-          <MetallicIcosahedron position={[6, -3, -5]} scale={1.5} color="#222222" />
-          
-          {/* Top Right - Coral Pink Donut */}
-          <GlassTorus position={[5, 4, -6]} scale={0.8} color="#FF2A85" />
-          
-          {/* Bottom Left - Emerald Glass Icosahedron */}
-          <Float speed={1.5} rotationIntensity={1} floatIntensity={1.5} position={[-5, -4, -6]}>
-            <mesh scale={2}>
-              <icosahedronGeometry args={[1, 1]} />
-              <meshPhysicalMaterial 
-                color="#10b981"
-                transmission={0.4}
-                opacity={0.9}
                 transparent={true}
                 metalness={0.2}
                 roughness={0.1}
