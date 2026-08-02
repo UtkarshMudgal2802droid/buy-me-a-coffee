@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import { Loader2, MessageSquareQuote } from 'lucide-react';
+import { Loader2, MessageSquareQuote, Coffee } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 declare global {
