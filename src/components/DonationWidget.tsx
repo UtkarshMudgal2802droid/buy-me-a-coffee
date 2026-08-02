@@ -130,6 +130,22 @@ export default function DonationWidget() {
       className="glass-card w-full h-full p-10 flex flex-col relative overflow-hidden"
     >
       
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {notification && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className={`absolute top-6 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-full font-bold shadow-md whitespace-nowrap ${
+              notification.type === 'error' ? 'bg-red-100 text-red-600 border border-red-200' : 'bg-emerald-100 text-emerald-600 border border-emerald-200'
+            }`}
+          >
+            {notification.message}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Soft Animated Background Orbs */}
       <div className="absolute top-[20%] right-[-20%] w-[50%] h-[50%] rounded-full bg-blue-300 opacity-10 blur-3xl mix-blend-multiply"></div>
 
