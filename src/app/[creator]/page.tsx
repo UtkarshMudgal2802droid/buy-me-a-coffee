@@ -20,7 +20,7 @@ export default function CreatorPage() {
         
         {/* Left Column: Creator Profile (Takes up 7 cols on large screens) */}
         <div className="lg:col-span-7 space-y-8">
-          <CreatorCard />
+          <CreatorCard creator={CREATORS[0]} />
           
           <div className="glass-card p-8 border border-white/10">
             <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
@@ -44,7 +44,7 @@ export default function CreatorPage() {
         {/* Right Column: Donation Widget (Sticky, takes 5 cols) */}
         <div className="lg:col-span-5 relative">
           <div className="sticky top-8">
-            <DonationWidget />
+            <DonationWidget creatorName={CREATORS[0].name} />
           </div>
         </div>
 
