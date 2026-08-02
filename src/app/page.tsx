@@ -70,9 +70,9 @@ export default function Home() {
       </section>
 
       {/* Section 2: Creator Carousel & Donation Side-by-Side */}
-      <section id="demo" className="scroll-mt-32 w-full min-h-screen flex flex-col justify-center py-20 px-6 relative z-10">
+      <section id="demo" className="w-full flex flex-col pt-24 pb-20 px-6 relative z-10">
         
-        <div className="text-center mb-12 pt-10">
+        <div className="text-center mb-12">
           <h2 className="text-4xl font-black text-bmc-dark font-serif italic">Discover Creators</h2>
           <p className="text-slate-600 mt-2 font-medium">Swipe to explore. Fund their goals directly.</p>
         </div>
