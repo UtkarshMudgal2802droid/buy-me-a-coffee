@@ -179,7 +179,7 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
                 </div>
                 
                 <p className="text-slate-700 text-lg leading-relaxed font-medium italic mb-6">
-                  "{tip.note}"
+                  &quot;{tip.note}&quot;
                 </p>
                 
                 <div className="text-right">
