@@ -17,19 +17,11 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
   // Wallet state
   const [account, setAccount] = useState<string | null>(null);
 
-  // Check if wallet is connected on load
-  useEffect(() => {
-    checkConnection();
-  }, []);
-
-  const showNotification = (type: 'success' | 'error', message: string) => {
-    setNotification({ type, message });
-    setTimeout(() => setNotification(null), 5000);
-  };
-
   const checkConnection = async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (typeof window !== 'undefined' && (window as any).ethereum) {
       try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const accounts = await (window as any).ethereum.request({ method: 'eth_accounts' });
         if (accounts.length > 0) {
           setAccount(accounts[0]);
@@ -40,8 +32,21 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
     }
   };
 
+  // Check if wallet is connected on load
+  useEffect(() => {
+    checkConnection();
+  }, []);
+
+  const showNotification = (type: 'success' | 'error', message: string) => {
+    setNotification({ type, message });
+    setTimeout(() => setNotification(null), 5000);
+  };
+
+
+
   const connectWallet = async () => {
-    if (typeof window !== 'undefined' && (window as unknown as { ethereum: any }).ethereum) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (typeof window !== 'undefined' && (window as any).ethereum) {
       try {
         setIsProcessing(true);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
