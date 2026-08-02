@@ -23,8 +23,8 @@ type Tip = {
 export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: string }) {
   const [tips, setTips] = useState<Tip[]>([]);
   const [loading, setLoading] = useState(true);
-  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
-  const [filterHasNote, setFilterHasNote] = useState(false);
+  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest' | 'highest' | 'lowest'>('newest');
+  const [filterMode, setFilterMode] = useState<'all' | 'has_note' | 'large_only'>('all');
 
   useEffect(() => {
     fetchPastTips();
@@ -50,7 +50,7 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
         amount: ethers.formatEther(event.args.amount),
         note: event.args.note,
         txHash: event.transactionHash
-      })).reverse();
+      })).reverse(); // Reverse makes it 'newest' by default
       
       setTips(parsedTips);
     } catch (error) {
@@ -60,12 +60,30 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
     }
   };
 
-  const displayedTips = tips
-    .filter((tip) => (filterHasNote ? tip.note.trim().length > 0 : true))
+  const cycleFilter = () => {
+    if (filterMode === 'all') setFilterMode('has_note');
+    else if (filterMode === 'has_note') setFilterMode('large_only');
+    else setFilterMode('all');
+  };
+
+  const cycleSort = () => {
+    if (sortOrder === 'newest') setSortOrder('highest');
+    else if (sortOrder === 'highest') setSortOrder('lowest');
+    else if (sortOrder === 'lowest') setSortOrder('oldest');
+    else setSortOrder('newest');
+  };
+
+  // We copy the tips to avoid mutating the original fetched array during sorting
+  const displayedTips = [...tips]
+    .filter((tip) => {
+      if (filterMode === 'has_note') return tip.note.trim().length > 0;
+      if (filterMode === 'large_only') return parseFloat(tip.amount) >= 0.01;
+      return true;
+    })
     .sort((a, b) => {
-      // tips array is inherently 'newest' first because of the .reverse() on fetch
-      // If 'oldest', we just reverse the relative order
-      return sortOrder === 'newest' ? 0 : -1;
+      if (sortOrder === 'highest') return parseFloat(b.amount) - parseFloat(a.amount);
+      if (sortOrder === 'lowest') return parseFloat(a.amount) - parseFloat(b.amount);
+      return 0; // fallback, handles 'newest' naturally since array is already newest-first
     });
 
   if (sortOrder === 'oldest') {
@@ -75,7 +93,7 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
   return (
     <div className="w-full max-w-5xl mx-auto mt-20">
       <div className="glass-card p-10 flex flex-col">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
           <h2 className="text-3xl font-black tracking-tight text-bmc-dark flex items-center gap-4">
             <div className="p-3 rounded-full bg-bmc-yellow border-2 border-bmc-dark text-bmc-dark shadow-[4px_4px_0px_0px_rgba(34,34,34,1)]">
               <MessageSquareQuote className="w-6 h-6" />
@@ -84,18 +102,18 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
           </h2>
           <div className="flex items-center gap-3">
             <button 
-              onClick={() => setFilterHasNote(!filterHasNote)}
-              className={`p-2 rounded-full border-2 transition-colors ${filterHasNote ? 'bg-bmc-yellow border-bmc-dark text-bmc-dark shadow-[2px_2px_0px_0px_rgba(34,34,34,1)]' : 'border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark'}`}
-              title="Filter by messages"
+              onClick={cycleFilter}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 transition-colors font-bold text-sm ${filterMode !== 'all' ? 'bg-bmc-yellow border-bmc-dark text-bmc-dark shadow-[2px_2px_0px_0px_rgba(34,34,34,1)]' : 'border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark'}`}
             >
-              <Filter className="w-5 h-5" />
+              <Filter className="w-4 h-4" />
+              {filterMode === 'all' ? 'Filter: All' : filterMode === 'has_note' ? 'Filter: Messages' : 'Filter: Large Tips'}
             </button>
             <button 
-              onClick={() => setSortOrder(prev => prev === 'newest' ? 'oldest' : 'newest')}
-              className={`p-2 rounded-full border-2 transition-colors ${sortOrder === 'oldest' ? 'bg-bmc-yellow border-bmc-dark text-bmc-dark shadow-[2px_2px_0px_0px_rgba(34,34,34,1)]' : 'border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark'}`}
-              title={`Sort by: ${sortOrder}`}
+              onClick={cycleSort}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 transition-colors font-bold text-sm ${sortOrder !== 'newest' ? 'bg-bmc-yellow border-bmc-dark text-bmc-dark shadow-[2px_2px_0px_0px_rgba(34,34,34,1)]' : 'border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark'}`}
             >
-              <ArrowUpDown className="w-5 h-5" />
+              <ArrowUpDown className="w-4 h-4" />
+              {sortOrder === 'newest' ? 'Newest' : sortOrder === 'oldest' ? 'Oldest' : sortOrder === 'highest' ? 'Highest Amount' : 'Lowest Amount'}
             </button>
           </div>
         </div>
