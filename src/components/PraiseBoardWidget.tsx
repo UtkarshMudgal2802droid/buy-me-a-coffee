@@ -20,7 +20,7 @@ type Tip = {
   txHash: string;
 };
 
-export default function PraiseBoardWidget() {
+export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: string }) {
   const [tips, setTips] = useState<Tip[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -61,11 +61,11 @@ export default function PraiseBoardWidget() {
   return (
     <div className="w-full max-w-5xl mx-auto mt-20">
       <div className="glass-card p-10 flex flex-col">
-        <h2 className="text-3xl font-bold mb-8 tracking-tight text-slate-900 flex items-center gap-4">
-          <div className="p-3 rounded-full bg-amber-50 border border-amber-100 text-amber-500 shadow-sm">
+        <h2 className="text-3xl font-black mb-8 tracking-tight text-bmc-dark flex items-center gap-4">
+          <div className="p-3 rounded-full bg-bmc-yellow border-2 border-bmc-dark text-bmc-dark shadow-[4px_4px_0px_0px_rgba(34,34,34,1)]">
             <MessageSquareQuote className="w-6 h-6" />
           </div>
-          Recent Coffees
+          Recent Coffees {creatorName && `for ${creatorName.split(' ')[0]}`}
         </h2>
         
         {loading ? (
