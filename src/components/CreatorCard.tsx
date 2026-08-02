@@ -66,14 +66,26 @@ export default function CreatorCard() {
         </p>
       </motion.div>
 
-      <div className="mt-auto pt-8 flex gap-3 relative z-10">
-        <motion.span variants={itemVars} className="px-4 py-2 rounded-xl bg-[#ff2a85]/10 text-[#ff2a85] text-xs font-black tracking-widest uppercase border border-[#ff2a85]/20 flex items-center gap-2 shadow-sm">
-          <ImageIcon className="w-3 h-3" /> Time-Lapse
-        </motion.span>
-        <motion.span variants={itemVars} className="px-4 py-2 rounded-xl bg-[#00e5ff]/10 text-[#00e5ff] text-xs font-black tracking-widest uppercase border border-[#00e5ff]/20 flex items-center gap-2 shadow-sm">
-          Nature
-        </motion.span>
-      </div>
+      <motion.div variants={itemVars} className="mt-auto pt-6 relative z-10 w-full">
+        <div className="flex justify-between items-end mb-2">
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Goal Progress</span>
+          <span className="text-sm font-black text-emerald-500">85%</span>
+        </div>
+        <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden shadow-inner">
+          <motion.div 
+            initial={{ width: 0 }}
+            whileInView={{ width: "85%" }}
+            transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
+            className="h-full bg-gradient-to-r from-teal-400 to-emerald-500 rounded-full relative"
+          >
+            <div className="absolute inset-0 bg-white/20 w-full h-full animate-[shimmer_2s_infinite]"></div>
+          </motion.div>
+        </div>
+        <div className="flex justify-between items-center mt-2">
+          <span className="text-xs font-bold text-slate-400">0.85 ETH raised</span>
+          <span className="text-xs font-bold text-slate-400">1.0 ETH</span>
+        </div>
+      </motion.div>
       
     </motion.div>
   );
