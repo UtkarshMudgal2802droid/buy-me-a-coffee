@@ -1,12 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-pink: #ff2a85;
-  --color-brand-yellow: #ffeb3b;
-  --color-brand-cyan: #00e5ff;
-  --color-brand-purple: #8a2be2;
-  --color-brand-orange: #ff6a00;
-  --color-light-bg: #f0f4f8;
+  --color-charity-green: #10b981;
+  --color-charity-teal: #14b8a6;
+  --color-charity-blue: #3b82f6;
+  --color-charity-orange: #f97316;
+  --color-charity-bg: #f8fafc;
 }
 
 @layer base {
@@ -16,120 +15,48 @@
 }
 
 @layer components {
-  /* Vibrant Light Mode Glassmorphism */
+  /* Clean Charity Glassmorphism */
   .glass-card {
-    @apply bg-white/60 backdrop-blur-3xl border-2 border-white/80 rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(255,42,133,0.3)];
-    box-shadow: 
-      inset 0 2px 10px rgba(255, 255, 255, 0.8),
-      0 30px 60px -20px rgba(138, 43, 226, 0.3),
-      0 10px 30px -10px rgba(0, 229, 255, 0.3);
+    @apply bg-white/80 backdrop-blur-2xl border border-slate-100 rounded-[2rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)];
   }
   
   .glass-input {
-    @apply bg-white/80 border-2 border-slate-200 rounded-2xl px-6 py-4 text-slate-900 placeholder-slate-400 font-bold focus:outline-none focus:ring-4 focus:ring-brand-pink/30 focus:border-brand-pink transition-all duration-300 hover:bg-white hover:border-brand-pink/50 hover:-translate-y-1 shadow-sm;
+    @apply bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-slate-900 placeholder-slate-400 font-medium focus:outline-none focus:ring-2 focus:ring-charity-green/30 focus:border-charity-green transition-all duration-300 hover:bg-white hover:border-charity-green/50 hover:-translate-y-0.5 shadow-sm;
   }
   
-  /* Crazy Hover Buttons */
+  /* Charity Primary Button */
   .glow-btn {
-    @apply relative overflow-hidden rounded-2xl font-black text-lg transition-all duration-300 bg-slate-950 text-white z-10 hover:-translate-y-2 active:translate-y-1;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
-  }
-  
-  .glow-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-    transition: all 0.5s ease;
-    z-index: 1;
-  }
-  
-  .glow-btn:hover::before {
-    left: 100%;
-  }
-  
-  .glow-btn::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 1rem;
-    padding: 3px;
-    background: linear-gradient(45deg, var(--color-brand-pink), var(--color-brand-cyan), var(--color-brand-yellow));
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .glow-btn:hover::after {
-    opacity: 1;
+    @apply relative overflow-hidden rounded-full font-bold text-lg transition-all duration-300 bg-charity-green text-white z-10 hover:-translate-y-1 active:translate-y-0 shadow-[0_10px_20px_-5px_rgba(16,185,129,0.4)];
   }
   
   .glow-btn:hover {
-    box-shadow: 0 20px 40px -10px rgba(255, 42, 133, 0.5), 0 10px 20px -5px rgba(0, 229, 255, 0.4);
+    @apply shadow-[0_15px_25px_-5px_rgba(16,185,129,0.5)];
   }
 
   /* Outline Button */
   .outline-glow-btn {
-    @apply relative overflow-hidden rounded-2xl font-black text-lg transition-all duration-300 border-2 border-slate-950 bg-transparent text-slate-950 z-10 hover:-translate-y-2 active:translate-y-1 hover:text-white flex items-center justify-center gap-2;
+    @apply relative overflow-hidden rounded-full font-bold text-lg transition-all duration-300 border-2 border-slate-200 bg-white text-slate-700 z-10 hover:-translate-y-1 active:translate-y-0 hover:border-charity-green hover:text-charity-green shadow-sm;
   }
 
-  .outline-glow-btn::before {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: slate-950;
-    transition: all 0.4s cubic-bezier(0.8, 0, 0.2, 1);
-    z-index: -1;
-    border-radius: 50% 50% 0 0;
-  }
-
-  .outline-glow-btn:hover::before {
-    top: 0;
-    border-radius: 0;
-    background: #0f172a;
-  }
-
-  .outline-glow-btn:hover {
-    box-shadow: 0 15px 30px -10px rgba(15, 23, 42, 0.3);
-    border-color: transparent;
-  }
-
-  /* Crazy Text Gradient */
+  /* Clean Text Gradient */
   .text-wild-gradient {
-    background: linear-gradient(to right, #ff2a85, #8a2be2, #00e5ff, #ffeb3b);
+    background: linear-gradient(to right, #10b981, #14b8a6, #3b82f6);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    background-size: 300% 300%;
-    animation: gradientMove 5s ease infinite;
-  }
-
-  @keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
   }
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f8fafc;
+  background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
-  border-radius: 6px;
-  border: 3px solid #f8fafc;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
