@@ -131,10 +131,39 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Floating Theme Clock */}
-      <div className="absolute right-[5%] md:right-[15%] top-[40%] hidden md:block z-30 pointer-events-none">
-        <ThemeClock />
       </div>
+
+      {/* 4K 3D Render Object */}
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
+        animate={{ 
+          opacity: 1, 
+          scale: 1, 
+          rotate: 0,
+          y: [0, -20, 0] // Floating animation
+        }}
+        transition={{ 
+          y: {
+            duration: 6,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut"
+          },
+          default: {
+            type: "spring", 
+            stiffness: 100, 
+            damping: 20, 
+            delay: 0.2 
+          }
+        }}
+        className="absolute right-0 md:-right-[10%] top-[30%] w-[500px] h-[500px] hidden md:block z-0 pointer-events-none mix-blend-multiply"
+      >
+        <img 
+          src="/transit_hero_3d.png" 
+          alt="4K 3D Futuristic Transit" 
+          className="w-full h-full object-contain"
+        />
+      </motion.div>
 
       {/* Interactive Cursor Glow Background */}
       <motion.div
