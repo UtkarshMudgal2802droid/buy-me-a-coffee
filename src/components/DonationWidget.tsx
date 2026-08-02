@@ -61,7 +61,8 @@ export default function DonationWidget() {
         </label>
         <div className="flex gap-3">
           {[1, 3, 5].map((amount) => (
-            <button
+            <motion.button
+              whileTap={{ scale: 0.95 }}
               key={amount}
               onClick={() => setSelectedAmount(amount)}
               className={`flex-1 py-3 rounded-full border-2 font-bold transition-all duration-300 flex items-center justify-center gap-2 hover:-translate-y-0.5 shadow-sm ${
@@ -71,9 +72,10 @@ export default function DonationWidget() {
               }`}
             >
               {amount} <Coffee className="w-4 h-4" />
-            </button>
+            </motion.button>
           ))}
-          <button
+          <motion.button
+            whileTap={{ scale: 0.95 }}
             onClick={() => setSelectedAmount('custom')}
             className={`flex-1 py-3 rounded-full border-2 font-bold transition-all duration-300 hover:-translate-y-0.5 shadow-sm ${
               selectedAmount === 'custom'
@@ -82,7 +84,7 @@ export default function DonationWidget() {
             }`}
           >
             Custom
-          </button>
+          </motion.button>
         </div>
 
         <AnimatePresence>
