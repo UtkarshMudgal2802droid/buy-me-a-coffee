@@ -65,10 +65,10 @@ export default function PraiseBoardWidget() {
     <div className="w-full max-w-5xl mx-auto mt-20">
       <div className="glass-card p-10 flex flex-col">
         <h2 className="text-3xl font-bold mb-8 tracking-tight text-slate-900 flex items-center gap-4">
-          <div className="p-3 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-500 shadow-sm">
+          <div className="p-3 rounded-full bg-amber-50 border border-amber-100 text-amber-500 shadow-sm">
             <MessageSquareQuote className="w-6 h-6" />
           </div>
-          Recent Supporters
+          Recent Coffees
         </h2>
         
         {loading ? (
