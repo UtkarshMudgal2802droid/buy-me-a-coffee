@@ -6,7 +6,10 @@ import { Float, Environment, ContactShadows, PresentationControls } from '@react
 
 export default function Hero3D() {
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    const t = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(t);
+  }, []);
 
   if (!mounted) return null;
 
