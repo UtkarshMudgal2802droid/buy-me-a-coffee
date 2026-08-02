@@ -2,10 +2,12 @@
 
 import React, { useState } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
-import { Coffee } from 'lucide-react';
-import Link from 'next/link';
-
 export default function Navbar() {
+  const navLinks = [
+    { name: 'Creators', href: '#demo' }
+  ];
+
+  return (
     <nav className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4">
       <div className="w-full max-w-6xl bg-white/60 backdrop-blur-md border border-white/80 rounded-full px-3 py-2 flex items-center justify-between shadow-sm">
         
@@ -61,6 +63,6 @@ export default function Navbar() {
           </a>
         </div>
       </div>
-    </motion.nav>
+    </nav>
   );
 }
