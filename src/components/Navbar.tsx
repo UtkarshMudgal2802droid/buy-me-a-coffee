@@ -45,25 +45,42 @@ export default function Navbar() {
         {/* Center: Links */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <Link 
+            <a 
               key={link.name} 
               href={link.href}
-              className="text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors cursor-pointer"
             >
               {link.name}
-            </Link>
+            </a>
           ))}
         </div>
 
-        {/* Right: Actions */}
-        <div className="flex items-center">
+        {/* Right: Actions (Animated Yellow Button) */}
+        <div className="flex items-center relative group">
+          {/* Animated flowing line outside the box */}
+          <motion.div 
+            className="absolute -inset-1 rounded-full bg-gradient-to-r from-bmc-yellow via-[#10b981] to-bmc-yellow opacity-75 blur-sm"
+            animate={{
+              backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+            style={{ backgroundSize: "200% 200%" }}
+          />
           <a 
             href="#demo"
             onClick={(e) => {
               e.preventDefault();
               document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="bg-slate-900 text-white font-bold text-xs uppercase tracking-widest px-6 py-3 rounded-full hover:bg-slate-800 transition-colors cursor-pointer shadow-md"
+            className="relative bg-bmc-yellow text-slate-900 font-black text-xs uppercase tracking-widest px-6 py-3 rounded-full hover:bg-yellow-400 transition-colors cursor-pointer shadow-md z-10"
           >
             Start Tipping
           </a>
