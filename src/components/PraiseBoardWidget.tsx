@@ -23,6 +23,8 @@ type Tip = {
 export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: string }) {
   const [tips, setTips] = useState<Tip[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
+  const [filterHasNote, setFilterHasNote] = useState(false);
 
   useEffect(() => {
     fetchPastTips();
@@ -58,6 +60,18 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
     }
   };
 
+  const displayedTips = tips
+    .filter((tip) => (filterHasNote ? tip.note.trim().length > 0 : true))
+    .sort((a, b) => {
+      // tips array is inherently 'newest' first because of the .reverse() on fetch
+      // If 'oldest', we just reverse the relative order
+      return sortOrder === 'newest' ? 0 : -1;
+    });
+
+  if (sortOrder === 'oldest') {
+    displayedTips.reverse();
+  }
+
   return (
     <div className="w-full max-w-5xl mx-auto mt-20">
       <div className="glass-card p-10 flex flex-col">
@@ -69,10 +83,18 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
             Recent Coffees {creatorName && `for ${creatorName.split(' ')[0]}`}
           </h2>
           <div className="flex items-center gap-3">
-            <button className="p-2 rounded-full border-2 border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark transition-colors">
+            <button 
+              onClick={() => setFilterHasNote(!filterHasNote)}
+              className={`p-2 rounded-full border-2 transition-colors ${filterHasNote ? 'bg-bmc-yellow border-bmc-dark text-bmc-dark shadow-[2px_2px_0px_0px_rgba(34,34,34,1)]' : 'border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark'}`}
+              title="Filter by messages"
+            >
               <Filter className="w-5 h-5" />
             </button>
-            <button className="p-2 rounded-full border-2 border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark transition-colors">
+            <button 
+              onClick={() => setSortOrder(prev => prev === 'newest' ? 'oldest' : 'newest')}
+              className={`p-2 rounded-full border-2 transition-colors ${sortOrder === 'oldest' ? 'bg-bmc-yellow border-bmc-dark text-bmc-dark shadow-[2px_2px_0px_0px_rgba(34,34,34,1)]' : 'border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark'}`}
+              title={`Sort by: ${sortOrder}`}
+            >
               <ArrowUpDown className="w-5 h-5" />
             </button>
           </div>
