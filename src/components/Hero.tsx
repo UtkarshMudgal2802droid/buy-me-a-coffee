@@ -122,8 +122,6 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      </div>
-
       {/* Interactive Cursor Glow Background */}
       <motion.div
         className="pointer-events-none fixed top-0 left-0 w-[400px] h-[400px] rounded-full mix-blend-multiply filter blur-[100px] opacity-60 z-0"
