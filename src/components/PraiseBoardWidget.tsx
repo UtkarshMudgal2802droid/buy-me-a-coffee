@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import { Loader2, MessageSquareQuote, Coffee, ArrowUpDown, Filter, AlertCircle, RefreshCw, Wallet, ServerCrash } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Loader2, MessageSquareQuote, Coffee, ArrowUpDown, Filter, AlertCircle, RefreshCw, Wallet, ServerCrash, ChevronDown } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 declare global {
   interface Window {
@@ -32,6 +32,19 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
   const [hasMetaMask, setHasMetaMask] = useState(true);
   const [isWrongNetwork, setIsWrongNetwork] = useState(false);
   const [rpcError, setRpcError] = useState(false);
+  
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isSortOpen, setIsSortOpen] = useState(false);
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => {
+      setIsFilterOpen(false);
+      setIsSortOpen(false);
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
 
   const checkNetworkAndWallet = async () => {
     if (!window.ethereum) {
@@ -128,18 +141,7 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const cycleFilter = () => {
-    if (filterMode === 'all') setFilterMode('has_note');
-    else if (filterMode === 'has_note') setFilterMode('large_only');
-    else setFilterMode('all');
-  };
 
-  const cycleSort = () => {
-    if (sortOrder === 'newest') setSortOrder('highest');
-    else if (sortOrder === 'highest') setSortOrder('lowest');
-    else if (sortOrder === 'lowest') setSortOrder('oldest');
-    else setSortOrder('newest');
-  };
 
   // We copy the tips to avoid mutating the original fetched array during sorting
   const displayedTips = [...tips]
@@ -199,22 +201,70 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
             Recent Coffees {creatorName && `for ${creatorName.split(' ')[0]}`}
           </h2>
           <div className="flex items-center gap-3">
-            <button 
-              onClick={cycleFilter}
-              disabled={loading || !hasMetaMask || isWrongNetwork || rpcError}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 transition-colors font-bold text-sm disabled:opacity-50 ${filterMode !== 'all' ? 'bg-bmc-yellow border-bmc-dark text-bmc-dark shadow-[2px_2px_0px_0px_rgba(34,34,34,1)]' : 'border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark'}`}
-            >
-              <Filter className="w-4 h-4" />
-              {filterMode === 'all' ? 'Filter: All' : filterMode === 'has_note' ? 'Filter: Messages' : 'Filter: Large Tips'}
-            </button>
-            <button 
-              onClick={cycleSort}
-              disabled={loading || !hasMetaMask || isWrongNetwork || rpcError}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 transition-colors font-bold text-sm disabled:opacity-50 ${sortOrder !== 'newest' ? 'bg-bmc-yellow border-bmc-dark text-bmc-dark shadow-[2px_2px_0px_0px_rgba(34,34,34,1)]' : 'border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark'}`}
-            >
-              <ArrowUpDown className="w-4 h-4" />
-              {sortOrder === 'newest' ? 'Newest' : sortOrder === 'oldest' ? 'Oldest' : sortOrder === 'highest' ? 'Highest Amount' : 'Lowest Amount'}
-            </button>
+            
+            {/* Filter Dropdown */}
+            <div className="relative">
+              <button 
+                onClick={(e) => { e.stopPropagation(); setIsFilterOpen(!isFilterOpen); setIsSortOpen(false); }}
+                disabled={loading || !hasMetaMask || isWrongNetwork || rpcError}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 transition-colors font-bold text-sm disabled:opacity-50 ${filterMode !== 'all' ? 'bg-bmc-yellow border-bmc-dark text-bmc-dark shadow-[2px_2px_0px_0px_rgba(34,34,34,1)]' : 'border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark'}`}
+              >
+                <Filter className="w-4 h-4" />
+                {filterMode === 'all' ? 'Filter' : filterMode === 'has_note' ? 'Messages' : 'Large Tips'}
+                <ChevronDown className={`w-4 h-4 transition-transform ${isFilterOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              <AnimatePresence>
+                {isFilterOpen && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 mt-2 w-56 bg-white border-2 border-slate-200 rounded-2xl shadow-xl z-50 overflow-hidden"
+                  >
+                    <div className="flex flex-col py-1">
+                      <button onClick={() => { setFilterMode('all'); setIsFilterOpen(false); }} className={`px-4 py-3 text-left text-sm font-bold transition-colors ${filterMode === 'all' ? 'text-bmc-dark bg-bmc-yellow/20' : 'text-slate-500 hover:bg-slate-50 hover:text-bmc-dark'}`}>All Coffees</button>
+                      <button onClick={() => { setFilterMode('has_note'); setIsFilterOpen(false); }} className={`px-4 py-3 text-left text-sm font-bold transition-colors ${filterMode === 'has_note' ? 'text-bmc-dark bg-bmc-yellow/20' : 'text-slate-500 hover:bg-slate-50 hover:text-bmc-dark'}`}>With Messages Only</button>
+                      <button onClick={() => { setFilterMode('large_only'); setIsFilterOpen(false); }} className={`px-4 py-3 text-left text-sm font-bold transition-colors ${filterMode === 'large_only' ? 'text-bmc-dark bg-bmc-yellow/20' : 'text-slate-500 hover:bg-slate-50 hover:text-bmc-dark'}`}>Large Tips (≥0.01 ETH)</button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Sort Dropdown */}
+            <div className="relative">
+              <button 
+                onClick={(e) => { e.stopPropagation(); setIsSortOpen(!isSortOpen); setIsFilterOpen(false); }}
+                disabled={loading || !hasMetaMask || isWrongNetwork || rpcError}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 transition-colors font-bold text-sm disabled:opacity-50 ${sortOrder !== 'newest' ? 'bg-bmc-yellow border-bmc-dark text-bmc-dark shadow-[2px_2px_0px_0px_rgba(34,34,34,1)]' : 'border-slate-200 text-slate-500 hover:text-bmc-dark hover:border-bmc-dark'}`}
+              >
+                <ArrowUpDown className="w-4 h-4" />
+                {sortOrder === 'newest' ? 'Newest' : sortOrder === 'oldest' ? 'Oldest' : sortOrder === 'highest' ? 'Highest' : 'Lowest'}
+                <ChevronDown className={`w-4 h-4 transition-transform ${isSortOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              <AnimatePresence>
+                {isSortOpen && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 mt-2 w-48 bg-white border-2 border-slate-200 rounded-2xl shadow-xl z-50 overflow-hidden"
+                  >
+                    <div className="flex flex-col py-1">
+                      <button onClick={() => { setSortOrder('newest'); setIsSortOpen(false); }} className={`px-4 py-3 text-left text-sm font-bold transition-colors ${sortOrder === 'newest' ? 'text-bmc-dark bg-bmc-yellow/20' : 'text-slate-500 hover:bg-slate-50 hover:text-bmc-dark'}`}>Newest First</button>
+                      <button onClick={() => { setSortOrder('oldest'); setIsSortOpen(false); }} className={`px-4 py-3 text-left text-sm font-bold transition-colors ${sortOrder === 'oldest' ? 'text-bmc-dark bg-bmc-yellow/20' : 'text-slate-500 hover:bg-slate-50 hover:text-bmc-dark'}`}>Oldest First</button>
+                      <button onClick={() => { setSortOrder('highest'); setIsSortOpen(false); }} className={`px-4 py-3 text-left text-sm font-bold transition-colors ${sortOrder === 'highest' ? 'text-bmc-dark bg-bmc-yellow/20' : 'text-slate-500 hover:bg-slate-50 hover:text-bmc-dark'}`}>Highest Amount</button>
+                      <button onClick={() => { setSortOrder('lowest'); setIsSortOpen(false); }} className={`px-4 py-3 text-left text-sm font-bold transition-colors ${sortOrder === 'lowest' ? 'text-bmc-dark bg-bmc-yellow/20' : 'text-slate-500 hover:bg-slate-50 hover:text-bmc-dark'}`}>Lowest Amount</button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+            
           </div>
         </div>
         
