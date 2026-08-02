@@ -45,18 +45,18 @@ export default function DonationWidget() {
       className="glass-card w-full h-full p-10 flex flex-col relative overflow-hidden"
     >
       
-      {/* Animated Glowing Orbs */}
-      <div className="absolute top-[20%] right-[-20%] w-[50%] h-[50%] rounded-full bg-[#00e5ff] opacity-10 blur-3xl mix-blend-multiply"></div>
+      {/* Soft Animated Background Orbs */}
+      <div className="absolute top-[20%] right-[-20%] w-[50%] h-[50%] rounded-full bg-blue-300 opacity-10 blur-3xl mix-blend-multiply"></div>
 
       <motion.div variants={itemVars} className="flex items-center gap-5 mb-10 relative z-10">
-        <div className="w-16 h-16 rounded-[1.5rem] bg-[#00e5ff]/10 text-[#00e5ff] border-2 border-[#00e5ff]/20 flex items-center justify-center shadow-[0_0_20px_rgba(0,229,255,0.2)]">
-          <Hexagon className="w-8 h-8" />
+        <div className="w-16 h-16 rounded-full bg-blue-50 text-blue-500 border border-blue-100 flex items-center justify-center shadow-sm">
+          <Coffee className="w-8 h-8" />
         </div>
-        <h2 className="text-3xl font-black text-slate-900 tracking-tight">Support Creator</h2>
+        <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Support Cause</h2>
       </motion.div>
 
       <motion.div variants={itemVars} className="mb-8 relative z-10">
-        <label className="block text-xs uppercase tracking-widest font-black text-slate-500 mb-4">
+        <label className="block text-xs uppercase tracking-widest font-bold text-slate-500 mb-4">
           Select Amount
         </label>
         <div className="flex gap-3">
@@ -64,10 +64,10 @@ export default function DonationWidget() {
             <button
               key={amount}
               onClick={() => setSelectedAmount(amount)}
-              className={`flex-1 py-3 rounded-2xl border-2 font-black transition-all duration-300 flex items-center justify-center gap-2 hover:-translate-y-1 shadow-sm ${
+              className={`flex-1 py-3 rounded-full border-2 font-bold transition-all duration-300 flex items-center justify-center gap-2 hover:-translate-y-0.5 shadow-sm ${
                 selectedAmount === amount
-                  ? 'border-[#ff2a85] bg-[#ff2a85] text-white shadow-[0_10px_20px_rgba(255,42,133,0.3)]'
-                  : 'border-slate-200 bg-white/80 text-slate-600 hover:border-[#ff2a85]/50 hover:bg-white'
+                  ? 'border-emerald-500 bg-emerald-50 text-emerald-600'
+                  : 'border-slate-100 bg-white text-slate-600 hover:border-emerald-200'
               }`}
             >
               {amount} <Coffee className="w-4 h-4" />
@@ -75,10 +75,10 @@ export default function DonationWidget() {
           ))}
           <button
             onClick={() => setSelectedAmount('custom')}
-            className={`flex-1 py-3 rounded-2xl border-2 font-black transition-all duration-300 hover:-translate-y-1 shadow-sm ${
+            className={`flex-1 py-3 rounded-full border-2 font-bold transition-all duration-300 hover:-translate-y-0.5 shadow-sm ${
               selectedAmount === 'custom'
-                ? 'border-[#8a2be2] bg-[#8a2be2] text-white shadow-[0_10px_20px_rgba(138,43,226,0.3)]'
-                : 'border-slate-200 bg-white/80 text-slate-600 hover:border-[#8a2be2]/50 hover:bg-white'
+                ? 'border-blue-500 bg-blue-50 text-blue-600'
+                : 'border-slate-100 bg-white text-slate-600 hover:border-blue-200'
             }`}
           >
             Custom
