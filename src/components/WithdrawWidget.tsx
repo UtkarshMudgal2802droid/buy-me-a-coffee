@@ -142,58 +142,57 @@ export default function WithdrawWidget() {
 
   const isOwner = account && ownerAddress && account.toLowerCase() === ownerAddress;
 
+  // Secret Admin Mode: Only render the component if the connected wallet is the owner
+  if (!isOwner) return null;
+
   return (
-    <div className="w-full max-w-4xl mx-auto my-20 p-8 border border-slate-200 rounded-xl bg-slate-50/50 shadow-sm relative overflow-hidden">
-      <AnimatePresence>
-        {notification && (
-          <motion.div
-            initial={{ opacity: 0, y: -20, x: "-50%" }}
-            animate={{ opacity: 1, y: 0, x: "-50%" }}
-            exit={{ opacity: 0, y: -20, x: "-50%" }}
-            className={`absolute top-6 left-1/2 z-50 px-6 py-3 rounded-md font-medium text-sm shadow-md flex items-center gap-2 ${
-              notification.type === 'error' ? 'bg-red-50 text-red-800 border border-red-200' : 
-              'bg-emerald-50 text-emerald-800 border border-emerald-200'
-            }`}
-          >
-            {notification.type === 'error' ? <ShieldAlert className="w-4 h-4" /> : <CheckCircle2 className="w-4 h-4" />}
-            {notification.message}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-        <div>
-          <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-            <ShieldAlert className="w-5 h-5 text-slate-400" /> Administrative Controls
-          </h3>
-          <p className="text-slate-500 mt-2 text-sm max-w-lg">
-            Total funds secured in contract: <strong className="text-slate-700">{parseFloat(contractBalance).toFixed(4)} ETH</strong>. 
-            Withdrawal operations are strictly restricted at the cryptographic level. Only the deployer's wallet signature can authorize extraction.
-          </p>
-        </div>
-
-        <button
-          onClick={handleWithdraw}
-          disabled={isProcessing || !account}
-          className={`flex items-center justify-center gap-2 px-8 py-3 rounded-md font-semibold transition-all ${
-            isOwner
-              ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm'
-              : 'bg-slate-800 hover:bg-slate-900 text-white shadow-sm'
-          } disabled:opacity-50`}
-        >
-          {isProcessing ? (
-            <><Loader2 className="w-4 h-4 animate-spin" /> Processing</>
-          ) : (
-            <><LogOut className="w-4 h-4" /> Secure Withdraw</>
+    <div className="w-full max-w-5xl mx-auto mt-20">
+      <div className="glass-card p-10 flex flex-col relative overflow-hidden">
+        <AnimatePresence>
+          {notification && (
+            <motion.div
+              initial={{ opacity: 0, y: -20, x: "-50%" }}
+              animate={{ opacity: 1, y: 0, x: "-50%" }}
+              exit={{ opacity: 0, y: -20, x: "-50%" }}
+              className={`absolute top-6 left-1/2 z-50 px-6 py-3 rounded-full font-bold shadow-lg whitespace-nowrap flex items-center gap-2 ${
+                notification.type === 'error' ? 'bg-red-100 text-red-700 border border-red-200' : 
+                'bg-emerald-100 text-emerald-700 border border-emerald-200'
+              }`}
+            >
+              {notification.type === 'error' ? <ShieldAlert className="w-5 h-5" /> : <CheckCircle2 className="w-5 h-5" />}
+              {notification.message}
+            </motion.div>
           )}
-        </button>
-      </div>
+        </AnimatePresence>
 
-      {!account && (
-        <p className="text-xs text-slate-400 mt-4 text-right flex items-center justify-end gap-1">
-          <Wallet className="w-3 h-3" /> Connect wallet to access admin functions
-        </p>
-      )}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-8 relative z-10">
+          <div>
+            <h3 className="text-3xl font-black text-bmc-dark tracking-tight flex items-center gap-4">
+              <div className="p-3 rounded-full bg-emerald-400 border-2 border-emerald-700 text-emerald-900 shadow-[4px_4px_0px_0px_rgba(4,120,87,1)]">
+                <ShieldAlert className="w-6 h-6" />
+              </div>
+              Creator Dashboard
+            </h3>
+            <p className="text-slate-600 font-medium mt-4 max-w-lg leading-relaxed">
+              Total funds secured in contract: <strong className="text-bmc-dark font-black text-lg">{parseFloat(contractBalance).toFixed(4)} ETH</strong>. 
+              <br/>Withdrawal operations are strictly restricted. Only the verified creator wallet can extract funds.
+            </p>
+          </div>
+
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={handleWithdraw}
+            disabled={isProcessing || !account}
+            className="bg-emerald-500 hover:bg-emerald-600 text-emerald-950 border-2 border-emerald-700 shadow-[4px_4px_0px_0px_rgba(4,120,87,1)] rounded-full px-8 py-4 font-black transition-all hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(4,120,87,1)] disabled:opacity-50 flex items-center gap-3"
+          >
+            {isProcessing ? (
+              <><Loader2 className="w-6 h-6 animate-spin" /> Processing</>
+            ) : (
+              <><LogOut className="w-6 h-6" /> Secure Withdraw</>
+            )}
+          </motion.button>
+        </div>
+      </div>
     </div>
   );
 }
