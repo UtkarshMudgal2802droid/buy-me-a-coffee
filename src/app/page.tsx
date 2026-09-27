@@ -5,6 +5,7 @@ import Hero from '@/components/Hero';
 import CreatorCard from '@/components/CreatorCard';
 import DonationWidget from '@/components/DonationWidget';
 import PraiseBoardWidget from '@/components/PraiseBoardWidget';
+import WithdrawWidget from '@/components/WithdrawWidget';
 import Navbar from '@/components/Navbar';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Navigation } from 'swiper/modules';
@@ -138,6 +139,11 @@ export default function Home() {
         <div className="mt-20 relative z-20">
           <PraiseBoardWidget creatorName={activeCreator.name} />
         </div>
+      </section>
+
+      {/* Admin Controls */}
+      <section className="w-full pb-20 px-6 relative z-10">
+        <WithdrawWidget />
       </section>
 
     </main>

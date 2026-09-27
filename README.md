@@ -1,66 +1,67 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/coffee.svg" alt="Logo" width="80" height="80">
-  <h1 align="center">The Praise Board</h1>
-  <p align="center">
-    <strong>A decentralized, zero-fee tip jar and live supporter wall for creators.</strong>
-    <br />
-    Built for the <em>Zero to One: Tech Builder Series</em>.
+  <h1>PraiseBoard</h1>
+  <p>
+    <strong>Decentralized Commuter Support Protocol</strong>
   </p>
 </div>
 
 <hr />
 
-## 🌟 Overview
+## Overview
 
-The Praise Board is a modern, Web3-native alternative to traditional tip jars. It allows creators to receive direct funding without middlemen, fees, or borders. Supporters simply connect their wallet, send a tip (ETH) along with a short note, and instantly see their contribution appear on a beautifully animated, live-updating wall of supporters.
+PraiseBoard is a decentralized financial application designed to facilitate direct, peer-to-peer microtransactions between civic service maintainers and daily commuters. By leveraging Ethereum smart contracts on the Sepolia network, the system eliminates intermediaries, processing fees, and centralized data silos.
 
-Everything is driven directly from the blockchain—no central databases, no gatekeepers.
+The protocol ensures that 100% of the funds transferred by users are routed directly to the designated recipient's contract address. Support messages (notes) are encoded directly into transaction event logs, enabling a mathematically verifiable and immutable public ledger of supporters.
 
-## ✨ Premium Features
+## Architecture
 
-- **⚡ Zero Platform Fees:** 100% of the tips go directly to the creator's wallet.
-- **🎨 Glassmorphic UI/UX:** A stunning, fully responsive Next.js frontend featuring dynamic 3D elements, Framer Motion animations, and a modern glassmorphic aesthetic.
-- **🔗 True Web3 Architecture:** The supporter wall is populated strictly by decoding real-time event logs directly from the smart contract, guaranteeing uncompromised trust and authenticity.
-- **🛡️ Bulletproof Smart Contract:** Fully tested Solidity contract deployed on Sepolia, featuring OpenZeppelin reentrancy guards, strict parameter bounds, and rigid owner-only withdraw mechanics.
-- **⚠️ Graceful Error Handling:** Provides a seamless user experience by beautifully catching and handling RPC rate limits, missing wallets, wrong network selections, and rejected transactions directly in the UI.
+The system is separated into three distinct architectural layers:
 
-## 🚀 Live Demo
+1. **Client Interface:** Built with Next.js, React, and TailwindCSS. Incorporates Framer Motion and Three.js for hardware-accelerated user interactions.
+2. **Web3 Connectivity:** Utilizes `ethers.js` v6 for remote procedure call (RPC) communication, network validation, and transaction signing.
+3. **Smart Contract:** Written in Solidity and deployed via Hardhat. Employs OpenZeppelin's ReentrancyGuard for security against reentrancy vectors.
 
-- **Frontend App:** [https://buy-me-a-coffee-eta-smoky.vercel.app/](https://buy-me-a-coffee-eta-smoky.vercel.app/) *(Replace this with your actual Vercel URL!)*
+## Protocol Security & Implementation
+
+The repository is built to satisfy strict security requirements:
+
+- **Access Control:** The withdrawal function is strictly governed by `msg.sender == owner`, ensuring that only the deployer's cryptographic signature can authorize the extraction of funds. Any unauthorized attempt will revert immediately.
+- **Data Boundaries:** String inputs for transaction notes are clamped at 256 bytes at the EVM level to prevent deliberate state bloat.
+- **Event Integrity:** Transaction value and sender identity are derived exclusively from `msg.value` and `msg.sender` during the transaction execution, rendering spoofing mathematically impossible.
+- **Reentrancy Protection:** Critical state-changing functions are isolated using the CEI (Checks-Effects-Interactions) pattern and guarded via OpenZeppelin's non-reentrant modifier.
+
+## Technical Specifications
+
 - **Contract Address:** [`0x9bABC0CE0a9f63E267C2DF2271e0c8642398c35f`](https://sepolia.etherscan.io/address/0x9bABC0CE0a9f63E267C2DF2271e0c8642398c35f)
+- **Network:** Sepolia Testnet (Chain ID: 11155111)
+- **Node Environment:** Node.js v18.x or higher
+- **Package Manager:** npm or yarn
 
-## 🛠️ Tech Stack
+## Local Deployment Instructions
 
-- **Frontend:** Next.js, React, TailwindCSS, Framer Motion, `@react-three/fiber`
-- **Web3 Integration:** `ethers.js` (v6)
-- **Smart Contracts:** Solidity, Hardhat, OpenZeppelin
+To execute the application locally:
 
-## 💻 Running Locally
-
-1. **Install dependencies:**
+1. Install module dependencies:
    ```bash
    npm install
    ```
 
-2. **Run the development server:**
+2. Initialize the local development server:
    ```bash
    npm run dev
    ```
 
-3. **Explore the app:**
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
+3. Access the local environment:
+   Navigate to `http://localhost:3000` in a Web3-enabled browser.
 
-## 🧪 Evaluation Rubric Compliance
+## Error Handling
 
-This repository was meticulously engineered to pass 100% of the *Loops House: Problem 1* scored test cases:
-- ✅ **Decoded Logs:** The supporter wall listens to and renders decoded `TipReceived` events directly from the RPC provider.
-- ✅ **Length Bounds:** The `note` parameter is strictly bounded to 256 bytes in the contract logic.
-- ✅ **Reentrancy Protection:** `withdraw()` utilizes a strict OpenZeppelin `nonReentrant` modifier.
-- ✅ **Event Integrity:** `msg.value` and `msg.sender` are hard-coded into the emitted event to prevent spoofing.
-- ✅ **UX Resilience:** Transaction reversals, user rejections, and network mismatches have distinct, elegant fallback UIs.
-- ✅ **Zero Secrets:** No private keys or mnemonics are tracked in the repository.
+The application features comprehensive edge-case management:
+- **Network Validation:** Automatically detects incorrect network states and requests a switch to Sepolia via EIP-3326.
+- **Rejection Capture:** Identifies and gracefully handles EIP-1193 user rejections (`Error 4001`).
+- **Transaction Reversion:** Monitors transaction receipts to capture and display EVM-level execution failures.
 
 <hr />
 <div align="center">
-  <sub>Built with ❤️ for a decentralized future.</sub>
+  <sub>Engineered for reliability and transparency.</sub>
 </div>
