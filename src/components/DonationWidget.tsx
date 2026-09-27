@@ -29,7 +29,7 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
         const chainId = await (window as any).ethereum.request({ method: 'eth_chainId' });
         setIsWrongNetwork(chainId !== SEPOLIA_CHAIN_ID);
       } catch (e) {
-        console.error("Could not check network", e);
+        // Network check failed, ignored in production
       }
     }
   };
@@ -46,7 +46,7 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
           await checkNetwork();
         }
       } catch (error) {
-        console.error("Error checking connection:", error);
+        // Connection error ignored
       }
     } else {
       setHasMetaMask(false);
@@ -111,13 +111,12 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
             ],
           });
         } catch (addError) {
-          console.error("Error adding network", addError);
+          // Add network failed
           showNotification('error', "Failed to add Sepolia network. Please add it manually.");
         }
       } else if (error.code === 4001 || error.code === 'ACTION_REJECTED') {
         showNotification('warning', "Network switch was rejected.");
       } else {
-        console.error("Error switching network", error);
         showNotification('error', "Failed to switch network.");
       }
     } finally {
@@ -144,7 +143,6 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
       if (error.code === 4001 || error.code === 'ACTION_REJECTED') {
         showNotification('warning', "Connection request rejected.");
       } else {
-        console.error("Error connecting wallet:", error);
         showNotification('error', "Failed to connect wallet.");
       }
     } finally {
@@ -204,8 +202,7 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
       if (error.code === 4001 || error.code === 'ACTION_REJECTED') {
         showNotification('warning', "Transaction was rejected by the user.");
       } else {
-        // Only log unexpected errors to the console
-        console.error("Transaction failed:", error);
+        // Only log unexpected errors to the console in dev, removed for production
         showNotification('error', "Transaction failed or wallet is locked.");
       }
     } finally {
