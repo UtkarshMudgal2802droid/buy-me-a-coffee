@@ -201,6 +201,8 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
       // Rejected wallet prompt has its own branch (Test 8)
       if (error.code === 4001 || error.code === 'ACTION_REJECTED') {
         showNotification('warning', "Transaction was rejected by the user.");
+      } else if (error.code === -32002 || (error.message && error.message.toLowerCase().includes('pending'))) {
+        showNotification('warning', "MetaMask is busy. Please complete or cancel your pending transaction first.");
       } else {
         // Only log unexpected errors to the console in dev, removed for production
         showNotification('error', "Transaction failed or wallet is locked.");
