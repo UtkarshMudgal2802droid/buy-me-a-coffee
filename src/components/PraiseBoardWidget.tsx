@@ -110,8 +110,6 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
       }
     };
     setup();
-
-    };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
