@@ -32,7 +32,7 @@ The repository is built to satisfy strict security requirements:
 
 ## Technical Specifications
 
-- **Contract Address:** [`0x9bABC0CE0a9f63E267C2DF2271e0c8642398c35f`](https://sepolia.etherscan.io/address/0x9bABC0CE0a9f63E267C2DF2271e0c8642398c35f)
+- **Contract Address:** `<your-contract-address>`
 - **Network:** Sepolia Testnet (Chain ID: 11155111)
 - **Node Environment:** Node.js v18.x or higher
 - **Package Manager:** npm or yarn
@@ -43,7 +43,7 @@ Create a `.env.local` file in the root directory and supply your QuickNode RPC U
 
 ```env
 NEXT_PUBLIC_RPC_URL=https://<your-quicknode-endpoint-url>
-NEXT_PUBLIC_CONTRACT_ADDRESS=0x9bABC0CE0a9f63E267C2DF2271e0c8642398c35f
+NEXT_PUBLIC_CONTRACT_ADDRESS=<your-contract-address>
 PRIVATE_KEY=<your-wallet-private-key>
 ```
 
