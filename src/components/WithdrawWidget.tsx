@@ -23,9 +23,7 @@ export default function WithdrawWidget() {
         if (accounts.length > 0) {
           setAccount(accounts[0]);
         }
-      } catch (error) {
-        console.error("Connection error:", error);
-      }
+        // Connection error silently ignored in production
     }
   };
 
@@ -44,10 +42,10 @@ export default function WithdrawWidget() {
         const owner = await contract.owner();
         setOwnerAddress(owner.toLowerCase());
       } catch (e) {
-        console.warn("Owner getter not public or not found");
+        // Owner getter not public or not found, ignored
       }
     } catch (error) {
-      console.error("Failed to load contract data:", error);
+      // Failed to load contract data, handled by UI state
     }
   };
 
