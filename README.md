@@ -43,7 +43,6 @@ Create a `.env.local` file in the root directory and supply your QuickNode RPC U
 
 ```env
 NEXT_PUBLIC_RPC_URL=https://<your-quicknode-endpoint-url>
-NEXT_PUBLIC_CONTRACT_ADDRESS=0x9bABC0CE0a9f63E267C2DF2271e0c8642398c35f
 PRIVATE_KEY=<your-wallet-private-key>
 ```
 
