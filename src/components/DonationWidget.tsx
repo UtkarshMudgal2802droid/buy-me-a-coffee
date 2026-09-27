@@ -204,6 +204,7 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
       if (error.code === 4001 || error.code === 'ACTION_REJECTED') {
         showNotification('warning', "Transaction was rejected by the user.");
       } else {
+        // Only log unexpected errors to the console
         console.error("Transaction failed:", error);
         showNotification('error', "Transaction failed or wallet is locked.");
       }
