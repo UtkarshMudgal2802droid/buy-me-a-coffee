@@ -31,8 +31,9 @@ export default function WithdrawWidget() {
 
   const loadContractData = async () => {
     try {
-      // Use public RPC to read data without requiring connected wallet
-      const provider = new ethers.JsonRpcProvider('https://ethereum-sepolia-rpc.publicnode.com');
+      // Use environment variable RPC (e.g. QuickNode) or fallback to public RPC
+      const rpcUrl = process.env.NEXT_PUBLIC_RPC_URL || 'https://ethereum-sepolia-rpc.publicnode.com';
+      const provider = new ethers.JsonRpcProvider(rpcUrl);
       const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
       
       const balance = await provider.getBalance(CONTRACT_ADDRESS);
