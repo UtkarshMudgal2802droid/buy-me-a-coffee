@@ -23,7 +23,9 @@ export default function WithdrawWidget() {
         if (accounts.length > 0) {
           setAccount(accounts[0]);
         }
+      } catch (error) {
         // Connection error silently ignored in production
+      }
     }
   };
 
