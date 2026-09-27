@@ -113,7 +113,6 @@ export default function WithdrawWidget() {
       showNotification('success', 'Funds successfully withdrawn to your wallet!');
       await loadContractData();
     } catch (error: any) {
-      console.error(error);
       
       // Edge Case 1: User rejected
       if (error.code === 4001 || error.code === 'ACTION_REJECTED') {
