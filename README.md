@@ -39,7 +39,7 @@ The repository is built to satisfy strict security requirements:
 
 ## Environment Setup
 
-Create a `.env.local` file in the root directory and supply your QuickNode RPC URL and deployer private key:
+Create a `.env` file in the root directory and supply the required environment variables:
 
 ```env
 NEXT_PUBLIC_RPC_URL=https://<your-quicknode-endpoint-url>
