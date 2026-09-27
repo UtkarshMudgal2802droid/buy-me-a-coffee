@@ -27,7 +27,7 @@ Everything is driven directly from the blockchain—no central databases, no gat
 ## 🚀 Live Demo
 
 - **Frontend App:** [https://buy-me-a-coffee-eta-smoky.vercel.app/](https://buy-me-a-coffee-eta-smoky.vercel.app/) *(Replace this with your actual Vercel URL!)*
-- **Contract Address:** [`0x0FaebD0cfA6f15CA041e304111C3590d3B6C3b2b`](https://sepolia.etherscan.io/address/0x0FaebD0cfA6f15CA041e304111C3590d3B6C3b2b)
+- **Contract Address:** [`0x9bABC0CE0a9f63E267C2DF2271e0c8642398c35f`](https://sepolia.etherscan.io/address/0x9bABC0CE0a9f63E267C2DF2271e0c8642398c35f)
 
 ## 🛠️ Tech Stack
 
