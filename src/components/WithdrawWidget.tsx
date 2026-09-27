@@ -118,17 +118,21 @@ export default function WithdrawWidget() {
       if (error.code === 4001 || error.code === 'ACTION_REJECTED') {
         showNotification('error', 'Withdrawal cancelled by user.');
       } 
-      // Edge Case 2: No funds
-      else if (error.message.includes('No funds')) {
+      // Edge Case 2: MetaMask Busy (Pending Transaction)
+      else if (error.code === -32002 || (error.message && error.message.toLowerCase().includes('pending'))) {
+        showNotification('error', 'MetaMask is busy. Please complete or cancel your pending transaction first.');
+      }
+      // Edge Case 3: No funds
+      else if (error.message && error.message.includes('No funds')) {
         showNotification('error', 'The contract balance is currently zero.');
       }
-      // Edge Case 3: Not Owner (Execution Reverted)
-      else if (error.message.includes('Only owner can withdraw') || error.message.includes('reverted')) {
+      // Edge Case 4: Not Owner (Execution Reverted)
+      else if (error.message && (error.message.includes('Only owner can withdraw') || error.message.includes('reverted'))) {
         showNotification('error', 'ACCESS DENIED: Only the contract owner can withdraw funds.');
       }
       // Fallback
       else {
-        showNotification('error', 'Transaction failed. You may not be the authorized owner.');
+        showNotification('error', 'Transaction failed. Please check MetaMask for details.');
       }
     } finally {
       setIsProcessing(false);
