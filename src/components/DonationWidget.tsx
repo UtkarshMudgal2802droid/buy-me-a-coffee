@@ -246,7 +246,7 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
             initial={{ opacity: 0, y: -20, x: "-50%" }}
             animate={{ opacity: 1, y: 0, x: "-50%" }}
             exit={{ opacity: 0, y: -20, x: "-50%" }}
-            className={`absolute top-6 left-1/2 z-50 px-6 py-3 rounded-full font-bold shadow-lg whitespace-nowrap flex items-center gap-2 ${
+            className={`absolute top-6 left-1/2 z-50 px-6 py-3 rounded-xl font-bold shadow-lg text-center max-w-[90%] md:max-w-md w-max flex flex-col md:flex-row items-center justify-center gap-2 ${
               notification.type === 'error' ? 'bg-red-100 text-red-700 border border-red-200' : 
               notification.type === 'warning' ? 'bg-amber-100 text-amber-700 border border-amber-200' : 
               'bg-emerald-100 text-emerald-700 border border-emerald-200'
