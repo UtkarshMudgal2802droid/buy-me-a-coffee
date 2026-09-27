@@ -80,7 +80,7 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
       setTips(parsedTips);
       return contract;
     } catch (error) {
-      console.error("Error fetching tips:", error);
+      // Error fetching tips silently handled by UI state
       setRpcError(true);
       return null;
     } finally {
