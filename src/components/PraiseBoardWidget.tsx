@@ -59,8 +59,8 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
       setLoading(true);
       setRpcError(false);
       
-      // Use environment variable RPC (e.g. QuickNode) or fallback to public RPC
-      const rpcUrl = process.env.NEXT_PUBLIC_RPC_URL || 'https://ethereum-sepolia-rpc.publicnode.com';
+      // Use strictly environment variable RPC
+      const rpcUrl = process.env.NEXT_PUBLIC_RPC_URL as string;
       const provider = new ethers.JsonRpcProvider(rpcUrl);
       const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
       
