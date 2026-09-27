@@ -203,6 +203,8 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
         showNotification('warning', "Transaction was rejected by the user.");
       } else if (error.code === -32002 || (error.message && error.message.toLowerCase().includes('pending'))) {
         showNotification('warning', "MetaMask is busy. Please complete or cancel your pending transaction first.");
+      } else if (error.code === 'INSUFFICIENT_FUNDS' || (error.message && error.message.toLowerCase().includes('insufficient funds'))) {
+        showNotification('error', "Insufficient funds for this transaction. Please add more ETH to your wallet.");
       } else {
         // Only log unexpected errors to the console in dev, removed for production
         showNotification('error', "Transaction failed or wallet is locked.");
