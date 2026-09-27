@@ -109,7 +109,6 @@ export default function WithdrawWidget() {
       
       const tx = await contract.withdraw();
       
-      setTxStatus('Awaiting Confirmation...');
       const receipt = await tx.wait();
       
       if (receipt.status === 0) {
@@ -148,7 +147,6 @@ export default function WithdrawWidget() {
       }
     } finally {
       setIsProcessing(false);
-      setTxStatus('');
     }
   };
 
