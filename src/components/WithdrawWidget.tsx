@@ -180,7 +180,7 @@ export default function WithdrawWidget() {
             </h3>
             <p className="text-slate-600 font-medium mt-4 max-w-lg leading-relaxed">
               Total funds secured in contract: <strong className="text-bmc-dark font-black text-lg">{parseFloat(contractBalance).toFixed(4)} ETH</strong>. 
-              <br/>Withdrawal operations are strictly restricted. Only the verified creator wallet can extract funds.
+              <br/>Withdrawal operations are strictly restricted. Only the contract owner can extract funds.
             </p>
           </div>
 
