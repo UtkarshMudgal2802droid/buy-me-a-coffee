@@ -119,13 +119,13 @@ export default function WithdrawWidget() {
       if (error.code === 4001 || error.code === 'ACTION_REJECTED') {
         showNotification('error', 'Withdrawal cancelled by user.');
       } 
-      // Edge Case 2: Not Owner (Execution Reverted)
-      else if (error.message.includes('Only owner can withdraw') || error.message.includes('reverted')) {
-        showNotification('error', 'ACCESS DENIED: Only the contract owner can withdraw funds.');
-      }
-      // Edge Case 3: No funds
+      // Edge Case 2: No funds
       else if (error.message.includes('No funds')) {
         showNotification('error', 'The contract balance is currently zero.');
+      }
+      // Edge Case 3: Not Owner (Execution Reverted)
+      else if (error.message.includes('Only owner can withdraw') || error.message.includes('reverted')) {
+        showNotification('error', 'ACCESS DENIED: Only the contract owner can withdraw funds.');
       }
       // Fallback
       else {
