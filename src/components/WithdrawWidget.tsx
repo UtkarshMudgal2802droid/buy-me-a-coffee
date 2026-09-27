@@ -122,11 +122,15 @@ export default function WithdrawWidget() {
       else if (error.code === -32002 || (error.message && error.message.toLowerCase().includes('pending'))) {
         showNotification('error', 'MetaMask is busy. Please complete or cancel your pending transaction first.');
       }
-      // Edge Case 3: No funds
+      // Edge Case 3: No funds in contract
       else if (error.message && error.message.includes('No funds')) {
         showNotification('error', 'The contract balance is currently zero.');
       }
-      // Edge Case 4: Not Owner (Execution Reverted)
+      // Edge Case 4: Insufficient funds for gas
+      else if (error.code === 'INSUFFICIENT_FUNDS' || (error.message && error.message.toLowerCase().includes('insufficient funds'))) {
+        showNotification('error', 'You do not have enough ETH to cover the gas fee for this transaction.');
+      }
+      // Edge Case 5: Not Owner (Execution Reverted)
       else if (error.message && (error.message.includes('Only owner can withdraw') || error.message.includes('reverted'))) {
         showNotification('error', 'ACCESS DENIED: Only the contract owner can withdraw funds.');
       }
