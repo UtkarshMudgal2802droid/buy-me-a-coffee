@@ -28,7 +28,7 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const chainId = await (window as any).ethereum.request({ method: 'eth_chainId' });
         setIsWrongNetwork(chainId !== SEPOLIA_CHAIN_ID);
-      } catch (e) {
+      } catch {
         // Network check failed, ignored in production
       }
     }
@@ -45,7 +45,7 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
           setAccount(accounts[0]);
           await checkNetwork();
         }
-      } catch (error) {
+      } catch {
         // Connection error ignored
       }
     } else {
@@ -110,7 +110,7 @@ export default function DonationWidget({ creatorName = "Buy me a coffee" }: { cr
               },
             ],
           });
-        } catch (addError) {
+        } catch {
           // Add network failed
           showNotification('error', "Failed to add Sepolia network. Please add it manually.");
         }

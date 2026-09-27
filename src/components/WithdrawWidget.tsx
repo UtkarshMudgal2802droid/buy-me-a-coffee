@@ -2,28 +2,29 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Wallet, ShieldAlert, Loader2, LogOut, CheckCircle2 } from 'lucide-react';
+import { ShieldAlert, Loader2, LogOut, CheckCircle2 } from 'lucide-react';
 import { ethers } from 'ethers';
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../contract-config';
 
-const SEPOLIA_CHAIN_ID = '0xaa36a7';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type EthereumWindow = { ethereum?: any };
 
 export default function WithdrawWidget() {
   const [account, setAccount] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [txStatus, setTxStatus] = useState<string>('');
   const [notification, setNotification] = useState<{ type: 'success' | 'error', message: string } | null>(null);
   const [contractBalance, setContractBalance] = useState<string>('0');
   const [ownerAddress, setOwnerAddress] = useState<string>('');
 
   const checkConnection = async () => {
-    if (typeof window !== 'undefined' && (window as any).ethereum) {
+    const win = window as unknown as EthereumWindow;
+    if (typeof window !== 'undefined' && win.ethereum) {
       try {
-        const accounts = await (window as any).ethereum.request({ method: 'eth_accounts' });
+        const accounts = await win.ethereum.request({ method: 'eth_accounts' });
         if (accounts.length > 0) {
           setAccount(accounts[0]);
         }
-      } catch (error) {
+      } catch {
         // Connection error silently ignored in production
       }
     }
@@ -44,27 +45,31 @@ export default function WithdrawWidget() {
       try {
         const owner = await contract.owner();
         setOwnerAddress(owner.toLowerCase());
-      } catch (e) {
+      } catch {
         // Owner getter not public or not found, ignored
       }
-    } catch (error) {
+    } catch {
       // Failed to load contract data, handled by UI state
     }
   };
 
   useEffect(() => {
-    checkConnection();
-    loadContractData();
+    const init = async () => {
+      await checkConnection();
+      await loadContractData();
+    };
+    init();
 
-    if (typeof window !== 'undefined' && (window as any).ethereum) {
-      (window as any).ethereum.on('accountsChanged', (accounts: string[]) => {
+    const win = window as unknown as EthereumWindow;
+    if (typeof window !== 'undefined' && win.ethereum) {
+      win.ethereum.on('accountsChanged', (accounts: string[]) => {
         if (accounts.length > 0) {
           setAccount(accounts[0]);
         } else {
           setAccount(null);
         }
       });
-      (window as any).ethereum.on('chainChanged', () => {
+      win.ethereum.on('chainChanged', () => {
         window.location.reload();
       });
     }
@@ -86,10 +91,10 @@ export default function WithdrawWidget() {
     }
 
     setIsProcessing(true);
-    setTxStatus('Requesting Withdrawal...');
     
     try {
-      const provider = new ethers.BrowserProvider((window as any).ethereum);
+      const win = window as unknown as EthereumWindow;
+      const provider = new ethers.BrowserProvider(win.ethereum);
       
       // Ensure on correct network
       const network = await provider.getNetwork();
@@ -113,26 +118,28 @@ export default function WithdrawWidget() {
       
       showNotification('success', 'Funds successfully withdrawn to your wallet!');
       await loadContractData();
-    } catch (error: any) {
+    } catch (error: unknown) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const err = error as any;
       
       // Edge Case 1: User rejected
-      if (error.code === 4001 || error.code === 'ACTION_REJECTED') {
+      if (err.code === 4001 || err.code === 'ACTION_REJECTED') {
         showNotification('error', 'Withdrawal cancelled by user.');
       } 
       // Edge Case 2: MetaMask Busy (Pending Transaction)
-      else if (error.code === -32002 || (error.message && error.message.toLowerCase().includes('pending'))) {
+      else if (err.code === -32002 || (err.message && err.message.toLowerCase().includes('pending'))) {
         showNotification('error', 'MetaMask is busy. Please complete or cancel your pending transaction first.');
       }
       // Edge Case 3: No funds in contract
-      else if (error.message && error.message.includes('No funds')) {
+      else if (err.message && err.message.includes('No funds')) {
         showNotification('error', 'The contract balance is currently zero.');
       }
       // Edge Case 4: Insufficient funds for gas
-      else if (error.code === 'INSUFFICIENT_FUNDS' || (error.message && error.message.toLowerCase().includes('insufficient funds'))) {
+      else if (err.code === 'INSUFFICIENT_FUNDS' || (err.message && err.message.toLowerCase().includes('insufficient funds'))) {
         showNotification('error', 'You do not have enough ETH to cover the gas fee for this transaction.');
       }
       // Edge Case 5: Not Owner (Execution Reverted)
-      else if (error.message && (error.message.includes('Only owner can withdraw') || error.message.includes('reverted'))) {
+      else if (err.message && (err.message.includes('Only owner can withdraw') || err.message.includes('reverted'))) {
         showNotification('error', 'ACCESS DENIED: Only the contract owner can withdraw funds.');
       }
       // Fallback

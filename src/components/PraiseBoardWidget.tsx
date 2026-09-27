@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import { Loader2, MessageSquareQuote, Coffee, ArrowUpDown, Filter, AlertCircle, RefreshCw, Wallet, ServerCrash, ChevronDown } from 'lucide-react';
+import { Loader2, MessageSquareQuote, Coffee, ArrowUpDown, Filter, RefreshCw, ServerCrash, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 declare global {
@@ -14,7 +14,7 @@ declare global {
 
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../contract-config';
 
-const SEPOLIA_CHAIN_ID = '0xaa36a7';
+
 
 type Tip = {
   sender: string;
@@ -80,7 +80,7 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
       
       setTips(parsedTips);
       return contract;
-    } catch (error) {
+    } catch {
       // Error fetching tips silently handled by UI state
       setRpcError(true);
       return null;
@@ -111,7 +111,6 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
       }
     };
     setup();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 
