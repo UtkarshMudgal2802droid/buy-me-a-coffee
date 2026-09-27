@@ -37,6 +37,15 @@ The repository is built to satisfy strict security requirements:
 - **Node Environment:** Node.js v18.x or higher
 - **Package Manager:** npm or yarn
 
+## Environment Setup
+
+Create a `.env.local` file in the root directory and supply your QuickNode RPC URL and deployer private key:
+
+```env
+NEXT_PUBLIC_RPC_URL=https://<your-quicknode-endpoint-url>
+PRIVATE_KEY=<your-wallet-private-key>
+```
+
 ## Local Deployment Instructions
 
 To execute the application locally:
