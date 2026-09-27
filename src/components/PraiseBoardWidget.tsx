@@ -59,8 +59,9 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
       setLoading(true);
       setRpcError(false);
       
-      // Use public RPC to completely avoid MetaMask crashes on mount
-      const provider = new ethers.JsonRpcProvider('https://ethereum-sepolia-rpc.publicnode.com');
+      // Use environment variable RPC (e.g. QuickNode) or fallback to public RPC
+      const rpcUrl = process.env.NEXT_PUBLIC_RPC_URL || 'https://ethereum-sepolia-rpc.publicnode.com';
+      const provider = new ethers.JsonRpcProvider(rpcUrl);
       const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
       
       const currentBlock = await provider.getBlockNumber();
