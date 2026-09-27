@@ -76,17 +76,16 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
   };
 
   const fetchPastTips = async () => {
-    const isReady = await checkNetworkAndWallet();
-    if (!isReady) return null;
-
+    // We don't need to check MetaMask just to read public logs!
     try {
       setLoading(true);
       setRpcError(false);
-      const provider = new ethers.BrowserProvider(window.ethereum);
+      
+      // Use public RPC to completely avoid MetaMask crashes on mount
+      const provider = new ethers.JsonRpcProvider('https://ethereum-sepolia-rpc.publicnode.com');
       const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
       
       const currentBlock = await provider.getBlockNumber();
-      // Use a smaller block range (e.g. 5000) to avoid "service temporarily unavailable" RPC rate limits on free tiers
       const fromBlock = Math.max(0, currentBlock - 5000);
 
       const filter = contract.filters.TipReceived();
@@ -98,7 +97,7 @@ export default function PraiseBoardWidget({ creatorName = "" }: { creatorName?: 
         amount: ethers.formatEther(event.args.amount),
         note: event.args.note,
         txHash: event.transactionHash
-      })).reverse(); // Reverse makes it 'newest' by default
+      })).reverse();
       
       setTips(parsedTips);
       return contract;
